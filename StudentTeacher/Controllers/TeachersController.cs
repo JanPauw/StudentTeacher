@@ -58,17 +58,29 @@ namespace StudentTeacher.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Number,FirstName,LastName,School,Email")] Teacher teacher)
+        public async Task<IActionResult> Create(string Number, string FirstName, string LastName, string School, string Email)
         {
-            if (ModelState.IsValid)
+            Teacher t = new Teacher();
+            t.Number = Number;
+            t.FirstName = FirstName;
+            t.LastName = LastName;
+            t.School = School;
+            t.SchoolNavigation = _context.Schools.Find(School);
+            t.Email = Email;
+            t.EmailNavigation = _context.Users.Find(Email);
+
+            try
             {
-                _context.Add(teacher);
+                _context.Add(t);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Email"] = new SelectList(_context.Users, "Email", "Email", teacher.Email);
-            ViewData["School"] = new SelectList(_context.Schools, "Code", "Code", teacher.School);
-            return View(teacher);
+            catch (Exception e)
+            {
+                ViewData["Email"] = new SelectList(_context.Users, "Email", "Email", t.Email);
+                ViewData["School"] = new SelectList(_context.Schools, "Code", "Code", t.School);
+                return View(t);
+            }
         }
 
         // GET: Teachers/Edit/5
@@ -160,14 +172,14 @@ namespace StudentTeacher.Controllers
             {
                 _context.Teachers.Remove(teacher);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TeacherExists(string id)
         {
-          return _context.Teachers.Any(e => e.Number == id);
+            return _context.Teachers.Any(e => e.Number == id);
         }
     }
 }

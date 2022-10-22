@@ -58,17 +58,30 @@ namespace StudentTeacher.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Number,FirstName,LastName,Email,Campus")] Lecturer lecturer)
+        public async Task<IActionResult> Create(string Number, string FirstName, string LastName, string Email, string Campus)
         {
-            if (ModelState.IsValid)
+            Lecturer l = new Lecturer();
+
+            l.Number = Number;
+            l.FirstName = FirstName;
+            l.LastName = LastName;
+            l.Email = Email;
+            l.EmailNavigation = _context.Users.Find(Email);
+            l.Campus = Campus;
+            l.CampusNavigation = _context.Campuses.Find(Campus);
+
+            try
             {
-                _context.Add(lecturer);
+                _context.Add(l);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Campus"] = new SelectList(_context.Campuses, "Code", "Code", lecturer.Campus);
-            ViewData["Email"] = new SelectList(_context.Users, "Email", "Email", lecturer.Email);
-            return View(lecturer);
+            catch (Exception e)
+            {
+                ViewData["Campus"] = new SelectList(_context.Campuses, "Code", "Code", l.Campus);
+                ViewData["Email"] = new SelectList(_context.Users, "Email", "Email", l.Email);
+                return View(l);
+            }
         }
 
         // GET: Lecturers/Edit/5
@@ -160,14 +173,14 @@ namespace StudentTeacher.Controllers
             {
                 _context.Lecturers.Remove(lecturer);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool LecturerExists(string id)
         {
-          return _context.Lecturers.Any(e => e.Number == id);
+            return _context.Lecturers.Any(e => e.Number == id);
         }
     }
 }
