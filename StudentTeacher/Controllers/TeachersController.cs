@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using StudentTeacher.Data;
 using StudentTeacher.Models;
 
 namespace StudentTeacher.Controllers
@@ -43,6 +44,116 @@ namespace StudentTeacher.Controllers
             }
 
             return View(teacher);
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        // POST: Teachers/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(string FirstName, string LastName, string SchoolCode, string Email, string Password, string ConfirmPassword)
+        {
+            #region Input Validation
+            if (String.IsNullOrEmpty(FirstName))
+            {
+                TempData["error"] = "Invalid First Name entered!";
+                return View();
+            }
+
+            if (String.IsNullOrEmpty(LastName))
+            {
+                TempData["error"] = "Invalid Last Name entered!";
+                return View();
+            }
+
+            if (String.IsNullOrEmpty(Email))
+            {
+                TempData["error"] = "Invalid Email entered!";
+                return View();
+            }
+
+            //Check if Email is already Registered
+            var user = _context.Users.Find(Email);
+            if (user != null)
+            {
+                TempData["error"] = "Email is already registered!";
+                return View();
+            }
+
+            if (String.IsNullOrEmpty(Password))
+            {
+                TempData["error"] = "Invalid Password entered!";
+                return View();
+            }
+
+            //Check Length of Password
+            if (Password.Length < 8)
+            {
+                TempData["error"] = "Password should be minimum 8 characters!";
+                return View();
+            }
+
+            if (String.IsNullOrEmpty(ConfirmPassword))
+            {
+                TempData["error"] = "Passwords do not match!";
+                return View();
+            }
+
+            if (!Password.Equals(ConfirmPassword))
+            {
+                TempData["error"] = "Passwords do not match!";
+                return View();
+            }
+
+            //Check Valid School Code
+            var school = _context.Schools.Find(SchoolCode);
+            if (school == null)
+            {
+                TempData["error"] = "Invalid School Code entered!";
+                return View();
+            }
+            #endregion
+
+            //Encryption
+            Encrypt enc = new Encrypt();
+
+            //Create new User
+            User u = new User();
+            u.Email = Email;
+            u.Password = enc.EncryptString(Password);
+            u.Type = "School Teacher";
+            u.Role = "Teacher";
+            _context.Users.Add(u);
+            _context.SaveChanges();
+
+            Teacher t = new Teacher();
+            t.Number = GenerateTeacherCode(FirstName, LastName);
+            t.FirstName = FirstName;
+            t.LastName = LastName;
+            t.School = SchoolCode;
+            t.SchoolNavigation = school;
+            t.Email = Email;
+            t.EmailNavigation = user;
+
+            try
+            {
+                _context.Add(t);
+                TempData["success"] = "Register Successful!";
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                TempData["error"] = "Register Unsuccessful!";
+                ViewData["Email"] = new SelectList(_context.Users, "Email", "Email", t.Email);
+                ViewData["School"] = new SelectList(_context.Schools, "Code", "Code", t.School);
+                return View(t);
+            }
         }
 
         // GET: Teachers/Create
@@ -180,6 +291,32 @@ namespace StudentTeacher.Controllers
         private bool TeacherExists(string id)
         {
             return _context.Teachers.Any(e => e.Number == id);
+        }
+
+        //Teacher Code Generator
+        private string GenerateTeacherCode(string FirstName, string LastName)
+        {
+            string toReturn = "";
+
+            FirstName = FirstName.ToUpper();
+            LastName = LastName.ToUpper();
+
+            toReturn += FirstName.Substring(0, 1);
+            toReturn += LastName.Substring(0, 1);
+
+            Random rnd = new Random();
+            int RandomNumber = rnd.Next(1000, 10000);
+
+            toReturn += RandomNumber.ToString();
+
+            if (!TeacherExists(toReturn))
+            {
+                return toReturn;
+            }
+            else
+            {
+                return GenerateTeacherCode(FirstName, LastName);
+            }
         }
     }
 }
