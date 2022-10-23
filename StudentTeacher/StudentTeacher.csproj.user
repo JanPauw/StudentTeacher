@@ -15,5 +15,6 @@
     <WebStackScaffolding_DbContextTypeFullName>StudentTeacher.Models.XISD_POEContext</WebStackScaffolding_DbContextTypeFullName>
     <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
     <WebStackScaffolding_IsViewGenerationSelected>True</WebStackScaffolding_IsViewGenerationSelected>
+    <NameOfLastUsedPublishProfile>D:\Visual Studio\Projects\StudentTeacher\StudentTeacher\Properties\PublishProfiles\StudentTeacher - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

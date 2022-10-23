@@ -85,6 +85,7 @@ namespace StudentTeacher.Controllers
             }
 
             //TODO: Store Session Variables
+            TempData["success"] = "Logged in successfully!";
             return RedirectToAction(nameof(Index));
         }
 
