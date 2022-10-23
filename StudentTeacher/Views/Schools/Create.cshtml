@@ -16,7 +16,16 @@
                 <label for="floatingInput">School Name</label>
             </div>
             <div class="form-floating mb-3">
-                <input name="Province" type="text" class="form-control" id="floatingProvince" placeholder="eg. Eastern Cape" required>
+                <select name="Province" type="text" class="form-select" id="floatingProvince" placeholder="eg. Eastern Cape" required>
+                    <option value="Eastern Cape">Eastern Cape</option>
+                    <option value="Free State">Free State</option>
+                    <option value="Gauteng">Gauteng</option>
+                    <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                    <option value="Limpopo">Limpopo</option>
+                    <option value="Mpumalanga">Mpumalanga</option>
+                    <option value="North West">North West</option>
+                    <option value="Western Cape">Western Cape</option>
+                </select>
                 <label for="floatingInput">Province</label>
             </div>
             <div class="form-floating mb-3">
@@ -30,7 +39,7 @@
                         <option value="@campus.Code">@campus.City, @campus.Province</option>
                     }
                 </select>
-                <label for="floatingPassword">Campus</label>
+                <label for="floatingPassword">Varsity College Campus</label>
             </div>
         </div>
         <br />

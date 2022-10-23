@@ -65,7 +65,7 @@ namespace StudentTeacher.Controllers
             #region Input validation
 
             //check if name is empty
-            if (String.IsNullOrEmpty(Name))
+            if (String.IsNullOrEmpty(Name) || Name.Length < 4)
             {
                 TempData["error"] = "Invalid Name entered!";
                 return View();
@@ -105,6 +105,7 @@ namespace StudentTeacher.Controllers
             {
                 _context.Add(s);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "School added Successfully!";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception e)

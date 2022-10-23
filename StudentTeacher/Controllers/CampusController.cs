@@ -64,7 +64,7 @@ namespace StudentTeacher.Controllers
             }
 
             //check if City is empty
-            if (String.IsNullOrEmpty(City))
+            if (String.IsNullOrEmpty(City) || City.Length < 4)
             {
                 TempData["error"] = "Invalid City entered!";
                 return View();
@@ -80,6 +80,7 @@ namespace StudentTeacher.Controllers
             {
                 _context.Add(c);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Campus added Successfully!";
                 return RedirectToAction(nameof(Index));
             }
             catch(Exception e)

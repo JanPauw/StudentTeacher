@@ -143,8 +143,8 @@ namespace StudentTeacher.Controllers
             try
             {
                 _context.Add(t);
-                TempData["success"] = "Register Successful!";
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Register Successful!";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception e)

@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Add School";
+
+    //Get List of Campuses from Back-End
+    List<Campus> campuses = ViewBag.ListCampuses;
+}
+
+<div id="Lec_Login">
+    <img src="~/images/AddStudent.png" />
+    <br />
+    <br />
+    <form method="post" asp-action="Create">
+        <div class="form-group">
+            <div class="form-floating mb-3">
+                <input name="Number" type="text" class="form-control" id="floatingNumber" placeholder="eg. ST10118596" required>
+                <label for="floatingInput">Student Number</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input name="FirstName" type="text" class="form-control" id="floatingFirstName" placeholder="eg. John" required />
+                <label for="floatingInput">First Name</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input name="LastName" type="text" class="form-control" id="floatingLastName" placeholder="eg. Doe" required />
+                <label for="floatingInput">Last Name</label>
+            </div>
+        </div>
+        <br />
+        <div id="buttons">
+            <button type="submit" class="btn btn-success">Add Student</button>
+            @*<table id="tbl_or">
+            <tr>
+            <td><hr /></td>
+            <td>OR</td>
+            <td><hr /></td>
+            </tr>
+            </table>
+            <a class="btn btn-secondary">REGISTER</a>*@
+        </div>
+    </form>
+</div>
+
+<style>
+    #Lec_Login {
+        width: 35%;
+        margin: auto;
+        margin-top: 3%;
+        padding: 3%;
+        box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    #Lec_Login {
+        background-color: white;
+    }
+
+        #Lec_Login img {
+            width: 80%;
+        }
+
+    #tbl_or {
+        width: 100%;
+    }
+
+        #tbl_or td {
+            width: 33%;
+            text-align: center;
+        }
+
+    #buttons button, #buttons a {
+        width: 100%;
+    }
+</style>
