@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using StudentTeacher.Data;
 using StudentTeacher.Models;
 
 namespace StudentTeacher.Controllers
@@ -21,7 +22,7 @@ namespace StudentTeacher.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Users.ToListAsync());
+            return View(await _context.Users.ToListAsync());
         }
 
         // GET: Users/Details/5
@@ -43,20 +44,69 @@ namespace StudentTeacher.Controllers
         }
 
         // GET: Users/Create
-        public IActionResult Create()
+        public IActionResult Login()
         {
             return View();
         }
 
-        // POST: Users/Create
+        // POST: Users/Login
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Email,Password,Type,Role")] User user)
+        public async Task<IActionResult> Login([Bind("Email,Password")] User user)
+        {
+            //If Empty email
+            if (String.IsNullOrEmpty(user.Email))
+            {
+                return View(user);
+            }
+
+            //If Empty password
+            if (String.IsNullOrEmpty(user.Password))
+            {
+                return View(user);
+            }
+
+            Encrypt enc = new Encrypt();
+            String EncryptedPassword = enc.EncryptString(user.Password);
+
+            //Check if user exists in DB
+            var u = _context.Users.Find(user.Email);
+            if (u == null)
+            {
+                return View(user);
+            }
+
+            //Check if passwords match
+            if (!u.Password.Equals(EncryptedPassword))
+            {
+                return View(user);
+            }
+
+            //TODO: Store Session Variables
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Users/Create
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        // POST: Users/Register
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register([Bind("Email,Password,Type,Role")] User user)
         {
             if (ModelState.IsValid)
             {
+                Encrypt enc = new Encrypt();
+                String EncryptedPassword = enc.EncryptString(user.Password);
+                user.Password = EncryptedPassword;
+
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -147,14 +197,14 @@ namespace StudentTeacher.Controllers
             {
                 _context.Users.Remove(user);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool UserExists(string id)
         {
-          return _context.Users.Any(e => e.Email == id);
+            return _context.Users.Any(e => e.Email == id);
         }
     }
 }

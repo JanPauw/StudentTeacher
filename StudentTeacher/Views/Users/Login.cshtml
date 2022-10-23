@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<div id="Lec_Login">
+    <img src="~/images/XISD_Logo_Full.png" />
+    @*<label class="h1">LOGIN</label>*@
+    <br />
+    <br />
+    <form method="post" asp-action="Login">
+        <div class="form-group">
+            <div class="form-floating mb-3">
+                <input name="Email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <label for="floatingInput">Email address</label>
+            </div>
+            <div class="form-floating">
+                <input name="Password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword">Password</label>
+            </div>
+        </div>
+        <br />
+        <div id="buttons">
+            <button type="submit" class="btn btn-success">LOGIN</button>
+            @*<table id="tbl_or">
+            <tr>
+            <td><hr /></td>
+            <td>OR</td>
+            <td><hr /></td>
+            </tr>
+            </table>
+            <a class="btn btn-secondary">REGISTER</a>*@
+        </div>
+    </form>
+</div>
+
+<style>
+    #Lec_Login {
+        width: 35%;
+        margin: auto;
+        margin-top: 10%;
+        padding: 3%;
+        box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    #Lec_Login {
+        background-color: white;
+    }
+
+        #Lec_Login img {
+            width: 80%;
+        }
+
+    #tbl_or {
+        width: 100%;
+    }
+
+        #tbl_or td {
+            width: 33%;
+            text-align: center;
+        }
+
+    #buttons button, #buttons a {
+        width: 100%;
+    }
+</style>
