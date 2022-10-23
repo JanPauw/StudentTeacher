@@ -1,7 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using StudentTeacher.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<XISD_POEContext>(options => options.UseSqlServer(
+    builder.Configuration.GetConnectionString("online")
+    ));
 
 var app = builder.Build();
 
