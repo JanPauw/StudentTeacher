@@ -62,7 +62,7 @@ namespace StudentTeacher.Controllers
         {
             Lecturer l = new Lecturer();
 
-            l.Number = Number;
+            l.Number = GenerateLectuerCode(FirstName, LastName);
             l.FirstName = FirstName;
             l.LastName = LastName;
             l.Email = Email;
@@ -182,5 +182,34 @@ namespace StudentTeacher.Controllers
         {
             return _context.Lecturers.Any(e => e.Number == id);
         }
+
+
+        //Lecturer Code Generator
+        private string GenerateLectuerCode(string FirstName, string LastName)
+        {
+            string toReturn = "";
+
+            FirstName = FirstName.ToUpper();
+            LastName = LastName.ToUpper();
+
+            toReturn += FirstName.Substring(0, 1);
+            toReturn += LastName.Substring(0, 1);
+
+            Random rnd = new Random();
+            int RandomNumber = rnd.Next(1000, 10000);
+
+            toReturn += RandomNumber.ToString();
+
+            if (!LecturerExists(toReturn))
+            {
+                return toReturn;
+            }
+            else
+            {
+                return GenerateLectuerCode(FirstName, LastName);
+            }
+        }
+
+
     }
 }

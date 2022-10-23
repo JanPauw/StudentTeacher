@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Number)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
             <th>
@@ -28,26 +31,30 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CampusNavigation.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmailNavigation.Email)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Number">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Number">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Number">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CampusNavigation.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmailNavigation.Email)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Number">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Number">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Number">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
