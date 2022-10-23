@@ -53,15 +53,47 @@ namespace StudentTeacher.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Code,Province,City")] Campus campus)
+        public async Task<IActionResult> Create(string Code, string Province, string City)
         {
-            if (ModelState.IsValid)
+            #region Input validation
+            //check if Code is empty
+            if (String.IsNullOrEmpty(Code))
             {
-                _context.Add(campus);
+                TempData["error"] = "Invalid Code entered!";
+                return View();
+            }
+
+            //check if Province is empty
+            if (String.IsNullOrEmpty(Province))
+            {
+                TempData["error"] = "Invalid Province entered!";
+                return View();
+            }
+
+            //check if City is empty
+            if (String.IsNullOrEmpty(City))
+            {
+                TempData["error"] = "Invalid City entered!";
+                return View();
+            }
+            #endregion
+
+            Campus c = new Campus();
+            c.Code = GenerateCampusCode(City);
+            c.Province = Province;
+            c.City = City;
+
+            try
+            {
+                _context.Add(c);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(campus);
+            catch(Exception e)
+            {
+                ViewData["Campus"] = new SelectList(_context.Campuses, "Code", "Code", c.Code);
+                return View(c);
+            }
         }
 
         // GET: Campus/Edit/5
@@ -156,5 +188,31 @@ namespace StudentTeacher.Controllers
         {
           return _context.Campuses.Any(e => e.Code == id);
         }
+
+        //Campus Code Generator
+        private string GenerateCampusCode(string City)
+        {
+            string toReturn = "";
+
+            City = City.ToUpper();
+
+            toReturn += City.Substring(0, 4);
+
+            Random rnd = new Random();
+            int RandomNumber = rnd.Next(1000, 10000);
+
+            toReturn += RandomNumber.ToString();
+
+            if (!CampusExists(toReturn))
+            {
+                return toReturn;
+            }
+            else
+            {
+                return GenerateCampusCode(City);
+            }
+        }
+
+
     }
 }
