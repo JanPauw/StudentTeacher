@@ -19,6 +19,7 @@ namespace StudentTeacher.Models
         public virtual DbSet<Campus> Campuses { get; set; } = null!;
         public virtual DbSet<Lecturer> Lecturers { get; set; } = null!;
         public virtual DbSet<School> Schools { get; set; } = null!;
+        public virtual DbSet<Student> Students { get; set; } = null!;
         public virtual DbSet<Teacher> Teachers { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
@@ -115,6 +116,20 @@ namespace StudentTeacher.Models
                     .WithMany(p => p.Schools)
                     .HasForeignKey(d => d.Campus)
                     .HasConstraintName("FK__Schools__Campus__2739D489");
+            });
+
+            modelBuilder.Entity<Student>(entity =>
+            {
+                entity.HasKey(e => e.Number)
+                    .HasName("PK__Students__78A1A19C26AB9EA1");
+
+                entity.Property(e => e.Number)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FirstName).IsUnicode(false);
+
+                entity.Property(e => e.LastName).IsUnicode(false);
             });
 
             modelBuilder.Entity<Teacher>(entity =>

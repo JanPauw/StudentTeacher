@@ -1,47 +1,81 @@
-﻿@model StudentTeacher.Models.School
-
-@{
+﻿@{
     ViewData["Title"] = "Add School";
+
+    //Get List of Campuses from Back-End
+    List<Campus> campuses = ViewBag.ListCampuses;
 }
 
-<h1>Create</h1>
-
-<h4>School</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+<div id="Lec_Login">
+    <img src="~/images/AddSchool.png" />
+    <br />
+    <br />
+    <form method="post" asp-action="Create">
+        <div class="form-group">
+            <div class="form-floating mb-3">
+                <input name="Name" type="text" class="form-control" id="floatingName" placeholder="eg. Sunridge Primary School" required>
+                <label for="floatingInput">School Name</label>
             </div>
-            <div class="form-group">
-                <label asp-for="Province" class="control-label"></label>
-                <input asp-for="Province" class="form-control" />
-                <span asp-validation-for="Province" class="text-danger"></span>
+            <div class="form-floating mb-3">
+                <input name="Province" type="text" class="form-control" id="floatingProvince" placeholder="eg. Eastern Cape" required>
+                <label for="floatingInput">Province</label>
             </div>
-            <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
+            <div class="form-floating mb-3">
+                <input name="City" type="text" class="form-control" id="floatingCity" placeholder="eg. Port Elizabeth" required>
+                <label for="floatingInput">City</label>
             </div>
-            <div class="form-group">
-                <label asp-for="Campus" class="control-label"></label>
-                <select asp-for="Campus" class ="form-control" asp-items="ViewBag.Campus"></select>
+            <div class="form-floating mb-3">
+                <select name="Campus" type="text" class="form-select" id="floatingCampus" placeholder="eg. Port Elizabeth, Eastern Cape" required>
+                    @foreach (var campus in campuses)
+                    {
+                        <option value="@campus.Code">@campus.City, @campus.Province</option>
+                    }
+                </select>
+                <label for="floatingPassword">Campus</label>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+        </div>
+        <br />
+        <div id="buttons">
+            <button type="submit" class="btn btn-success">Add School</button>
+            @*<table id="tbl_or">
+            <tr>
+            <td><hr /></td>
+            <td>OR</td>
+            <td><hr /></td>
+            </tr>
+            </table>
+            <a class="btn btn-secondary">REGISTER</a>*@
+        </div>
+    </form>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<style>
+    #Lec_Login {
+        width: 35%;
+        margin: auto;
+        margin-top: 3%;
+        padding: 3%;
+        box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    #Lec_Login {
+        background-color: white;
+    }
+
+        #Lec_Login img {
+            width: 80%;
+        }
+
+    #tbl_or {
+        width: 100%;
+    }
+
+        #tbl_or td {
+            width: 33%;
+            text-align: center;
+        }
+
+    #buttons button, #buttons a {
+        width: 100%;
+    }
+</style>

@@ -53,16 +53,9 @@ namespace StudentTeacher.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string Code, string Province, string City)
+        public async Task<IActionResult> Create(string Province, string City)
         {
             #region Input validation
-            //check if Code is empty
-            if (String.IsNullOrEmpty(Code))
-            {
-                TempData["error"] = "Invalid Code entered!";
-                return View();
-            }
-
             //check if Province is empty
             if (String.IsNullOrEmpty(Province))
             {

@@ -48,6 +48,7 @@ namespace StudentTeacher.Controllers
         public IActionResult Create()
         {
             ViewData["Campus"] = new SelectList(_context.Campuses, "Code", "Code");
+            ViewBag.ListCampuses = _context.Campuses.ToList();
             return View();
         }
 
@@ -58,6 +59,9 @@ namespace StudentTeacher.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(string Name, string Province, string City, string Campus)
         {
+            //List of Campuses in case of Page Reload on Post
+            ViewBag.ListCampuses = _context.Campuses.ToList();
+
             #region Input validation
 
             //check if name is empty
@@ -82,9 +86,10 @@ namespace StudentTeacher.Controllers
             }
 
             //check if campus is empty
-            if (String.IsNullOrEmpty(Campus))
+            var campus = _context.Campuses.Find(Campus);
+            if (campus == null)
             {
-                TempData["error"] = "Invalid Campus entered!";
+                TempData["error"] = "Invalid Campus selected!";
                 return View();
             }
             #endregion
