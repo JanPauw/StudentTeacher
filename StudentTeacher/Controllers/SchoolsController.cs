@@ -76,11 +76,6 @@ namespace StudentTeacher.Controllers
                 ViewData["Campus"] = new SelectList(_context.Campuses, "Code", "Code", s.Campus);
                 return View(s);
             }
-
-
-
-            
-
         }
 
         // GET: Schools/Edit/5
