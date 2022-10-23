@@ -58,6 +58,37 @@ namespace StudentTeacher.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(string Name, string Province, string City, string Campus)
         {
+            #region Input validation
+
+            //check if name is empty
+            if (String.IsNullOrEmpty(Name))
+            {
+                TempData["error"] = "Invalid Name entered!";
+                return View();
+            }
+
+            //check if province is empty
+            if (String.IsNullOrEmpty(Province))
+            {
+                TempData["error"] = "Invalid Province entered!";
+                return View();
+            }
+
+            //check if city is empty
+            if (String.IsNullOrEmpty(City))
+            {
+                TempData["error"] = "Invalid City entered!";
+                return View();
+            }
+
+            //check if campus is empty
+            if (String.IsNullOrEmpty(Campus))
+            {
+                TempData["error"] = "Invalid Campus entered!";
+                return View();
+            }
+            #endregion
+
             School s = new School();
             s.Name = Name;
             s.Province = Province;
