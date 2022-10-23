@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using StudentTeacher.Data;
 using StudentTeacher.Models;
 
 namespace StudentTeacher.Controllers
@@ -43,6 +44,116 @@ namespace StudentTeacher.Controllers
             }
 
             return View(lecturer);
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        // POST: Lecturers/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(string FirstName, string LastName, string Email, string Password, string ConfirmPassword, string CampusCode)
+        {
+            #region Input Validation
+            if (String.IsNullOrEmpty(FirstName))
+            {
+                TempData["error"] = "Invalid First Name entered!";
+                return View();
+            }
+
+            if (String.IsNullOrEmpty(LastName))
+            {
+                TempData["error"] = "Invalid Last Name entered!";
+                return View();
+            }
+
+            if (String.IsNullOrEmpty(Email))
+            {
+                TempData["error"] = "Invalid Email entered!";
+                return View();
+            }
+
+            //Check if Email is already Registered
+            var user = _context.Users.Find(Email);
+            if (user != null)
+            {
+                TempData["error"] = "Email is already registered!";
+                return View();
+            }
+
+            if (String.IsNullOrEmpty(Password))
+            {
+                TempData["error"] = "Invalid Password entered!";
+                return View();
+            }
+
+            //Check Length of Password
+            if (Password.Length < 8)
+            {
+                TempData["error"] = "Password should be minimum 8 characters!";
+                return View();
+            }
+
+            if (String.IsNullOrEmpty(ConfirmPassword))
+            {
+                TempData["error"] = "Passwords do not match!";
+                return View();
+            }
+
+            if (!Password.Equals(ConfirmPassword))
+            {
+                TempData["error"] = "Passwords do not match!";
+                return View();
+            }
+
+            //Check Valid School Code
+            var campus = _context.Campuses.Find(CampusCode);
+            if (campus == null)
+            {
+                TempData["error"] = "Invalid School Code entered!";
+                return View();
+            }
+            #endregion
+
+            //Creating new User
+            Encrypt enc = new Encrypt();
+            string EncyptedPassword = enc.EncryptString(Password);
+
+            User u = new User();
+            u.Email = Email;
+            u.Password = EncyptedPassword;
+            u.Type = "VC Lecturer";
+            u.Role = "lecturer";
+            _context.Users.Add(u);
+            _context.SaveChanges();
+
+            Lecturer l = new Lecturer();
+            l.Number = GenerateLectuerCode(FirstName, LastName);
+            l.FirstName = FirstName;
+            l.LastName = LastName;
+            l.Email = Email;
+            l.EmailNavigation = u;
+            l.Campus = CampusCode;
+            l.CampusNavigation = campus;
+
+            try
+            {
+                _context.Add(l);
+                await _context.SaveChangesAsync();
+                TempData["success"] = "Registration Successful!";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                ViewData["Campus"] = new SelectList(_context.Campuses, "Code", "Code", l.Campus);
+                ViewData["Email"] = new SelectList(_context.Users, "Email", "Email", l.Email);
+                TempData["error"] = "Registration Unsuccessful!";
+                return View(l);
+            }
         }
 
         // GET: Lecturers/Create
