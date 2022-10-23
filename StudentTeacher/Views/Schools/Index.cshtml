@@ -21,6 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.CampusNavigation)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -35,6 +38,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CampusNavigation.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Code">Edit</a> |

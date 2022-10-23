@@ -89,7 +89,7 @@ namespace StudentTeacher.Models
             modelBuilder.Entity<School>(entity =>
             {
                 entity.HasKey(e => e.Code)
-                    .HasName("PK__Schools__A25C5AA655AE8F53");
+                    .HasName("PK__Schools__A25C5AA61164245E");
 
                 entity.Property(e => e.Code)
                     .HasMaxLength(8)
@@ -103,6 +103,10 @@ namespace StudentTeacher.Models
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Name)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Province)
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -110,13 +114,13 @@ namespace StudentTeacher.Models
                 entity.HasOne(d => d.CampusNavigation)
                     .WithMany(p => p.Schools)
                     .HasForeignKey(d => d.Campus)
-                    .HasConstraintName("FK__Schools__Campus__19DFD96B");
+                    .HasConstraintName("FK__Schools__Campus__2739D489");
             });
 
             modelBuilder.Entity<Teacher>(entity =>
             {
                 entity.HasKey(e => e.Number)
-                    .HasName("PK__Teachers__78A1A19C7D0EFD96");
+                    .HasName("PK__Teachers__78A1A19CB330B6BF");
 
                 entity.Property(e => e.Number)
                     .HasMaxLength(6)
@@ -138,12 +142,12 @@ namespace StudentTeacher.Models
                     .WithMany(p => p.Teachers)
                     .HasForeignKey(d => d.Email)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Teachers__Email__1F98B2C1");
+                    .HasConstraintName("FK__Teachers__Email__2A164134");
 
                 entity.HasOne(d => d.SchoolNavigation)
                     .WithMany(p => p.Teachers)
                     .HasForeignKey(d => d.School)
-                    .HasConstraintName("FK__Teachers__School__208CD6FA");
+                    .HasConstraintName("FK__Teachers__School__2B0A656D");
             });
 
             modelBuilder.Entity<User>(entity =>

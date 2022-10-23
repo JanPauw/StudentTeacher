@@ -11,6 +11,7 @@ namespace StudentTeacher.Models
         }
 
         public string Code { get; set; } = null!;
+        public string? Name { get; set; }
         public string? Province { get; set; }
         public string? City { get; set; }
         public string? Campus { get; set; }

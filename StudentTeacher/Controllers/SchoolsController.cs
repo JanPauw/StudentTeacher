@@ -56,16 +56,31 @@ namespace StudentTeacher.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Code,Province,City,Campus")] School school)
+        public async Task<IActionResult> Create(string Name, string Province, string City, string Campus)
         {
-            if (ModelState.IsValid)
+            School s = new School();
+            s.Name = Name;
+            s.Province = Province;
+            s.City = City;
+            s.Campus = Campus;
+            s.Code = GenerateSchoolCode(Name);
+
+            try
             {
-                _context.Add(school);
+                _context.Add(s);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Campus"] = new SelectList(_context.Campuses, "Code", "Code", school.Campus);
-            return View(school);
+            catch (Exception e)
+            {
+                ViewData["Campus"] = new SelectList(_context.Campuses, "Code", "Code", s.Campus);
+                return View(s);
+            }
+
+
+
+            
+
         }
 
         // GET: Schools/Edit/5
@@ -154,14 +169,41 @@ namespace StudentTeacher.Controllers
             {
                 _context.Schools.Remove(school);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool SchoolExists(string id)
         {
-          return _context.Schools.Any(e => e.Code == id);
+            return _context.Schools.Any(e => e.Code == id);
         }
+
+
+        //School Code Generator
+        private string GenerateSchoolCode(string Name)
+        {
+            string toReturn = "";
+
+            Name = Name.ToUpper();
+
+            toReturn += Name.Substring(0, 4);
+
+            Random rnd = new Random();
+            int RandomNumber = rnd.Next(1000, 10000);
+
+            toReturn += RandomNumber.ToString();
+
+            if (!SchoolExists(toReturn))
+            {
+                return toReturn;
+            }
+            else
+            {
+                return GenerateSchoolCode(Name);
+            }
+        }
+
+
     }
 }
