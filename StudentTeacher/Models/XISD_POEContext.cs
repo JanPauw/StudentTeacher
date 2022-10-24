@@ -21,6 +21,7 @@ namespace StudentTeacher.Models
         public virtual DbSet<Module> Modules { get; set; } = null!;
         public virtual DbSet<School> Schools { get; set; } = null!;
         public virtual DbSet<Student> Students { get; set; } = null!;
+        public virtual DbSet<StudentModule> StudentModules { get; set; } = null!;
         public virtual DbSet<Teacher> Teachers { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
@@ -143,6 +144,31 @@ namespace StudentTeacher.Models
                 entity.Property(e => e.FirstName).IsUnicode(false);
 
                 entity.Property(e => e.LastName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<StudentModule>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Module)
+                    .HasMaxLength(8)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Student)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.ModuleNavigation)
+                    .WithMany(p => p.StudentModules)
+                    .HasForeignKey(d => d.Module)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__StudentMo__Modul__32AB8735");
+
+                entity.HasOne(d => d.StudentNavigation)
+                    .WithMany(p => p.StudentModules)
+                    .HasForeignKey(d => d.Student)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__StudentMo__Stude__31B762FC");
             });
 
             modelBuilder.Entity<Teacher>(entity =>
