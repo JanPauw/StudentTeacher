@@ -18,6 +18,7 @@ namespace StudentTeacher.Models
 
         public virtual DbSet<Campus> Campuses { get; set; } = null!;
         public virtual DbSet<Lecturer> Lecturers { get; set; } = null!;
+        public virtual DbSet<Module> Modules { get; set; } = null!;
         public virtual DbSet<School> Schools { get; set; } = null!;
         public virtual DbSet<Student> Students { get; set; } = null!;
         public virtual DbSet<Teacher> Teachers { get; set; } = null!;
@@ -85,6 +86,18 @@ namespace StudentTeacher.Models
                     .HasForeignKey(d => d.Email)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Lecturers__Email__236943A5");
+            });
+
+            modelBuilder.Entity<Module>(entity =>
+            {
+                entity.HasKey(e => e.Number)
+                    .HasName("PK__Modules__78A1A19CBF24A423");
+
+                entity.Property(e => e.Number)
+                    .HasMaxLength(8)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
             });
 
             modelBuilder.Entity<School>(entity =>
