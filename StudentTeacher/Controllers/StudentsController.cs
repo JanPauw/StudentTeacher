@@ -27,6 +27,15 @@ namespace StudentTeacher.Controllers
         // GET: Students/Details/5
         public async Task<IActionResult> Details(string id)
         {
+            //Generate List of Modules
+            List<StudentModule> studentModules = _context.StudentModules.Where(x => x.Student == id).ToList();
+            List<Module> modules = new List<Module>();
+            foreach (var sm in studentModules)
+            {
+                modules.Add(sm.ModuleNavigation);
+            }
+            ViewBag.Modules = modules;
+
             if (id == null || _context.Students == null)
             {
                 return NotFound();
