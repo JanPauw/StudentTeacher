@@ -207,6 +207,16 @@ namespace StudentTeacher.Controllers
             {
                 return NotFound();
             }
+
+            //populate user input fields
+            string firstName = teacher.FirstName;
+            string lastName = teacher.LastName;
+            string school = teacher.School;
+
+            ViewBag.FirstName = firstName;
+            ViewBag.LastName = lastName;
+            //ViewBag.School = school;
+
             ViewData["Email"] = new SelectList(_context.Users, "Email", "Email", teacher.Email);
             ViewData["School"] = new SelectList(_context.Schools, "Code", "Code", teacher.School);
             return View(teacher);
@@ -217,9 +227,14 @@ namespace StudentTeacher.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Number,FirstName,LastName,School,Email")] Teacher teacher)
+        public async Task<IActionResult> Edit(string id, string FirstName, string LastName, string School)
         {
-            if (id != teacher.Number)
+            Teacher t = new Teacher();
+
+            //find teacher by id (teacherNumber)
+            t = _context.Teachers.Find(id);
+
+            if (id == null)
             {
                 return NotFound();
             }
@@ -228,12 +243,17 @@ namespace StudentTeacher.Controllers
             {
                 try
                 {
-                    _context.Update(teacher);
+                    //update teacher info
+                    t.FirstName = FirstName;
+                    t.LastName = LastName;
+                    t.School = School;
+
+                    //save changes to DB
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TeacherExists(teacher.Number))
+                    if (!TeacherExists(t.Number))
                     {
                         return NotFound();
                     }
@@ -244,9 +264,9 @@ namespace StudentTeacher.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Email"] = new SelectList(_context.Users, "Email", "Email", teacher.Email);
-            ViewData["School"] = new SelectList(_context.Schools, "Code", "Code", teacher.School);
-            return View(teacher);
+            ViewData["Email"] = new SelectList(_context.Users, "Email", "Email", t.Email);
+            ViewData["School"] = new SelectList(_context.Schools, "Code", "Code", t.School);
+            return View(t);
         }
 
         // GET: Teachers/Delete/5
