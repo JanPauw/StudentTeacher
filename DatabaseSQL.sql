@@ -12,6 +12,7 @@ select * from dbo.Users
 select * from dbo.Teachers
 select * from dbo.Schools
 select * from dbo.Lecturers
+select * from dbo.StudentModules
 
 --User Table Creation--
 create table dbo.Users (
