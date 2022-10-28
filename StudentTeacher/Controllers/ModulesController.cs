@@ -130,6 +130,12 @@ namespace StudentTeacher.Controllers
             {
                 return NotFound();
             }
+
+            //populate user input fields
+            string name = module.Name;
+
+            ViewBag.Name = name;
+
             return View(@module);
         }
 
@@ -138,9 +144,14 @@ namespace StudentTeacher.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Number,Name")] Module @module)
+        public async Task<IActionResult> Edit(string id, string name)
         {
-            if (id != @module.Number)
+            Module m = new Module();
+
+            //find module by id (module code)
+            m = _context.Modules.Find(id);
+
+            if (id == null)
             {
                 return NotFound();
             }
@@ -149,12 +160,15 @@ namespace StudentTeacher.Controllers
             {
                 try
                 {
-                    _context.Update(@module);
+                    //update module info
+                    m.Name = name;
+
+                    //save changes to DB
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ModuleExists(@module.Number))
+                    if (!ModuleExists(m.Number))
                     {
                         return NotFound();
                     }
@@ -165,7 +179,7 @@ namespace StudentTeacher.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(@module);
+            return View(m);
         }
 
         // GET: Modules/Delete/5

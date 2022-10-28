@@ -143,6 +143,14 @@ namespace StudentTeacher.Controllers
             {
                 return NotFound();
             }
+
+            //populate user input fields
+            string firstName = student.FirstName;
+            string lastName = student.LastName;
+
+            ViewBag.firstName = firstName;
+            ViewBag.lastName = lastName;
+
             return View(student);
         }
 
@@ -151,9 +159,14 @@ namespace StudentTeacher.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Number,FirstName,LastName")] Student student)
+        public async Task<IActionResult> Edit(string id, string FirstName, string LastName)
         {
-            if (id != student.Number)
+            Student s = new Student();
+
+            //find student by id (studentNumber)
+            s = _context.Students.Find(id);
+
+            if (id == null)
             {
                 return NotFound();
             }
@@ -162,12 +175,16 @@ namespace StudentTeacher.Controllers
             {
                 try
                 {
-                    _context.Update(student);
+                    //update user info
+                    s.FirstName = FirstName;
+                    s.LastName = LastName;
+
+                    //save changes to DB
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StudentExists(student.Number))
+                    if (!StudentExists(s.Number))
                     {
                         return NotFound();
                     }
@@ -178,7 +195,7 @@ namespace StudentTeacher.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(student);
+            return View(s);
         }
 
         // GET: Students/Delete/5
