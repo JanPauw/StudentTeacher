@@ -27,14 +27,36 @@ namespace StudentTeacher.Controllers
         // GET: Students/Details/5
         public async Task<IActionResult> Details(string id)
         {
+            #region Get List of Student's Assigned Modules
             //Generate List of Modules
             List<StudentModule> studentModules = _context.StudentModules.Where(x => x.Student == id).ToList();
-            List<Module> modules = new List<Module>();
+            List<Module> assignedModules = new List<Module>();
+
             foreach (var sm in studentModules)
             {
-                modules.Add(sm.ModuleNavigation);
+                assignedModules.Add(_context.Modules.Find(sm.Module));
             }
-            ViewBag.Modules = modules;
+            ViewBag.Modules = assignedModules;
+            #endregion
+
+            #region Get List of Student's Un-Assigned Modules
+            //Get All Modules
+            List<Module> allModules = _context.Modules.ToList();
+
+            //List of Available Modules to Assign
+            List<Module> canAssign = new List<Module>();
+
+            //Generate List of Modules where Student is NOT assigned
+            foreach (var item in allModules)
+            {
+                StudentModule studentModule = _context.StudentModules.Where(x => x.Module == item.Number && x.Student == id).SingleOrDefault();
+                if (studentModule == null)
+                {
+                    canAssign.Add(item);
+                }
+            }
+            ViewBag.CanAssignModules = canAssign;
+            #endregion
 
             if (id == null || _context.Students == null)
             {

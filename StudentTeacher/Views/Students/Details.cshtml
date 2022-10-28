@@ -6,8 +6,10 @@
     string email = Model.Number + "@vcconnect.edu.za";
     //List of Modules for Student
     List<Module> modules = ViewBag.Modules;
+    List<Module> unassignedModules = ViewBag.CanAssignModules;
 }
 
+@*Main Content*@
 <div>
     <label class="h1">Student Details: @Model.FirstName @Model.LastName</label>
     <a style="float: right;" class="btn btn-primary">
@@ -63,7 +65,7 @@
     <hr />
     <br />
     <label class="h1">Modules</label>
-    <a class="btn btn-primary" style="float: right">Assign new Module</a>
+    <button class="btn btn-primary" style="float: right" data-bs-toggle="modal" data-bs-target="#AM_Modal">Assign new Module</button>
     <br />
     <table id="tblModules">
         <thead>
@@ -74,8 +76,8 @@
                 <th>
                     Module Name
                 </th>
-                <th>
-                    Module Lecturer
+                <th style="text-align: center">
+                    Module Details
                 </th>
             </tr>
         </thead>
@@ -88,6 +90,11 @@
                     </td>
                     <td>
                         @item.Name
+                    </td>
+                    <td style="text-align: center">
+                        <a class="btn btn-success" asp-controller="Modules" asp-action="Details" asp-route-id="@item.Number">
+                            <i class="bi bi-info-circle"></i> Details
+                        </a>
                     </td>
                 </tr>
             }
@@ -143,6 +150,35 @@
     <br />
     <br />
     <br />
+</div>
+
+
+
+@*Assign Module Model*@
+<div class="modal fade" id="AM_Modal" tabindex="-1" aria-labelledby="Assign Module" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="AM_Label">Assign Module</h4>
+                <button style="background-color: white;" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" asp-controller="StudentModules" asp-action="Assign">
+                <div class="modal-body">
+                    <input name="StudentNumber" value="@Model.Number" hidden required />
+                    <select class="select2" id="selectModules" name="SelectedModule">
+                        @foreach (var item in unassignedModules)
+                        {
+                            <option value="@item.Number">@item.Number</option>
+                        }
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Buy Goods</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <style>
@@ -203,3 +239,30 @@
             color: black;
         }
 </style>
+
+
+@*Getting Select Search Working*@
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    <!-- Or for RTL support -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.select2').each(function () {
+                $(this).select2({
+                    theme: "bootstrap-5",
+                    width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+                    placeholder: $(this).data('placeholder'),
+                    dropdownParent: $(this).parent(),
+                });
+            });
+        });
+    </script>
+}
