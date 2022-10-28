@@ -122,16 +122,12 @@ namespace StudentTeacher.Controllers
                 return NotFound();
             }
 
-
             //populate user input fields
             string firstName = student.FirstName;
             string lastName = student.LastName;
 
             ViewBag.firstName = firstName;
             ViewBag.lastName = lastName;
-
-
-
 
             return View(student);
         }
