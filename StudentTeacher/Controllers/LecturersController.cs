@@ -208,6 +208,14 @@ namespace StudentTeacher.Controllers
             {
                 return NotFound();
             }
+
+            //populate user input fields
+            string firstName = lecturer.FirstName;
+            string lastName = lecturer.LastName;
+
+            ViewBag.FirstName = firstName;
+            ViewBag.LastName = lastName;
+
             ViewData["Campus"] = new SelectList(_context.Campuses, "Code", "Code", lecturer.Campus);
             ViewData["Email"] = new SelectList(_context.Users, "Email", "Email", lecturer.Email);
             return View(lecturer);
@@ -218,9 +226,14 @@ namespace StudentTeacher.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Number,FirstName,LastName,Email,Campus")] Lecturer lecturer)
+        public async Task<IActionResult> Edit(string id, string FirstName, string LastName, string Campus)
         {
-            if (id != lecturer.Number)
+            Lecturer l = new Lecturer();
+
+            //find lecturer by id (lecturerNumber)
+            l = _context.Lecturers.Find(id);
+
+            if (id == null)
             {
                 return NotFound();
             }
@@ -229,12 +242,17 @@ namespace StudentTeacher.Controllers
             {
                 try
                 {
-                    _context.Update(lecturer);
+                    //update user info
+                    l.FirstName = FirstName;
+                    l.LastName = LastName;
+                    l.Campus = Campus;
+
+                    //save changes to DB
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LecturerExists(lecturer.Number))
+                    if (!LecturerExists(l.Number))
                     {
                         return NotFound();
                     }
@@ -245,9 +263,9 @@ namespace StudentTeacher.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Campus"] = new SelectList(_context.Campuses, "Code", "Code", lecturer.Campus);
-            ViewData["Email"] = new SelectList(_context.Users, "Email", "Email", lecturer.Email);
-            return View(lecturer);
+            ViewData["Campus"] = new SelectList(_context.Campuses, "Code", "Code", l.Campus);
+            ViewData["Email"] = new SelectList(_context.Users, "Email", "Email", l.Email);
+            return View(l);
         }
 
         // GET: Lecturers/Delete/5
