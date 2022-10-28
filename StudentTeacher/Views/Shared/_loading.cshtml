@@ -2,19 +2,6 @@
     <span class="ring-of-dots"></span>
 </div>
 
-<script src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js'></script>
-<script>
-    $(function() {
-        // page is loaded, it is safe to hide loading animation
-        $('#loading').fadeOut("slow");
-
-        $(window).on('beforeunload', function() {
-            // user has triggered a navigation, show the loading animation
-            $('#loading').show();
-        });
-    });
-</script>
-
 <style>
     .lw {
         width: 100%;
