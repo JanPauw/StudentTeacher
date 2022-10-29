@@ -1,16 +1,19 @@
 ﻿using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using StudentTeacher.Models;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IWebHostEnvironment;
 
 namespace StudentTeacher.Controllers
 {
     public class ImportsController : Controller
     {
         private readonly XISD_POEContext _context;
+        private IHostingEnvironment _env;
 
-        public ImportsController(XISD_POEContext context)
+        public ImportsController(XISD_POEContext context, IHostingEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
         #region Generated Action Results
@@ -118,7 +121,7 @@ namespace StudentTeacher.Controllers
 
                 var fileextension = Path.GetExtension(file.FileName);
                 var filename = Guid.NewGuid().ToString() + fileextension;
-                var filepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "files", filename);
+                var filepath = Path.Combine(this._env.WebRootPath, "files", filename);
                 using (FileStream fs = System.IO.File.Create(filepath))
                 {
                     file.CopyTo(fs);
