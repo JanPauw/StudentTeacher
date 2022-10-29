@@ -7,13 +7,15 @@ namespace StudentTeacher.Models
     {
         public Student()
         {
-            StudentModules = new HashSet<StudentModule>();
+            StudentSchools = new HashSet<StudentSchool>();
         }
 
         public string Number { get; set; } = null!;
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
+        public string? Qualification { get; set; }
+        public int YearOfStudy { get; set; }
 
-        public virtual ICollection<StudentModule> StudentModules { get; set; }
+        public virtual ICollection<StudentSchool> StudentSchools { get; set; }
     }
 }

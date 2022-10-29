@@ -57,7 +57,7 @@ namespace StudentTeacher.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string Name, string Province, string City, string Campus)
+        public async Task<IActionResult> Create(string Name, string Quintile, string Campus)
         {
             //List of Campuses in case of Page Reload on Post
             ViewBag.ListCampuses = _context.Campuses.ToList();
@@ -71,17 +71,10 @@ namespace StudentTeacher.Controllers
                 return View();
             }
 
-            //check if province is empty
-            if (String.IsNullOrEmpty(Province))
+            //check if quintile is empty
+            if (String.IsNullOrEmpty(Quintile))
             {
-                TempData["error"] = "Invalid Province entered!";
-                return View();
-            }
-
-            //check if city is empty
-            if (String.IsNullOrEmpty(City))
-            {
-                TempData["error"] = "Invalid City entered!";
+                TempData["error"] = "Invalid Quintile entered!";
                 return View();
             }
 
@@ -96,9 +89,8 @@ namespace StudentTeacher.Controllers
 
             School s = new School();
             s.Name = Name;
-            s.Province = Province;
-            s.City = City;
             s.Campus = Campus;
+            s.Quintile = Quintile;
             s.Code = GenerateSchoolCode(Name);
 
             try
@@ -131,12 +123,10 @@ namespace StudentTeacher.Controllers
 
             //populate user input fields
             string name = school.Name;
-            string province = school.Province;
-            string city = school.City;
+            string quintile = school.Quintile;
 
             ViewBag.Name = name;
-            ViewBag.Province = province;
-            ViewBag.City = city;
+            ViewBag.Quintile = quintile;
 
             ViewData["Campus"] = new SelectList(_context.Campuses, "Code", "Code");
             ViewBag.ListCampuses = _context.Campuses.ToList();
@@ -148,7 +138,7 @@ namespace StudentTeacher.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, string Name, string Province, string City, string Campus)
+        public async Task<IActionResult> Edit(string id, string Name, string Quintile, string Campus)
         {
             School s = new School();
 
@@ -166,8 +156,7 @@ namespace StudentTeacher.Controllers
                 {
                     //update school info
                     s.Name = Name;
-                    s.Province = Province;
-                    s.City = City;
+                    s.Quintile = Quintile;
                     s.Campus = Campus;
 
                     //save changes to DB

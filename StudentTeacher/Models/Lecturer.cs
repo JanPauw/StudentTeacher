@@ -9,9 +9,9 @@ namespace StudentTeacher.Models
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
         public string Email { get; set; } = null!;
-        public string? Campus { get; set; }
+        public string Campus { get; set; } = null!;
 
-        public virtual Campus? CampusNavigation { get; set; }
+        public virtual Campus CampusNavigation { get; set; } = null!;
         public virtual User EmailNavigation { get; set; } = null!;
     }
 }

@@ -12,8 +12,9 @@ namespace StudentTeacher.Models
         }
 
         public string Code { get; set; } = null!;
-        public string? Province { get; set; }
-        public string? City { get; set; }
+        public string Province { get; set; } = null!;
+        public string City { get; set; } = null!;
+        public string Name { get; set; } = null!;
 
         public virtual ICollection<Lecturer> Lecturers { get; set; }
         public virtual ICollection<School> Schools { get; set; }

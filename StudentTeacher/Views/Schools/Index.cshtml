@@ -13,12 +13,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Province)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.CampusNavigation)
             </th>
             <th>
@@ -30,12 +24,6 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Province)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CampusNavigation.Code)
             </td>

@@ -12,6 +12,10 @@
     <form method="post" asp-action="Create">
         <div class="form-group">
             <div class="form-floating mb-3">
+                <input name="Name" type="text" class="form-control" id="floatingName" placeholder="eg. Durban North" required>
+                <label for="floatingInput">Campus Name</label>
+            </div>
+            <div class="form-floating mb-3">
                 <select name="Province" type="text" class="form-select" id="floatingProvince" placeholder="eg. Eastern Cape" required>
                     <option value="Eastern Cape">Eastern Cape</option>
                     <option value="Free State">Free State</option>

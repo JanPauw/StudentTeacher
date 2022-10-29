@@ -53,7 +53,7 @@ namespace StudentTeacher.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string Province, string City)
+        public async Task<IActionResult> Create(string Province, string City, string Name)
         {
             #region Input validation
             //check if Province is empty
@@ -69,12 +69,20 @@ namespace StudentTeacher.Controllers
                 TempData["error"] = "Invalid City entered!";
                 return View();
             }
+
+            //check if Name is empty
+            if (String.IsNullOrWhiteSpace(Name))
+            {
+                TempData["error"] = "Invalid Campus Name entered!";
+                return View();
+            }
             #endregion
 
             Campus c = new Campus();
             c.Code = GenerateCampusCode(City);
             c.Province = Province;
             c.City = City;
+            c.Name = Name;
 
             try
             {

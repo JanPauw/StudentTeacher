@@ -7,16 +7,17 @@ namespace StudentTeacher.Models
     {
         public School()
         {
+            StudentSchools = new HashSet<StudentSchool>();
             Teachers = new HashSet<Teacher>();
         }
 
         public string Code { get; set; } = null!;
-        public string? Name { get; set; }
-        public string? Province { get; set; }
-        public string? City { get; set; }
-        public string? Campus { get; set; }
+        public string Name { get; set; } = null!;
+        public string Campus { get; set; } = null!;
+        public string Quintile { get; set; } = null!;
 
-        public virtual Campus? CampusNavigation { get; set; }
+        public virtual Campus CampusNavigation { get; set; } = null!;
+        public virtual ICollection<StudentSchool> StudentSchools { get; set; }
         public virtual ICollection<Teacher> Teachers { get; set; }
     }
 }

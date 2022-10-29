@@ -27,7 +27,8 @@ namespace StudentTeacher.Controllers
         // GET: Students/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            #region Get List of Student's Assigned Modules
+            #region Unused Modules Code
+            /*#region Get List of Student's Assigned Modules
             //Generate List of Modules
             List<StudentModule> studentModules = _context.StudentModules.Where(x => x.Student == id).ToList();
             List<Module> assignedModules = new List<Module>();
@@ -56,6 +57,7 @@ namespace StudentTeacher.Controllers
                 }
             }
             ViewBag.CanAssignModules = canAssign;
+            #endregion*/
             #endregion
 
             if (id == null || _context.Students == null)
@@ -84,7 +86,7 @@ namespace StudentTeacher.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string Number, string FirstName, string LastName)
+        public async Task<IActionResult> Create(string Number, string FirstName, string LastName, string Year)
         {
             #region Input Validation
             //check that firstname is not empty
@@ -108,12 +110,24 @@ namespace StudentTeacher.Controllers
                 TempData["error"] = "Student Number already in use!";
                 return View();
             }
+
+            //Test if Valid Year was chosen
+            try
+            {
+                int test = int.Parse(Year);
+            }
+            catch (Exception e)
+            {
+                TempData["error"] = "Inavlid Year of Study chosen!";
+                return View();
+            }
             #endregion
 
             Student s = new Student();
             s.Number = Number;
             s.FirstName = FirstName;
             s.LastName = LastName;
+            s.YearOfStudy = int.Parse(Year);
 
             try
             {

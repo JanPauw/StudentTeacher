@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    List<Campus> CampusList = ViewBag.Campuses;
+}
+
+<h1>Index</h1>
+
+<form method="post" asp-action="UploadData" enctype="multipart/form-data">
+    <div class="input-group mb-3">
+        <input name="file" type="file" class="form-control" id="inputGroupFile02">
+        <label class="input-group-text" for="inputGroupFile02">Upload</label>
+    </div>
+    <select class="form-select" name="Campus">
+        @foreach (var item in CampusList)
+        {
+            <option value="@item.Code">@item.Name</option>
+        }
+    </select>
+    <button type="submit" class="btn btn-primary">
+        <i class="bi bi-upload"></i> Import Data
+    </button>
+</form>

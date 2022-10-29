@@ -18,10 +18,9 @@ namespace StudentTeacher.Models
 
         public virtual DbSet<Campus> Campuses { get; set; } = null!;
         public virtual DbSet<Lecturer> Lecturers { get; set; } = null!;
-        public virtual DbSet<Module> Modules { get; set; } = null!;
         public virtual DbSet<School> Schools { get; set; } = null!;
         public virtual DbSet<Student> Students { get; set; } = null!;
-        public virtual DbSet<StudentModule> StudentModules { get; set; } = null!;
+        public virtual DbSet<StudentSchool> StudentSchools { get; set; } = null!;
         public virtual DbSet<Teacher> Teachers { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
@@ -39,7 +38,7 @@ namespace StudentTeacher.Models
             modelBuilder.Entity<Campus>(entity =>
             {
                 entity.HasKey(e => e.Code)
-                    .HasName("PK__Campus__A25C5AA66A1FBF1D");
+                    .HasName("PK__Campus__A25C5AA65752F7FC");
 
                 entity.ToTable("Campus");
 
@@ -51,6 +50,10 @@ namespace StudentTeacher.Models
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Name)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Province)
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -59,7 +62,7 @@ namespace StudentTeacher.Models
             modelBuilder.Entity<Lecturer>(entity =>
             {
                 entity.HasKey(e => e.Number)
-                    .HasName("PK__Lecturer__78A1A19C929224BA");
+                    .HasName("PK__Lecturer__78A1A19C38CC0740");
 
                 entity.Property(e => e.Number)
                     .HasMaxLength(6)
@@ -80,31 +83,20 @@ namespace StudentTeacher.Models
                 entity.HasOne(d => d.CampusNavigation)
                     .WithMany(p => p.Lecturers)
                     .HasForeignKey(d => d.Campus)
-                    .HasConstraintName("FK__Lecturers__Campu__245D67DE");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Lecturers__Campu__5D95E53A");
 
                 entity.HasOne(d => d.EmailNavigation)
                     .WithMany(p => p.Lecturers)
                     .HasForeignKey(d => d.Email)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Lecturers__Email__236943A5");
-            });
-
-            modelBuilder.Entity<Module>(entity =>
-            {
-                entity.HasKey(e => e.Number)
-                    .HasName("PK__Modules__78A1A19CBF24A423");
-
-                entity.Property(e => e.Number)
-                    .HasMaxLength(8)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Name).IsUnicode(false);
+                    .HasConstraintName("FK__Lecturers__Email__5CA1C101");
             });
 
             modelBuilder.Entity<School>(entity =>
             {
                 entity.HasKey(e => e.Code)
-                    .HasName("PK__Schools__A25C5AA61164245E");
+                    .HasName("PK__Schools__A25C5AA6CD685C51");
 
                 entity.Property(e => e.Code)
                     .HasMaxLength(8)
@@ -114,28 +106,25 @@ namespace StudentTeacher.Models
                     .HasMaxLength(8)
                     .IsUnicode(false);
 
-                entity.Property(e => e.City)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.Name)
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Province)
-                    .HasMaxLength(255)
+                entity.Property(e => e.Quintile)
+                    .HasMaxLength(2)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.CampusNavigation)
                     .WithMany(p => p.Schools)
                     .HasForeignKey(d => d.Campus)
-                    .HasConstraintName("FK__Schools__Campus__2739D489");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Schools__Campus__55F4C372");
             });
 
             modelBuilder.Entity<Student>(entity =>
             {
                 entity.HasKey(e => e.Number)
-                    .HasName("PK__Students__78A1A19C26AB9EA1");
+                    .HasName("PK__Students__78A1A19C74FAF5BB");
 
                 entity.Property(e => e.Number)
                     .HasMaxLength(10)
@@ -144,13 +133,17 @@ namespace StudentTeacher.Models
                 entity.Property(e => e.FirstName).IsUnicode(false);
 
                 entity.Property(e => e.LastName).IsUnicode(false);
+
+                entity.Property(e => e.Qualification)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
             });
 
-            modelBuilder.Entity<StudentModule>(entity =>
+            modelBuilder.Entity<StudentSchool>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Module)
+                entity.Property(e => e.School)
                     .HasMaxLength(8)
                     .IsUnicode(false);
 
@@ -158,23 +151,23 @@ namespace StudentTeacher.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.ModuleNavigation)
-                    .WithMany(p => p.StudentModules)
-                    .HasForeignKey(d => d.Module)
+                entity.HasOne(d => d.SchoolNavigation)
+                    .WithMany(p => p.StudentSchools)
+                    .HasForeignKey(d => d.School)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__StudentMo__Modul__32AB8735");
+                    .HasConstraintName("FK__StudentSc__Schoo__634EBE90");
 
                 entity.HasOne(d => d.StudentNavigation)
-                    .WithMany(p => p.StudentModules)
+                    .WithMany(p => p.StudentSchools)
                     .HasForeignKey(d => d.Student)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__StudentMo__Stude__31B762FC");
+                    .HasConstraintName("FK__StudentSc__Stude__625A9A57");
             });
 
             modelBuilder.Entity<Teacher>(entity =>
             {
                 entity.HasKey(e => e.Number)
-                    .HasName("PK__Teachers__78A1A19CB330B6BF");
+                    .HasName("PK__Teachers__78A1A19CCB0F754F");
 
                 entity.Property(e => e.Number)
                     .HasMaxLength(6)
@@ -196,18 +189,19 @@ namespace StudentTeacher.Models
                     .WithMany(p => p.Teachers)
                     .HasForeignKey(d => d.Email)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Teachers__Email__2A164134");
+                    .HasConstraintName("FK__Teachers__Email__58D1301D");
 
                 entity.HasOne(d => d.SchoolNavigation)
                     .WithMany(p => p.Teachers)
                     .HasForeignKey(d => d.School)
-                    .HasConstraintName("FK__Teachers__School__2B0A656D");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Teachers__School__59C55456");
             });
 
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.Email)
-                    .HasName("PK__Users__A9D105354C0C3C5B");
+                    .HasName("PK__Users__A9D1053580F64824");
 
                 entity.Property(e => e.Email)
                     .HasMaxLength(255)

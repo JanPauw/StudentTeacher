@@ -4,9 +4,12 @@
     ViewData["Title"] = "Student Details";
     //Email to use in table
     string email = Model.Number + "@vcconnect.edu.za";
+    #region Unused Modules Code
     //List of Modules for Student
-    List<Module> modules = ViewBag.Modules;
-    List<Module> unassignedModules = ViewBag.CanAssignModules;
+    //List<Module> modules = ViewBag.Modules;
+    //List<Module> unassignedModules = ViewBag.CanAssignModules;
+    #endregion
+
 }
 
 @*Main Content*@
@@ -64,46 +67,104 @@
     <br />
     <hr />
     <br />
-    <label class="h1">Modules</label>
-    <button class="btn btn-primary" style="float: right" data-bs-toggle="modal" data-bs-target="#AM_Modal">Assign new Module</button>
-    <br />
-    <table id="tblModules">
+    @{
+        #region Unused Modules Code
+        //<label class="h1">Modules</label>
+        //<button class="btn btn-primary" style="float: right" data-bs-toggle="modal" data-bs-target="#AM_Modal">Assign new Module</button>
+        //<br />
+        //<table id="tblModules">
+        //    <thead>
+        //        <tr>
+        //            <th>
+        //                Module Code
+        //            </th>
+        //            <th>
+        //                Module Name
+        //            </th>
+        //            <th style="text-align: center">
+        //                Module Details
+        //            </th>
+        //        </tr>
+        //    </thead>
+        //    <tbody>
+        //        @foreach (var item in modules)
+        //        {
+        //            <tr>
+        //                <td>
+        //                    @item.Number
+        //                </td>
+        //                <td>
+        //                    @item.Name
+        //                </td>
+        //                <td style="text-align: center">
+        //                    <a class="btn btn-success" asp-controller="Modules" asp-action="Details" asp-route-id="@item.Number">
+        //                        <i class="bi bi-info-circle"></i> Details
+        //                    </a>
+        //                </td>
+        //            </tr>
+        //        }
+        //    </tbody>
+        //</table>
+        //<br />
+        //<hr />
+        //<br />
+        #endregion
+    }
+    <label class="h1">Education Status</label>
+    <div style="float: right !important; width: 30% !important;" class="input-group mb-3">
+        <label class="input-group-text" for="YearOfStudy">Year of Study: </label>
+        <select name="YearOfStudy" id="YearOfStudy" class="form-select">
+            <option value="1">
+                1st Year @if (Model.YearOfStudy == 1)
+                {
+                    <label>(Current)</label>
+                }
+            </option>
+            <option value="2">
+                2nd Year @if (Model.YearOfStudy == 2)
+                {
+                    <label>(Current)</label>
+                }
+            </option>
+            <option value="3">
+                3rd Year @if (Model.YearOfStudy == 3)
+                {
+                    <label>(Current)</label>
+                }
+            </option>
+            <option value="4">
+                4th Year @if (Model.YearOfStudy == 4)
+                {
+                    <label>(Current)</label>
+                }
+            </option>
+        </select>
+    </div>
+    <table id="tblEducation">
         <thead>
             <tr>
                 <th>
-                    Module Code
-                </th>
-                <th>
-                    Module Name
-                </th>
-                <th style="text-align: center">
-                    Module Details
+                    Teaching Placement (School Name)
                 </th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in modules)
-            {
-                <tr>
-                    <td>
-                        @item.Number
-                    </td>
-                    <td>
-                        @item.Name
-                    </td>
-                    <td style="text-align: center">
-                        <a class="btn btn-success" asp-controller="Modules" asp-action="Details" asp-route-id="@item.Number">
-                            <i class="bi bi-info-circle"></i> Details
-                        </a>
-                    </td>
-                </tr>
-            }
+            <tr>
+                <td>
+                    Sunridge Primary School
+                </td>
+            </tr>
         </tbody>
     </table>
     <br />
     <hr />
     <br />
-    <label class="h1">Gradings</label>
+    <label class="h1">
+        Gradings: Year @Model.YearOfStudy
+    </label>
+    <a style="float: right;" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Add Grading
+    </a>
     <br />
     <table id="tblGradings">
         <thead>
@@ -153,33 +214,37 @@
 </div>
 
 
+@{
+    #region Unused Assign module modal
+    //@*Assign Module Model*@
+    //<div class="modal fade" id="AM_Modal" tabindex="-1" aria-labelledby="Assign Module" aria-hidden="true">
+    //    <div class="modal-dialog modal-dialog-centered">
+    //        <div class="modal-content">
+    //            <div class="modal-header">
+    //                <h4 class="modal-title" id="AM_Label">Assign Module</h4>
+    //                <button style="background-color: white;" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    //            </div>
+    //            <form method="post" asp-controller="StudentModules" asp-action="Assign">
+    //                <div class="modal-body">
+    //                    <input name="StudentNumber" value="@Model.Number" hidden required />
+    //                    <select class="select2" id="selectModules" name="SelectedModule">
+    //                        @foreach (var item in unassignedModules)
+    //                        {
+    //                            <option value="@item.Number">@item.Number</option>
+    //                        }
+    //                    </select>
+    //                </div>
+    //                <div class="modal-footer">
+    //                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    //                    <button type="submit" class="btn btn-success">Buy Goods</button>
+    //                </div>
+    //            </form>
+    //        </div>
+    //    </div>
+    //</div>
+    #endregion
+}
 
-@*Assign Module Model*@
-<div class="modal fade" id="AM_Modal" tabindex="-1" aria-labelledby="Assign Module" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="AM_Label">Assign Module</h4>
-                <button style="background-color: white;" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form method="post" asp-controller="StudentModules" asp-action="Assign">
-                <div class="modal-body">
-                    <input name="StudentNumber" value="@Model.Number" hidden required />
-                    <select class="select2" id="selectModules" name="SelectedModule">
-                        @foreach (var item in unassignedModules)
-                        {
-                            <option value="@item.Number">@item.Number</option>
-                        }
-                    </select>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">Buy Goods</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <style>
     main {

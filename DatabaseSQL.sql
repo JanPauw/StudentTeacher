@@ -1,18 +1,10 @@
--- drop TABLE dbo.Execution;
--- drop TABLE dbo.Grading;
--- drop TABLE dbo.Lecturer;
--- drop TABLE dbo.Module;
--- drop TABLE dbo.Overall;
--- drop TABLE dbo.Planning;
--- drop TABLE dbo.Student;
--- drop TABLE dbo.Teacher;
--- drop TABLE dbo.[User];
-
-select * from dbo.Users
-select * from dbo.Teachers
-select * from dbo.Schools
-select * from dbo.Lecturers
-select * from dbo.StudentModules
+drop table users;
+drop table campus;
+drop table schools;
+drop table teachers;
+drop table lecturers;
+drop table students;
+drop table studentschools;
 
 --User Table Creation--
 create table dbo.Users (
@@ -31,6 +23,7 @@ create table dbo.Campus (
     Code varchar(8) not null,
     Province varchar(255) not null,
     City varchar(255) not null,
+    Name varchar(255) not null,
 
     PRIMARY KEY (Code)
 )
@@ -40,9 +33,8 @@ drop TABLE dbo.Schools
 create table Schools (
     Code varchar(8) not null,
     Name varchar(255) not null,
-    Province varchar(255) not null,
-    City varchar(255) not null,
     Campus varchar(8) not null,
+    Quintile varchar(2) not null,
 
     PRIMARY KEY (Code),
     FOREIGN KEY (Campus) REFERENCES dbo.Campus(Code)
@@ -74,50 +66,29 @@ create table dbo.Lecturers (
     FOREIGN KEY(Campus) REFERENCES dbo.Campus(Code)
 )
 
+drop table dbo.Students
+
 --Student Creation Table--
 create table dbo.Students (
     Number VARCHAR(10) not null,
     FirstName varchar(max) not null,
     LastName VARCHAR(max) not null,
+    Qualification varchar(255),
+    YearOfStudy  int not null,
 
     PRIMARY KEY (Number)
 )
 
---Module Table Creation--
-create table dbo.Modules (
-    Number varchar(8) not null,
-    Name VARCHAR(Max) not null,
-
-    PRIMARY KEY (Number)
-)
-
--- StudentModules Table Creation
-create table dbo.StudentModules (
-    id int IDENTITY(1, 1) not null,
-    Student VARCHAR(10) not null,
-    Module varchar(8) not null,
-
-    PRIMARY KEY (id),
-    FOREIGN KEY (Student) REFERENCES dbo.Students(Number),
-    FOREIGN KEY (Module) REFERENCES dbo.Modules(Number)
-)
-
--- LecturerModules Table Creation
-create table dbo.LecturerModules (
-    id int IDENTITY(1, 1) not null,
-    Lecturer varchar(6) not null,
-    Module varchar(8) not null,
-
-    PRIMARY KEY (id),
-    FOREIGN KEY (Lecturer) REFERENCES dbo.Lecturers(Number),
-    FOREIGN KEY (Module) REFERENCES dbo.Modules(Number)
-)
-
--- StudentSchools Table Creation
-create table dbo.StudentSchools (
+-- StudentSchools Table Creation --
+create table StudentSchools (
     id int IDENTITY(1, 1) not null,
     Student VARCHAR(10) not null,
     School varchar(8) not null,
+    PlacementYear int not null,
+
+    PRIMARY KEY (id),
+    FOREIGN KEY(Student) REFERENCES dbo.Students(Number),
+    FOREIGN KEY(School) REFERENCES dbo.Schools(Code)
 )
 
 --Grading Table Creation--
@@ -174,3 +145,39 @@ create table Overall (
     PRIMARY KEY (Number),
     FOREIGN KEY (GradingNumber) REFERENCES Grading(Number)
 )
+
+drop table dbo.StudentModules;
+drop table dbo.Modules;
+-- Currently Unsused Table Ides --
+--Module Table Creation--
+
+-- create table dbo.Modules (
+--     Number varchar(8) not null,
+--     Name VARCHAR(Max) not null,
+
+--     PRIMARY KEY (Number)
+-- )
+
+-- StudentModules Table Creation
+
+-- create table dbo.StudentModules (
+--     id int IDENTITY(1, 1) not null,
+--     Student VARCHAR(10) not null,
+--     Module varchar(8) not null,
+
+--     PRIMARY KEY (id),
+--     FOREIGN KEY (Student) REFERENCES dbo.Students(Number),
+--     FOREIGN KEY (Module) REFERENCES dbo.Modules(Number)
+-- )
+
+-- LecturerModules Table Creation
+
+-- create table dbo.LecturerModules (
+--     id int IDENTITY(1, 1) not null,
+--     Lecturer varchar(6) not null,
+--     Module varchar(8) not null,
+
+--     PRIMARY KEY (id),
+--     FOREIGN KEY (Lecturer) REFERENCES dbo.Lecturers(Number),
+--     FOREIGN KEY (Module) REFERENCES dbo.Modules(Number)
+-- )
