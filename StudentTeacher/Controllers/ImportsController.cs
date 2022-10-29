@@ -115,8 +115,8 @@ namespace StudentTeacher.Controllers
                 return RedirectToAction("Index", "Students");
             }
 
-            try
-            {
+            //try
+            //{
                 listImports.Clear();
 
                 var fileextension = Path.GetExtension(file.FileName);
@@ -354,12 +354,12 @@ namespace StudentTeacher.Controllers
 
                 TempData["success"] = "Surely it worked?";
                 return RedirectToAction("Index", "Students");
-            }
-            catch (Exception e)
-            {
-                TempData["error"] = "Importing Failed!";
-                return RedirectToAction("Index", "Students");
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    TempData["error"] = "Importing Failed!";
+            //    return RedirectToAction("Index", "Students");
+            //}
         }
 
         private bool SchoolExists(string id)
