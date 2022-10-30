@@ -1,36 +1,414 @@
-﻿@model StudentTeacher.Models.Grading
-
-@{
-    ViewData["Title"] = "Create";
+﻿@{
+    ViewData["Title"] = "Add Grading";
 }
-
-<h1>Create</h1>
-
-<h4>Grading</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Student" class="control-label"></label>
-                <select asp-for="Student" class ="form-control" asp-items="ViewBag.Student"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Teacher" class="control-label"></label>
-                <select asp-for="Teacher" class ="form-control" asp-items="ViewBag.Teacher"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<form id="AddGrading" method="post" asp-action="Create">
+    <h1>Add Grading</h1>
+    <hr />
+    <div class="tab" id="SectionAtoD">
+        <label class="h3">SECTION A: LESSON PLANNING</label>
+        <hr />
+        <label class="h5">Sections A to D (of lesson plan)</label>
+        <br />
+        <div class="rate">
+            <input type="radio" id="a-to-d5" name="SectionAtoD" value="5" />
+            <label for="a-to-d5" title="text">5 stars</label>
+            <input type="radio" id="a-to-d4" name="SectionAtoD" value="4" />
+            <label for="a-to-d4" title="text">4 stars</label>
+            <input type="radio" id="a-to-d3" name="SectionAtoD" value="3" />
+            <label for="a-to-d3" title="text">3 stars</label>
+            <input type="radio" id="a-to-d2" name="SectionAtoD" value="2" />
+            <label for="a-to-d2" title="text">2 stars</label>
+            <input type="radio" id="a-to-d1" name="SectionAtoD" value="1" checked />
+            <label for="a-to-d1" title="text">1 star</label>
+        </div>
+        <br />
+        <br />
+        <label>Comments:</label>
+        <textarea rows="4" class="form-control" placeholder="Enter commentary..."></textarea>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="tab" id="SectionE">
+        <label class="h3">SECTION A: LESSON PLANNING</label>
+        <hr />
+        <label class="h5">Section E (of lesson plan)</label>
+        <br />
+        <div class="rate">
+            <input type="radio" id="SectionE5" name="SectionE" value="5" />
+            <label for="SectionE5" title="text">5 stars</label>
+            <input type="radio" id="SectionE4" name="SectionE" value="4" />
+            <label for="SectionE4" title="text">4 stars</label>
+            <input type="radio" id="SectionE3" name="SectionE" value="3" />
+            <label for="SectionE3" title="text">3 stars</label>
+            <input type="radio" id="SectionE2" name="SectionE" value="2" />
+            <label for="SectionE2" title="text">2 stars</label>
+            <input type="radio" id="SectionE1" name="SectionE" value="1" checked />
+            <label for="SectionE1" title="text">1 star</label>
+        </div>
+        <br />
+        <br />
+        <label>Comments:</label>
+        <textarea rows="4" class="form-control" placeholder="Enter commentary..."></textarea>
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <div class="tab" id="Intro">
+        <label class="h3">SECTION B: EXECUTION OF LESSON AS PER THE LESSON PLAN</label>
+        <hr />
+        <label class="h5">Introductory Phase</label>
+        <br />
+        <div class="rate">
+            <input type="radio" id="intro5" name="Intro" value="5" />
+            <label for="intro5" title="text">5 stars</label>
+            <input type="radio" id="intro4" name="Intro" value="4" />
+            <label for="intro4" title="text">4 stars</label>
+            <input type="radio" id="intro3" name="Intro" value="3" />
+            <label for="intro3" title="text">3 stars</label>
+            <input type="radio" id="intro2" name="Intro" value="2" />
+            <label for="intro2" title="text">2 stars</label>
+            <input type="radio" id="intro1" name="Intro" value="1" checked />
+            <label for="intro1" title="text">1 star</label>
+        </div>
+        <br />
+        <br />
+        <label>Comments:</label>
+        <textarea rows="4" class="form-control" placeholder="Enter commentary..."></textarea>
+    </div>
+
+    <div class="tab" id="Teaching">
+        <label class="h3">SECTION B: EXECUTION OF LESSON AS PER THE LESSON PLAN</label>
+        <hr />
+        <label class="h5">Teaching and Learning Phase</label>
+        <br />
+        <div class="rate">
+            <input type="radio" id="Teaching5" name="Teaching" value="5" />
+            <label for="Teaching5" title="text">5 stars</label>
+            <input type="radio" id="Teaching4" name="Teaching" value="4" />
+            <label for="Teaching4" title="text">4 stars</label>
+            <input type="radio" id="Teaching3" name="Teaching" value="3" />
+            <label for="Teaching3" title="text">3 stars</label>
+            <input type="radio" id="Teaching2" name="Teaching" value="2" />
+            <label for="Teaching2" title="text">2 stars</label>
+            <input type="radio" id="Teaching1" name="Teaching" value="1" checked />
+            <label for="Teaching1" title="text">1 star</label>
+        </div>
+        <br />
+        <br />
+        <label>Comments:</label>
+        <textarea rows="4" class="form-control" placeholder="Enter commentary..."></textarea>
+    </div>
+
+    <div class="tab" id="Closure">
+        <label class="h3">SECTION B: EXECUTION OF LESSON AS PER THE LESSON PLAN</label>
+        <hr />
+        <label class="h5">Closure Phase</label>
+        <br />
+        <div class="rate">
+            <input type="radio" id="Closure5" name="Closure" value="5" />
+            <label for="Closure5" title="text">5 stars</label>
+            <input type="radio" id="Closure4" name="Closure" value="4" />
+            <label for="Closure4" title="text">4 stars</label>
+            <input type="radio" id="Closure3" name="Closure" value="3" />
+            <label for="Closure3" title="text">3 stars</label>
+            <input type="radio" id="Closure2" name="Closure" value="2" />
+            <label for="Closure2" title="text">2 stars</label>
+            <input type="radio" id="Closure1" name="Closure" value="1" checked />
+            <label for="Closure1" title="text">1 star</label>
+        </div>
+        <br />
+        <br />
+        <label>Comments:</label>
+        <textarea rows="4" class="form-control" placeholder="Enter commentary..."></textarea>
+    </div>
+
+    <div class="tab" id="Assessment">
+        <label class="h3">SECTION B: EXECUTION OF LESSON AS PER THE LESSON PLAN</label>
+        <hr />
+        <label class="h5">Assessment</label>
+        <br />
+        <div class="rate">
+            <input type="radio" id="Assessment5" name="Assessment" value="5" />
+            <label for="Assessment5" title="text">5 stars</label>
+            <input type="radio" id="Assessment4" name="Assessment" value="4" />
+            <label for="Assessment4" title="text">4 stars</label>
+            <input type="radio" id="Assessment3" name="Assessment" value="3" />
+            <label for="Assessment3" title="text">3 stars</label>
+            <input type="radio" id="Assessment2" name="Assessment" value="2" />
+            <label for="Assessment2" title="text">2 stars</label>
+            <input type="radio" id="Assessment1" name="Assessment" value="1" checked />
+            <label for="Assessment1" title="text">1 star</label>
+        </div>
+        <br />
+        <br />
+        <label>Comments:</label>
+        <textarea rows="4" class="form-control" placeholder="Enter commentary..."></textarea>
+    </div>
+
+    <div class="tab" id="Presence">
+        <label class="h3">SECTION C: OVERALL SENSE OF THE LESSON</label>
+        <hr />
+        <label class="h5">Classroom Presence</label>
+        <br />
+        <div class="rate">
+            <input type="radio" id="Presence5" name="Presence" value="5" />
+            <label for="Presence5" title="text">5 stars</label>
+            <input type="radio" id="Presence4" name="Presence" value="4" />
+            <label for="Presence4" title="text">4 stars</label>
+            <input type="radio" id="Presence3" name="Presence" value="3" />
+            <label for="Presence3" title="text">3 stars</label>
+            <input type="radio" id="Presence2" name="Presence" value="2" />
+            <label for="Presence2" title="text">2 stars</label>
+            <input type="radio" id="Presence1" name="Presence" value="1" checked />
+            <label for="Presence1" title="text">1 star</label>
+        </div>
+        <br />
+        <br />
+        <label>Comments:</label>
+        <textarea rows="4" class="form-control" placeholder="Enter commentary..."></textarea>
+    </div>
+
+    <div class="tab" id="Environment">
+        <label class="h3">SECTION C: OVERALL SENSE OF THE LESSON</label>
+        <hr />
+        <label class="h5">Learning Environment</label>
+        <br />
+        <div class="rate">
+            <input type="radio" id="Environment5" name="Environment" value="5" />
+            <label for="Environment5" title="text">5 stars</label>
+            <input type="radio" id="Environment4" name="Environment" value="4" />
+            <label for="Environment4" title="text">4 stars</label>
+            <input type="radio" id="Environment3" name="Environment" value="3" />
+            <label for="Environment3" title="text">3 stars</label>
+            <input type="radio" id="Environment2" name="Environment" value="2" />
+            <label for="Environment2" title="text">2 stars</label>
+            <input type="radio" id="Environment1" name="Environment" value="1" checked />
+            <label for="Environment1" title="text">1 star</label>
+        </div>
+        <br />
+        <br />
+        <label>Comments:</label>
+        <textarea rows="4" class="form-control" placeholder="Enter commentary..."></textarea>
+    </div>
+
+    <div style="overflow:auto;">
+        <br />
+        <div style="float:right;">
+            <button class="btn btn-secondary" type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+            <button class="btn btn-primary" type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+        </div>
+    </div>
+
+    <!-- Circles which indicates the steps of the form: -->
+    <div style="text-align:center;margin-top:40px;">
+        <span class="step"></span>
+        <span class="step"></span>
+        <span class="step"></span>
+        <span class="step"></span>
+        <span class="step"></span>
+        <span class="step"></span>
+        <span class="step"></span>
+        <span class="step"></span>
+    </div>
+</form>
+<style>
+    body {
+        overflow: hidden !important;
+    }
+
+    main {
+        width: 100% !important;
+        height: 100vh;
+        background-color: white;
+        padding: 3%;
+    }
+
+    main {
+        box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+@*Star Rating CSS: https://codepen.io/hesguru/pen/BaybqXv*@
+<style>
+    .rate {
+        float: left;
+        height: 46px;
+        padding: 0 10px;
+    }
+
+        .rate:not(:checked) > input {
+            visibility: hidden;
+            position: absolute;
+            /* top: -9999px;*/
+        }
+
+        .rate:not(:checked) > label {
+            float: right;
+            width: 1em;
+            overflow: hidden;
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 30px;
+            color: #ccc;
+        }
+
+            .rate:not(:checked) > label:before {
+                content: '★ ';
+            }
+
+        .rate > input:checked ~ label {
+            color: #ffc700;
+        }
+
+        .rate:not(:checked) > label:hover,
+        .rate:not(:checked) > label:hover ~ label {
+            color: #deb217;
+        }
+
+        .rate > input:checked + label:hover,
+        .rate > input:checked + label:hover ~ label,
+        .rate > input:checked ~ label:hover,
+        .rate > input:checked ~ label:hover ~ label,
+        .rate > label:hover ~ input:checked ~ label {
+            color: #c59b08;
+        }
+
+    /* Modified from: https://github.com/mukulkant/Star-rating-using-pure-css */
+</style>
+
+@*Multipage From Styling*@
+<style>
+    /* Style the form */
+    #AddGrading {
+        background-color: #ffffff;
+        margin: auto;
+        margin-top:10%;
+        padding: 40px;
+        width: 100%;
+        min-width: 300px;
+    }
+
+    /* Style the input fields */
+    textarea {
+        padding: 10px;
+        width: 100%;
+        font-size: 17px;
+        font-family: Raleway;
+        border: 1px solid #aaaaaa;
+    }
+
+        /* Mark input boxes that gets an error on validation: */
+        textarea.invalid {
+            background-color: #ffdddd;
+        }
+
+        /* Mark input boxes that gets no error on validation: */
+        textarea.valid {
+            background-color: white;
+        }
+
+    /* Hide all steps by default: */
+    .tab {
+        display: none;
+    }
+
+    /* Make circles that indicate the steps of the form: */
+    .step {
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #bbbbbb;
+        border: none;
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 0.5;
+    }
+
+        /* Mark the active step: */
+        .step.active {
+            opacity: 1;
+        }
+
+        /* Mark the steps that are finished and valid: */
+        .step.finish {
+            background-color: #084E62;
+        }
+</style>
+
+<script>
+    var currentTab = 0; // Current tab is set to be the first tab (0)
+    showTab(currentTab); // Display the current tab
+
+    function showTab(n) {
+        // This function will display the specified tab of the form ...
+        var x = document.getElementsByClassName("tab");
+        x[n].style.display = "block";
+        // ... and fix the Previous/Next buttons:
+        if (n == 0) {
+            document.getElementById("prevBtn").style.display = "none";
+        } else {
+            document.getElementById("prevBtn").style.display = "inline";
+        }
+        if (n == (x.length - 1)) {
+            document.getElementById("nextBtn").innerHTML = "Submit";
+        } else {
+            document.getElementById("nextBtn").innerHTML = "Next";
+        }
+        // ... and run a function that displays the correct step indicator:
+        fixStepIndicator(n)
+    }
+
+    function nextPrev(n) {
+        // This function will figure out which tab to display
+        var x = document.getElementsByClassName("tab");
+        // Exit the function if any field in the current tab is invalid:
+        if (n == 1 && !validateForm()) return false;
+        // Hide the current tab:
+        x[currentTab].style.display = "none";
+        // Increase or decrease the current tab by 1:
+        currentTab = currentTab + n;
+        // if you have reached the end of the form... :
+        if (currentTab >= x.length) {
+            //...the form gets submitted:
+            document.getElementById("AddGrading").submit();
+            return false;
+        }
+        // Otherwise, display the correct tab:
+        showTab(currentTab);
+    }
+
+    function validateForm() {
+        // This function deals with validation of the form fields
+        var x, y, i, valid = true;
+        x = document.getElementsByClassName("tab");
+        y = x[currentTab].getElementsByTagName("textarea");
+        // A loop that checks every input field in the current tab:
+        for (i = 0; i < y.length; i++) {
+            // If a field is empty...
+            if (y[i].value == "") {
+                // add an "invalid" class to the field:
+                y[i].className += " invalid";
+                // and set the current valid status to false:
+                valid = false;
+            }
+            else {
+                // add an "invalid" class to the field:
+                y[i].className += " valid";
+                // and set the current valid status to false:
+                valid = true;
+            }
+        }
+        // If the valid status is true, mark the step as finished and valid:
+        if (valid) {
+            document.getElementsByClassName("step")[currentTab].className += " finish";
+        }
+        return valid; // return the valid status
+    }
+
+    function fixStepIndicator(n) {
+        // This function removes the "active" class of all steps...
+        var i, x = document.getElementsByClassName("step");
+        for (i = 0; i < x.length; i++) {
+            x[i].className = x[i].className.replace(" active", "");
+        }
+        //... and adds the "active" class to the current step:
+        x[n].className += " active";
+    }
+</script>
