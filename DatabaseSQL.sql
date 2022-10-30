@@ -1,5 +1,4 @@
 drop table users;
-drop table campus;
 drop table schools;
 drop table teachers;
 drop table lecturers;
@@ -79,6 +78,9 @@ create table dbo.Students (
     PRIMARY KEY (Number)
 )
 
+select * from Students;
+select * from StudentSchools;
+
 -- StudentSchools Table Creation --
 create table StudentSchools (
     id int IDENTITY(1, 1) not null,
@@ -94,12 +96,12 @@ create table StudentSchools (
 --Grading Table Creation--
 create table dbo.Gradings (
     Number int IDENTITY(1, 1) not null,
-    StudentNumber VARCHAR(10) not null,
-    TeacherNumber varchar(6) not null,
+    Student VARCHAR(10) not null,
+    Teacher varchar(6) not null,
 
     PRIMARY KEY (Number),
-    FOREIGN KEY (TeacherNumber) REFERENCES Teacher(Number),
-    FOREIGN KEY (StudentNumber) REFERENCES Student(Number)
+    FOREIGN KEY (Teacher) REFERENCES Teachers(Number),
+    FOREIGN KEY (Student) REFERENCES Students(Number)
 )
 
 --Section A: Planning--
@@ -109,11 +111,10 @@ create table Planning (
     SectionAtoD int not null,
     SectionE int not null,
     --CRITERIA END--
-    Commentary varchar(max) not null,
     GradingNumber int not null,
 
     PRIMARY KEY (Number),
-    FOREIGN KEY (GradingNumber) REFERENCES Grading(Number)
+    FOREIGN KEY (GradingNumber) REFERENCES Gradings(Number)
 )
 
 --Section B: Execution--
@@ -125,11 +126,10 @@ create table Execution (
     Closure int not null,
     Assessment int not null,
     --CRITERIA END--
-    Commentary varchar(max) not null,
     GradingNumber int not null,
 
     PRIMARY KEY (Number),
-    FOREIGN KEY (GradingNumber) REFERENCES Grading(Number)
+    FOREIGN KEY (GradingNumber) REFERENCES Gradings(Number)
 )
 
 --Section C: Overall--
@@ -139,11 +139,20 @@ create table Overall (
     Presence int not null,
     Environment int not null,
     --CRITERIA END--
-    Commentary varchar(max) not null,
     GradingNumber int not null,
 
     PRIMARY KEY (Number),
-    FOREIGN KEY (GradingNumber) REFERENCES Grading(Number)
+    FOREIGN KEY (GradingNumber) REFERENCES Gradings(Number)
+)
+
+--Commentary Table Creation--
+create table Commentary (
+    id int IDENTITY(1, 1) not null,
+    Criteria varchar(255) not null, --SectionAtoD/SectionE/Intro/Teaching/Closure/Assessment/Presence/Environment--
+    GradingNumber int not null,
+
+    PRIMARY KEY (id),
+    FOREIGN KEY (GradingNumber) REFERENCES Gradings(Number)
 )
 
 drop table dbo.StudentModules;

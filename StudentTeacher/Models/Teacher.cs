@@ -5,6 +5,11 @@ namespace StudentTeacher.Models
 {
     public partial class Teacher
     {
+        public Teacher()
+        {
+            Gradings = new HashSet<Grading>();
+        }
+
         public string Number { get; set; } = null!;
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
@@ -13,5 +18,6 @@ namespace StudentTeacher.Models
 
         public virtual User EmailNavigation { get; set; } = null!;
         public virtual School SchoolNavigation { get; set; } = null!;
+        public virtual ICollection<Grading> Gradings { get; set; }
     }
 }

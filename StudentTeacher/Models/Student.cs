@@ -7,6 +7,7 @@ namespace StudentTeacher.Models
     {
         public Student()
         {
+            Gradings = new HashSet<Grading>();
             StudentSchools = new HashSet<StudentSchool>();
         }
 
@@ -16,6 +17,7 @@ namespace StudentTeacher.Models
         public string? Qualification { get; set; }
         public int YearOfStudy { get; set; }
 
+        public virtual ICollection<Grading> Gradings { get; set; }
         public virtual ICollection<StudentSchool> StudentSchools { get; set; }
     }
 }
