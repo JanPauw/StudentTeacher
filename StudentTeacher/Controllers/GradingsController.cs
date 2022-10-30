@@ -58,7 +58,10 @@ namespace StudentTeacher.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Number,Student,Teacher")] Grading grading)
+        public async Task<IActionResult> Create(
+            string SectionAtoD, string SectionE, string Intro, string Teaching, string Closure, 
+            string Assessment, string Presence, string Environment,  
+            )
         {
             if (ModelState.IsValid)
             {
