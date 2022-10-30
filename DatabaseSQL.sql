@@ -145,11 +145,14 @@ create table Overall (
     FOREIGN KEY (GradingNumber) REFERENCES Gradings(Number)
 )
 
+drop table Commentary
+
 --Commentary Table Creation--
 create table Commentary (
     id int IDENTITY(1, 1) not null,
     Criteria varchar(255) not null, --SectionAtoD/SectionE/Intro/Teaching/Closure/Assessment/Presence/Environment--
     GradingNumber int not null,
+    Comment varchar(max) not null,
 
     PRIMARY KEY (id),
     FOREIGN KEY (GradingNumber) REFERENCES Gradings(Number)
