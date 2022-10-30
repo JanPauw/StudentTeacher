@@ -70,6 +70,8 @@ namespace StudentTeacher.Models
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.Comment).IsUnicode(false);
+
                 entity.Property(e => e.Criteria)
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -78,7 +80,7 @@ namespace StudentTeacher.Models
                     .WithMany(p => p.Commentaries)
                     .HasForeignKey(d => d.GradingNumber)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Commentar__Gradi__078C1F06");
+                    .HasConstraintName("FK__Commentar__Gradi__0A688BB1");
             });
 
             modelBuilder.Entity<Execution>(entity =>
