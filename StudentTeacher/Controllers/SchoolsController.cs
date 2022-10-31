@@ -41,6 +41,46 @@ namespace StudentTeacher.Controllers
                 return NotFound();
             }
 
+
+            List<Student> StudentList = new List<Student>();
+            String SchoolCode = id; //Code of the Current School your viewing
+
+            foreach (var item in _context.StudentSchools.ToList())
+            {
+                Student s = _context.Students.Find(item.Student);
+                if (s != null)
+                {
+                    if (s.YearOfStudy == item.PlacementYear)
+                    {
+                        if (item.School == SchoolCode)
+                        {
+                            StudentList.Add(s);
+                        }
+                    }
+                }
+            }
+
+            List<Grading> GradingList = new List<Grading>();
+
+            foreach (var item in _context.Gradings.ToList())
+            {
+                Grading g = _context.Gradings.Find(item.Number);
+                Student s = StudentList.Where(x => x.Number == item.Student).SingleOrDefault();
+
+                if (s != null && g != null)
+                {
+                    if (g.YearOfStudy == item.YearOfStudy)
+                    {
+                        GradingList.Add(g);
+                    }
+                }
+
+            }
+
+            ViewBag.GradingList = GradingList;
+
+            ViewBag.StudentList = StudentList;
+
             return View(school);
         }
 
@@ -124,6 +164,7 @@ namespace StudentTeacher.Controllers
             //populate user input fields
             string name = school.Name;
             string quintile = school.Quintile;
+
 
             ViewBag.Name = name;
             ViewBag.Quintile = quintile;

@@ -108,6 +108,7 @@ namespace StudentTeacher.Controllers
         // GET: Students/Create
         public IActionResult Create()
         {
+            ViewBag.ListCampuses = _context.Campuses.ToList();
             return View();
         }
 

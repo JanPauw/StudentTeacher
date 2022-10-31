@@ -31,10 +31,6 @@
                 <label for="floatingInput">Province</label>
             </div>
             <div class="form-floating mb-3">
-                <input name="City" type="text" class="form-control" id="floatingCity" placeholder="eg. Port Elizabeth" required value="@ViewBag.City">
-                <label for="floatingInput">City</label>
-            </div>
-            <div class="form-floating mb-3">
                 <select name="Campus" type="text" class="form-select" id="floatingCampus" placeholder="eg. Port Elizabeth, Eastern Cape" required>
                     @foreach (var campus in campuses)
                     {
