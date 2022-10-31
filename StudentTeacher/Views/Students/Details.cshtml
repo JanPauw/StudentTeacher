@@ -10,6 +10,10 @@
     //List<Module> unassignedModules = ViewBag.CanAssignModules;
     #endregion
 
+    //Get Role Session
+    String _role = Accessor.HttpContext.Session.GetString("_role");
+
+
     //Set Session Variables for Adding Grading
     Accessor.HttpContext.Session.SetString("_studentNumber", Model.Number);
     var YearSelected = Accessor.HttpContext.Request.Query["year"];
@@ -179,11 +183,14 @@
     <hr />
     <br />
     <label class="h1">
-        Gradings: Year @Model.YearOfStudy
+        Gradings: Year @year
     </label>
-    <a asp-action="Create" asp-controller="Gradings" style="float: right;" class="btn btn-primary">
-        <i class="bi bi-plus-circle"></i> Add Grading
-    </a>
+    @if (_role.Equals("Teacher"))
+    {
+        <a asp-action="Create" asp-controller="Gradings" style="float: right;" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Add Grading
+        </a>
+    }
     <br />
     <table id="tblGradings">
         <thead>
@@ -206,10 +213,10 @@
             </tr>
         </thead>
         <tbody>
-            
-                @for (int i = 0; i < gradings.Count; i++)
-                {
-                    <tr>
+
+            @for (int i = 0; i < gradings.Count; i++)
+            {
+                <tr>
                     <td>
                         @gradings[i].Date.ToShortDateString()
                     </td>
@@ -228,8 +235,8 @@
                         </a>
                     </td>
                 </tr>
-                }
-            
+            }
+
         </tbody>
     </table>
     <br />

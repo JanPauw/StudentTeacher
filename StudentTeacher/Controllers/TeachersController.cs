@@ -26,6 +26,12 @@ namespace StudentTeacher.Controllers
             return View(await xISD_POEContext.ToListAsync());
         }
 
+        // GET: Dashboard
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
+
         // GET: Teachers/Details/5
         public async Task<IActionResult> Details(string id)
         {
