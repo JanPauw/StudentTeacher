@@ -84,6 +84,11 @@ namespace StudentTeacher.Controllers
                 return View(user);
             }
 
+            //Setting Session Variables
+            HttpContext.Session.SetString("_email", u.Email);
+            HttpContext.Session.SetString("_type", u.Type);
+            HttpContext.Session.SetString("_role", u.Role);
+
             //TODO: Store Session Variables
             TempData["success"] = "Logged in successfully!";
             return RedirectToAction(nameof(Index));

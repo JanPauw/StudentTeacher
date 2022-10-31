@@ -10,6 +10,15 @@
     //List<Module> unassignedModules = ViewBag.CanAssignModules;
     #endregion
 
+    //Set Session Variables for Adding Grading
+    Accessor.HttpContext.Session.SetString("_studentNumber", Model.Number);
+    var YearSelected = Accessor.HttpContext.Request.Query["year"];
+    int year = int.Parse(YearSelected);
+
+    School school = ViewBag.School;
+
+    List<Grading> gradings = ViewBag.Gradings;
+    List<string> teachers = ViewBag.Teachers;
 }
 
 @*Main Content*@
@@ -113,31 +122,82 @@
     <label class="h1">Education Status</label>
     <div style="float: right !important; width: 30% !important;" class="input-group mb-3">
         <label class="input-group-text" for="YearOfStudy">Year of Study: </label>
-        <select name="YearOfStudy" id="YearOfStudy" class="form-select">
-            <option value="1">
-                1st Year @if (Model.YearOfStudy == 1)
-                {
-                    <label>(Current)</label>
-                }
-            </option>
-            <option value="2">
-                2nd Year @if (Model.YearOfStudy == 2)
-                {
-                    <label>(Current)</label>
-                }
-            </option>
-            <option value="3">
-                3rd Year @if (Model.YearOfStudy == 3)
-                {
-                    <label>(Current)</label>
-                }
-            </option>
-            <option value="4">
-                4th Year @if (Model.YearOfStudy == 4)
-                {
-                    <label>(Current)</label>
-                }
-            </option>
+        <select name="YearOfStudy" id="YearOfStudy" class="form-select" onchange="YearSelected()">
+            @if (YearSelected == "1")
+            {
+                <option value="1" selected>
+                    1st Year @if (Model.YearOfStudy == 1)
+                    {
+                        <label>(Current)</label>
+                    }
+                </option>
+            }
+            else
+            {
+                <option value="1">
+                    1st Year @if (Model.YearOfStudy == 1)
+                    {
+                        <label>(Current)</label>
+                    }
+                </option>
+            }
+
+            @if (YearSelected == "2")
+            {
+                <option value="2" selected>
+                    2nd Year @if (Model.YearOfStudy == 2)
+                    {
+                        <label>(Current)</label>
+                    }
+                </option>
+            }
+            else
+            {
+                <option value="2">
+                    2nd Year @if (Model.YearOfStudy == 2)
+                    {
+                        <label>(Current)</label>
+                    }
+                </option>
+            }
+
+            @if (YearSelected == "3")
+            {
+                <option value="3" selected>
+                    3rd Year @if (Model.YearOfStudy == 3)
+                    {
+                        <label>(Current)</label>
+                    }
+                </option>
+            }
+            else
+            {
+                <option value="3">
+                    3rd Year @if (Model.YearOfStudy == 3)
+                    {
+                        <label>(Current)</label>
+                    }
+                </option>
+            }
+
+            @if (YearSelected == "4")
+            {
+                <option value="4" selected>
+                    4th Year @if (Model.YearOfStudy == 4)
+                    {
+                        <label>(Current)</label>
+                    }
+                </option>
+            }
+            else
+            {
+                <option value="4">
+                    4th Year @if (Model.YearOfStudy == 4)
+                    {
+                        <label>(Current)</label>
+                    }
+                </option>
+            }
         </select>
     </div>
     <table id="tblEducation">
@@ -151,7 +211,7 @@
         <tbody>
             <tr>
                 <td>
-                    Sunridge Primary School
+                    @school.Name
                 </td>
             </tr>
         </tbody>
@@ -162,7 +222,7 @@
     <label class="h1">
         Gradings: Year @Model.YearOfStudy
     </label>
-    <a style="float: right;" class="btn btn-primary">
+    <a asp-action="Create" asp-controller="Gradings" style="float: right;" class="btn btn-primary">
         <i class="bi bi-plus-circle"></i> Add Grading
     </a>
     <br />
@@ -173,13 +233,13 @@
                     Date
                 </th>
                 <th>
-                    Module
+                    Subject
                 </th>
                 <th>
-                    Mark
+                    Topic
                 </th>
                 <th>
-                    Status
+                    Teacher
                 </th>
                 <th>
                     Details
@@ -187,25 +247,30 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>
-                    29 September 2022
-                </td>
-                <td>
-                    PROG6312
-                </td>
-                <td>
-                    50 / 80
-                </td>
-                <td>
-                    DRAFT
-                </td>
-                <td style="text-align: center">
-                    <a class="btn btn-success">
-                        <i class="bi bi-info-circle"></i> Details
-                    </a>
-                </td>
-            </tr>
+            
+                @for (int i = 0; i < gradings.Count; i++)
+                {
+                    <tr>
+                    <td>
+                        @gradings[i].Grade
+                    </td>
+                    <td>
+                        @gradings[i].Subject
+                    </td>
+                    <td>
+                        @gradings[i].Topic
+                    </td>
+                    <td>
+                        @teachers[i]
+                    </td>
+                    <td>
+                        <a class="btn btn-success" asp-action="Details" asp-controller="Gradings">
+                            <i class="bi bi-info-circle"></i> Details
+                        </a>
+                    </td>
+                </tr>
+                }
+            
         </tbody>
     </table>
     <br />
@@ -329,5 +394,13 @@
                 });
             });
         });
+    </script>
+    <script>
+        function YearSelected() {
+            d = document.getElementById("YearOfStudy").value;
+            currentUrl = window.location.href.split('?')[0];
+            newUrl = currentUrl + "?year=" + d;
+            window.location.href = newUrl;
+        }
     </script>
 }

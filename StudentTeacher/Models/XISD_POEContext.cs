@@ -80,13 +80,13 @@ namespace StudentTeacher.Models
                     .WithMany(p => p.Commentaries)
                     .HasForeignKey(d => d.GradingNumber)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Commentar__Gradi__0A688BB1");
+                    .HasConstraintName("FK__Commentar__Gradi__382F5661");
             });
 
             modelBuilder.Entity<Execution>(entity =>
             {
                 entity.HasKey(e => e.Number)
-                    .HasName("PK__Executio__78A1A19CEE9860BE");
+                    .HasName("PK__Executio__78A1A19CF8187754");
 
                 entity.ToTable("Execution");
 
@@ -94,33 +94,43 @@ namespace StudentTeacher.Models
                     .WithMany(p => p.Executions)
                     .HasForeignKey(d => d.GradingNumber)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Execution__Gradi__01D345B0");
+                    .HasConstraintName("FK__Execution__Gradi__32767D0B");
             });
 
             modelBuilder.Entity<Grading>(entity =>
             {
                 entity.HasKey(e => e.Number)
-                    .HasName("PK__Gradings__78A1A19CE0AE4B12");
+                    .HasName("PK__Gradings__78A1A19C2944AC83");
+
+                entity.Property(e => e.Date).HasColumnType("date");
 
                 entity.Property(e => e.Student)
                     .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Subject)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Teacher)
                     .HasMaxLength(6)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Topic)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.HasOne(d => d.StudentNavigation)
                     .WithMany(p => p.Gradings)
                     .HasForeignKey(d => d.Student)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Gradings__Studen__793DFFAF");
+                    .HasConstraintName("FK__Gradings__Studen__2CBDA3B5");
 
                 entity.HasOne(d => d.TeacherNavigation)
                     .WithMany(p => p.Gradings)
                     .HasForeignKey(d => d.Teacher)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Gradings__Teache__7849DB76");
+                    .HasConstraintName("FK__Gradings__Teache__2BC97F7C");
             });
 
             modelBuilder.Entity<Lecturer>(entity =>
@@ -160,7 +170,7 @@ namespace StudentTeacher.Models
             modelBuilder.Entity<Overall>(entity =>
             {
                 entity.HasKey(e => e.Number)
-                    .HasName("PK__Overall__78A1A19CB23B3F75");
+                    .HasName("PK__Overall__78A1A19C49163E17");
 
                 entity.ToTable("Overall");
 
@@ -168,13 +178,13 @@ namespace StudentTeacher.Models
                     .WithMany(p => p.Overalls)
                     .HasForeignKey(d => d.GradingNumber)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Overall__Grading__04AFB25B");
+                    .HasConstraintName("FK__Overall__Grading__3552E9B6");
             });
 
             modelBuilder.Entity<Planning>(entity =>
             {
                 entity.HasKey(e => e.Number)
-                    .HasName("PK__Planning__78A1A19C848452E0");
+                    .HasName("PK__Planning__78A1A19C3921588F");
 
                 entity.ToTable("Planning");
 
@@ -182,7 +192,7 @@ namespace StudentTeacher.Models
                     .WithMany(p => p.Plannings)
                     .HasForeignKey(d => d.GradingNumber)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Planning__Gradin__7EF6D905");
+                    .HasConstraintName("FK__Planning__Gradin__2F9A1060");
             });
 
             modelBuilder.Entity<School>(entity =>

@@ -16,6 +16,11 @@ namespace StudentTeacher.Models
         public int Number { get; set; }
         public string Student { get; set; } = null!;
         public string Teacher { get; set; } = null!;
+        public int YearOfStudy { get; set; }
+        public DateTime Date { get; set; }
+        public int Grade { get; set; }
+        public string Topic { get; set; } = null!;
+        public string Subject { get; set; } = null!;
 
         public virtual Student StudentNavigation { get; set; } = null!;
         public virtual Teacher TeacherNavigation { get; set; } = null!;

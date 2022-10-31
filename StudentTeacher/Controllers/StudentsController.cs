@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -72,6 +73,35 @@ namespace StudentTeacher.Controllers
                 return NotFound();
             }
 
+            //Get Current Year Details
+            var YearSelected = HttpContext.Request.Query["year"];
+
+            if (string.IsNullOrWhiteSpace(YearSelected))
+            {
+                return RedirectToAction("Details", "Students", new { id = id, year = "" + student.YearOfStudy });
+            }
+
+            int year = int.Parse(YearSelected);
+
+            StudentSchool studentSchool = _context.StudentSchools.Where(x => x.Student == student.Number && x.PlacementYear == year).SingleOrDefault();
+            School school = _context.Schools.Find(studentSchool.School);
+
+            ViewBag.School = school;
+
+            //Get Gradings info
+            List<Grading> gradings = _context.Gradings.Where(x => x.Student == student.Number && x.YearOfStudy == year).ToList();
+            ViewBag.Gradings = gradings;
+
+            List<string> TeacherNames = new List<string>();
+
+            foreach (var item in gradings)
+            {
+                Teacher t = _context.Teachers.Find(item.Teacher);
+                TeacherNames.Add("" + t.FirstName + " " + t.LastName);
+            }
+
+            ViewBag.Teachers = TeacherNames;
+
             return View(student);
         }
 
@@ -136,12 +166,12 @@ namespace StudentTeacher.Controllers
                 TempData["success"] = "Student added succesfully!";
                 return RedirectToAction(nameof(Index));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 TempData["error"] = "Error adding Student!";
                 return View(s);
             }
-            
+
         }
 
         // GET: Students/Edit/5

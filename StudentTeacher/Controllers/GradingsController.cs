@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.InkML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +49,34 @@ namespace StudentTeacher.Controllers
         // GET: Gradings/Create
         public IActionResult Create()
         {
+            //Get Student Number from Session
+            string _studentNumber = HttpContext.Session.GetString("_studentNumber");
+            //Test valid Student Number
+            Student student = _context.Students.Find(_studentNumber);
+            if (student == null)
+            {
+                return RedirectToAction("Index", "Students");
+            }
+
+            //Check that user viewing this page is a teacher
+            var _role = HttpContext.Session.GetString("_role");
+            if (_role != "Teacher")
+            {
+                return RedirectToAction("Details", "Students", new { id = _studentNumber });
+            }
+
+            //Set Teacher Number
+            var _email = HttpContext.Session.GetString("_email");
+            Teacher teacher = _context.Teachers.Where(x => x.Email == _email).SingleOrDefault();
+
+            if (teacher == null)
+            {
+                return RedirectToAction("Details", "Students", new { id = _studentNumber });
+            }
+
+            ViewBag.TeacherCode = teacher.Number;
+            ViewBag.StudentCode = student.Number;
+
             return View();
         }
 
@@ -57,6 +86,7 @@ namespace StudentTeacher.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
+            int Grade, string Topic, string Subject,
             string SectionAtoD, string SectionE, string Intro, string Teaching, string Closure,
             string Assessment, string Presence, string Environment,
             string ComSectionAtoD, string ComSectionE, string ComIntro, string ComTeaching, string ComClosure,
@@ -76,6 +106,26 @@ namespace StudentTeacher.Controllers
             if (teacher == null)
             {
                 TempData["error"] = "Invalid Teacher selected!";
+                return View();
+            }
+            #endregion
+
+            #region Check that Class info is valid
+            if (Grade < 1 || Grade > 7)
+            {
+                TempData["error"] = "Invalid Grade Entered!";
+                return View();
+            }
+
+            if (string.IsNullOrWhiteSpace(Topic))
+            {
+                TempData["error"] = "Invalid Topic enetered!";
+                return View();
+            }
+
+            if (string.IsNullOrWhiteSpace(Subject))
+            {
+                TempData["error"] = "Invalid Subject enetered!";
                 return View();
             }
             #endregion
@@ -180,6 +230,11 @@ namespace StudentTeacher.Controllers
             grading.Teacher = TeacherCode;
             grading.StudentNavigation = student;
             grading.TeacherNavigation = teacher;
+            grading.YearOfStudy = student.YearOfStudy;
+            grading.Date = DateTime.Now;
+            grading.Grade = Grade;
+            grading.Topic = Topic;
+            grading.Subject = Subject;
 
             _context.Gradings.Add(grading);
             await _context.SaveChangesAsync();
