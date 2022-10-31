@@ -1,18 +1,28 @@
 ﻿@{
     ViewData["Title"] = "Dashboard";
+
+    //Get Lists to Display on Front-End
+    List<Student> students = ViewBag.Students;
+    List<School> schools = ViewBag.Schools;
+    List<Teacher> teachers = ViewBag.Teachers;
+    List<Lecturer> lecturers = ViewBag.Lecturers;
+    List<Grading> gradings = ViewBag.Gradings;
+    List<Campus> campuses = ViewBag.Campuses;
 }
 
 <div id="Tea_Dash">
     <label class="h1">Dashboard</label>
     <br />
-    <label class="h5">Welcome, Jan.</label>
+    <label class="h5">Welcome</label>
     <hr />
-    <label class="h2">My Students</label>
+    <label class="h2">Varisty College Students</label>
     <div style="float: right; width: 40%;" class="input-group mb-3">
         <select class="form-select" style="max-width: 40% !important">
-            <option value="">Name</option>
-            <option value="">Module Code</option>
-            <option value="">Module Name</option>
+            <option value="">Student Number</option>
+            <option value="">Name & Surname</option>
+            <option value="">Qualification</option>
+            <option value="">Year of Study</option>
+            <option value="">Campus</option>
         </select>
         <input type="text" class="form-control" placeholder="Search..." aria-label="Recipient's username" aria-describedby="button-addon2">
         <button class="btn btn-primary" type="button" id="button-addon2"> <i class="bi bi-search"></i> Search</button>
@@ -23,13 +33,19 @@
                 <thead>
                     <tr>
                         <th>
+                            Student Number
+                        </th>
+                        <th>
                             Name & Surname
                         </th>
                         <th>
-                            Module Code
+                            Qualification
                         </th>
                         <th>
-                            Module Name
+                            Year of Study
+                        </th>
+                        <th>
+                            Campus
                         </th>
                         <th>
                             Details
@@ -41,85 +57,46 @@
         <div id="StudentsBot">
             <table>
                 <tbody>
-                    <tr>
-                        <td>
-                            Jan Pauw
-                        </td>
-                        <td>
-                            PROG6312
-                        </td>
-                        <td>
-                            Programming 3B
-                        </td>
-                        <td style="text-align: center;">
-                            <a class="btn btn-success">
-                                <i class="bi bi-info-circle"></i> Details
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Henco Barkhuizen
-                        </td>
-                        <td>
-                            IPMA6312
-                        </td>
-                        <td>
-                            Intro to Project Management 3B
-                        </td>
-                        <td style="text-align: center;">
-                            <a class="btn btn-success">
-                                <i class="bi bi-info-circle"></i> Details
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            David Britnor
-                        </td>
-                        <td>
-                            APPR6312
-                        </td>
-                        <td>
-                            Applied Programming 3B
-                        </td>
-                        <td style="text-align: center;">
-                            <a class="btn btn-success">
-                                <i class="bi bi-info-circle"></i> Details
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Oliver Honiball
-                        </td>
-                        <td>
-                            ADDB6312
-                        </td>
-                        <td>
-                            Advanced Databases 3B
-                        </td>
-                        <td style="text-align: center;">
-                            <a class="btn btn-success">
-                                <i class="bi bi-info-circle"></i> Details
-                            </a>
-                        </td>
-                    </tr>
+                    @foreach (var item in students)
+                    {
+                        Campus c = campuses.Where(x => x.Code == item.Campus).SingleOrDefault();
+                        <tr>
+                            <td>
+                                @item.Number
+                            </td>
+                            <td>
+                                @item.FirstName @item.LastName
+                            </td>
+                            <td>
+                                @item.Qualification
+                            </td>
+                            <td>
+                                @item.YearOfStudy
+                            </td>
+                            <td>
+                                @c.Name
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-controller="Students" asp-route-id="@item.Number" class="btn btn-success">
+                                    <i class="bi bi-info-circle"></i> Details
+                                </a>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
     </div>
     <br />
     <hr />
-    <label class="h2">My Gradings</label>
+    <label class="h2">Recent Gradings</label>
     <div style="float: right; width: 40%;" class="input-group mb-3">
         <select class="form-select" style="max-width: 40% !important">
             <option value="">Date</option>
             <option value="">Student</option>
-            <option value="">Mark Equal to</option>
-            <option value="">Mark Greater than</option>
-            <option value="">Mark Less than</option>
-            <option value="">Status</option>
+            <option value="">Teacher</option>
+            <option value="">Year of Study</option>
+            <option value="">Subject</option>
         </select>
         <input type="text" class="form-control" placeholder="Search..." aria-label="Recipient's username" aria-describedby="button-addon2">
         <button class="btn btn-primary" type="button" id="button-addon2"> <i class="bi bi-search"></i> Search</button>
@@ -136,10 +113,13 @@
                             Student
                         </th>
                         <th>
-                            Mark
+                            Teacher
                         </th>
                         <th>
-                            Status
+                            Year of Study
+                        </th>
+                        <th>
+                            Subject
                         </th>
                         <th>
                             Details
@@ -151,82 +131,33 @@
         <div id="GradingsBot">
             <table>
                 <tbody>
-                    <tr>
-                        <td>
-                            29 September 2022
-                        </td>
-                        <td>
-                            Jan Pauw
-                        </td>
-                        <td>
-                            50 / 80
-                        </td>
-                        <td>
-                            DRAFT
-                        </td>
-                        <td style="text-align: center;">
-                            <a class="btn btn-success">
-                                <i class="bi bi-info-circle"></i> Details
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            12 June 2022
-                        </td>
-                        <td>
-                            Henco Barkhuizen
-                        </td>
-                        <td>
-                            75 / 80
-                        </td>
-                        <td>
-                            FINAL
-                        </td>
-                        <td style="text-align: center;">
-                            <a class="btn btn-success">
-                                <i class="bi bi-info-circle"></i> Details
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            09 August 2022
-                        </td>
-                        <td>
-                            David Britnor
-                        </td>
-                        <td>
-                            15 / 80
-                        </td>
-                        <td>
-                            FINAL
-                        </td>
-                        <td style="text-align: center;">
-                            <a class="btn btn-success">
-                                <i class="bi bi-info-circle"></i> Details
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            15 July 2022
-                        </td>
-                        <td>
-                            Oliver Honiball
-                        </td>
-                        <td>
-                            63 / 80
-                        </td>
-                        <td>
-                            DRAFT
-                        </td>
-                        <td style="text-align: center;">
-                            <a class="btn btn-success">
-                                <i class="bi bi-info-circle"></i> Details
-                            </a>
-                        </td>
-                    </tr>
+                    @foreach (var item in gradings)
+                    {
+                        Teacher t = teachers.Where(x => x.Number == item.Teacher).SingleOrDefault();
+                        string t_name = t.FirstName.Substring(0, 1) + ". " + t.LastName;
+                        <tr>
+                            <td>
+                                @item.Date.ToShortDateString()
+                            </td>
+                            <td>
+                                @item.Student
+                            </td>
+                            <td>
+                                @t_name
+                            </td>
+                            <td>
+                                @item.YearOfStudy
+                            </td>
+                            <td>
+                                @item.Subject
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-controller="Gradings" asp-route-id="@item.Number" class="btn btn-success">
+                                    <i class="bi bi-info-circle"></i> Details
+                                </a>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
@@ -273,7 +204,7 @@
             }
 
             #StudentsTop table th {
-                width: 25%;
+                width: 16%;
                 padding: 1%;
                 color: white;
             }
@@ -295,7 +226,7 @@
             }
 
             #StudentsBot table td {
-                width: 25%;
+                width: 16%;
                 padding: 1%;
                 color: black;
             }
@@ -313,7 +244,7 @@
             }
 
             #GradingsTop table th {
-                width: 20%;
+                width: 16%;
                 padding: 1%;
                 color: white;
             }
@@ -335,7 +266,7 @@
             }
 
             #GradingsBot table td {
-                width: 20%;
+                width: 16%;
                 padding: 1%;
                 color: black;
             }

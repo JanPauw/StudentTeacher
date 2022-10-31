@@ -47,10 +47,16 @@
                         @if (loggedIn)
                         {
                             <li class="nav-item">
-                                <a id="nav_Dashboard" class="nav-link " asp-controller="Teachers" asp-action="Dashboard">
+                                <a id="nav_Dashboard" class="nav-link " asp-controller="Users" asp-action="Dashboard">
                                     Dashboard
                                     <span class="visually-hidden">(current)</span>
                                 </a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="nav_Campus" class="nav-link" asp-controller="Campus" asp-action="Index">Campuses</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="nav_Gradings" class="nav-link" asp-controller="Gradings" asp-action="Index">Gradings</a>
                             </li>
                             <li class="nav-item">
                                 <a id="nav_Students" class="nav-link" asp-controller="Students" asp-action="Index">Students</a>

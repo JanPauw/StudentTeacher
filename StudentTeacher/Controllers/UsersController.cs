@@ -158,6 +158,9 @@ namespace StudentTeacher.Controllers
             ViewBag.Students = _context.Students.ToList();
             ViewBag.Schools = _context.Schools.ToList();
             ViewBag.Teachers = _context.Teachers.ToList();
+            ViewBag.Lecturers = _context.Lecturers.ToList();
+            ViewBag.Gradings = _context.Gradings.OrderByDescending(x => x.Date).ToList();
+            ViewBag.Campuses = _context.Campuses.ToList();
 
             //(admin dashboard)
             return View();
