@@ -154,6 +154,11 @@ namespace StudentTeacher.Controllers
                     break;
             }
 
+            //Info to disiplay on Dashboard
+            ViewBag.Students = _context.Students.ToList();
+            ViewBag.Schools = _context.Schools.ToList();
+            ViewBag.Teachers = _context.Teachers.ToList();
+
             //(admin dashboard)
             return View();
         }
