@@ -1,9 +1,30 @@
-drop table users;
-drop table schools;
-drop table teachers;
-drop table lecturers;
-drop table students;
-drop table studentschools;
+-- Select * from * --
+select * from Users;
+select * from Campus;
+select * from Schools;
+select * from Teachers;
+select * from Lecturers;
+select * from Students;
+select * from StudentSchools;
+select * from Gradings;
+select * from Planning;
+select * from Execution;
+select * from Overall;
+select * from Commentary;
+
+-- Drop Table * --
+drop table Users;
+drop table Campus;
+drop table Schools;
+drop table Teachers;
+drop table Lecturers;
+drop table Students;
+drop table StudentSchools;
+drop table Gradings;
+drop table Planning;
+drop table Execution;
+drop table Overall;
+drop table Commentary;
 
 --User Table Creation--
 create table dbo.Users (
@@ -27,7 +48,6 @@ create table dbo.Campus (
     PRIMARY KEY (Code)
 )
 
-drop TABLE dbo.Schools
 -- School Table Creation
 create table Schools (
     Code varchar(8) not null,
@@ -65,8 +85,6 @@ create table dbo.Lecturers (
     FOREIGN KEY(Campus) REFERENCES dbo.Campus(Code)
 )
 
-drop table dbo.Students
-
 --Student Creation Table--
 create table dbo.Students (
     Number VARCHAR(10) not null,
@@ -74,12 +92,11 @@ create table dbo.Students (
     LastName VARCHAR(max) not null,
     Qualification varchar(255),
     YearOfStudy  int not null,
+    Campus varchar(8) not null,
 
-    PRIMARY KEY (Number)
+    PRIMARY KEY (Number),
+    FOREIGN KEY (Campus) REFERENCES Campus(Code)
 )
-
-select * from Students;
-select * from StudentSchools;
 
 -- StudentSchools Table Creation --
 create table StudentSchools (
@@ -92,13 +109,6 @@ create table StudentSchools (
     FOREIGN KEY(Student) REFERENCES dbo.Students(Number),
     FOREIGN KEY(School) REFERENCES dbo.Schools(Code)
 )
-
---Dropping Gradings Tables--
-drop table Gradings;
-drop table Planning;
-drop table Execution;
-drop table Overall;
-drop table Commentary;
 
 --Grading Table Creation--
 create table dbo.Gradings (
@@ -157,8 +167,6 @@ create table Overall (
     FOREIGN KEY (GradingNumber) REFERENCES Gradings(Number)
 )
 
-drop table Commentary
-
 --Commentary Table Creation--
 create table Commentary (
     id int IDENTITY(1, 1) not null,
@@ -170,14 +178,6 @@ create table Commentary (
     FOREIGN KEY (GradingNumber) REFERENCES Gradings(Number)
 )
 
-select * from Gradings;
-select * from Planning;
-select * from Execution;
-select * from Overall;
-select * from Commentary;
-
-drop table dbo.StudentModules;
-drop table dbo.Modules;
 -- Currently Unsused Table Ides --
 --Module Table Creation--
 

@@ -16,7 +16,9 @@ namespace StudentTeacher.Models
         public string LastName { get; set; } = null!;
         public string? Qualification { get; set; }
         public int YearOfStudy { get; set; }
+        public string Campus { get; set; } = null!;
 
+        public virtual Campus CampusNavigation { get; set; } = null!;
         public virtual ICollection<Grading> Gradings { get; set; }
         public virtual ICollection<StudentSchool> StudentSchools { get; set; }
     }

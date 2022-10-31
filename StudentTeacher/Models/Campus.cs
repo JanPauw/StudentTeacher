@@ -9,6 +9,7 @@ namespace StudentTeacher.Models
         {
             Lecturers = new HashSet<Lecturer>();
             Schools = new HashSet<School>();
+            Students = new HashSet<Student>();
         }
 
         public string Code { get; set; } = null!;
@@ -18,5 +19,6 @@ namespace StudentTeacher.Models
 
         public virtual ICollection<Lecturer> Lecturers { get; set; }
         public virtual ICollection<School> Schools { get; set; }
+        public virtual ICollection<Student> Students { get; set; }
     }
 }
