@@ -145,7 +145,7 @@ namespace StudentTeacher.Controllers
                 _context.Add(t);
                 await _context.SaveChangesAsync();
                 TempData["success"] = "Register Successful!";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Login", "Users");
             }
             catch (Exception e)
             {

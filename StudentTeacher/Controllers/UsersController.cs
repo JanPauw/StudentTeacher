@@ -88,10 +88,17 @@ namespace StudentTeacher.Controllers
             HttpContext.Session.SetString("_email", u.Email);
             HttpContext.Session.SetString("_type", u.Type);
             HttpContext.Session.SetString("_role", u.Role);
+            HttpContext.Session.SetString("_loggedIn", "true");
 
             //TODO: Store Session Variables
             TempData["success"] = "Logged in successfully!";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Dashboard", "Users");
+        }
+
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Users");
         }
 
         // GET: Users/Create
@@ -118,6 +125,37 @@ namespace StudentTeacher.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
+        }
+
+        //GET: Users/Dashboard
+        public async Task<IActionResult> Dashboard()
+        {
+            //get role of logged in user
+            string _role = HttpContext.Session.GetString("_role");
+
+            //Check that Role is set in Sessions
+            if (String.IsNullOrWhiteSpace(_role))
+            {
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login", "Users");
+            }
+
+            //check which user is logged in by role
+            switch (_role)
+            {
+                case "Lecturer":
+                    return RedirectToAction("Dashboard", "Lecturers");
+                    break;
+                case "Teacher":
+                    return RedirectToAction("Dashboard", "Teachers");
+                    break;
+                case "Supervisor":
+                    return RedirectToAction("Dashboard", "Lecturers");
+                    break;
+            }
+
+            //(admin dashboard)
+            return View();
         }
 
         // GET: Users/Edit/5

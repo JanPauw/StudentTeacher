@@ -1,4 +1,28 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string _loggedIn = Accessor.HttpContext.Session.GetString("_loggedIn");
+    string _role = Accessor.HttpContext.Session.GetString("_role");
+    bool loggedIn = false;
+
+    //Check that User is logged in
+    if (!String.IsNullOrWhiteSpace(_loggedIn))
+    {
+        if (_loggedIn.Equals("true"))
+        {
+            loggedIn = true;
+        }
+    }
+    else
+    {
+        loggedIn = false;
+    }
+
+    //Check Role ?? Set as None
+    if (string.IsNullOrWhiteSpace(_role)) {
+        _role = "None";
+    }
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -20,40 +44,60 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav me-auto" style="width: 80% !important;">
-                        <li class="nav-item">
-                            <a id="nav_Dashboard" class="nav-link " asp-controller="Teachers" asp-action="Dashboard">
-                                Dashboard
-                                <span class="visually-hidden">(current)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a id="nav_Users" class="nav-link" asp-controller="Modules" asp-action="Index">Modules</a>
-                        </li>
-                        <li class="nav-item">
-                            <a id="nav_Users" class="nav-link" asp-controller="Students" asp-action="Index">Students</a>
-                        </li>
-                        <li class="nav-item">
-                            <a id="nav_Users" class="nav-link" asp-controller="Schools" asp-action="Index">Schools</a>
-                        </li>
-                        <li class="nav-item">
-                            <a id="nav_Teachers" class="nav-link" asp-controller="Teachers" asp-action="Index">Teachers</a>
-                        </li>
-                        <li class="nav-item">
-                            <a id="nav_Lecturers" class="nav-link" asp-controller="Lecturers" asp-action="Index">Lecturers</a>
-                        </li>
+                        @if (loggedIn)
+                        {
+                            <li class="nav-item">
+                                <a id="nav_Dashboard" class="nav-link " asp-controller="Teachers" asp-action="Dashboard">
+                                    Dashboard
+                                    <span class="visually-hidden">(current)</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="nav_Students" class="nav-link" asp-controller="Students" asp-action="Index">Students</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="nav_Schools" class="nav-link" asp-controller="Schools" asp-action="Index">Schools</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="nav_Teachers" class="nav-link" asp-controller="Teachers" asp-action="Index">Teachers</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="nav_Lecturers" class="nav-link" asp-controller="Lecturers" asp-action="Index">Lecturers</a>
+                            </li>
+                            if (_role == "Admin") {
+                                <li class="nav-item">
+                                    <a id="nav_Import" class="nav-link" asp-controller="Imports" asp-action="Index">Bulk Import</a>
+                                </li>
+                            }
+                        }
+                        else 
+                        {
+                            <li class="nav-item">
+                                <a id="nav_Login" class="nav-link" asp-controller="Users" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="nav_Register_Lecturer" class="nav-link" asp-controller="Lecturers" asp-action="Register">Lecturer Registration</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="nav_Register_Teacher" class="nav-link" asp-controller="Teachers" asp-action="Register">Teacher Registration</a>
+                            </li>
+                        }
                     </ul>
                     <ul class="navbar-nav me-auto" style="float: right !important;">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                <i style="font-size: 25px !important;" class="bi bi-person-circle"></i>
-                            </a>
-                            <div class="dropdown-menu">
-                                <label class="dropdown-header">Welcome, Jan</label>
-                                <a id="account" class="dropdown-item" href="#">My Account</a>
-                                <div class="dropdown-divider"></div>
-                                <a id="logout" class="dropdown-item" href="#">Logout</a>
-                            </div>
-                        </li>
+                        @if (loggedIn)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i style="font-size: 25px !important;" class="bi bi-person-circle"></i>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <label class="dropdown-header">Welcome, Jan</label>
+                                    <a id="account" class="dropdown-item" href="#">My Account</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a asp-action="LogOut" asp-controller="Users" id="logout" class="dropdown-item">Logout</a>
+                                </div>
+                            </li>
+                        }
                     </ul>
                     @*<form class="d-flex">
                     <input class="form-control me-sm-2" type="text" placeholder="Search">
@@ -67,6 +111,7 @@
         <main role="main" class="pb-3">
             <partial name="_Notification" />
             <partial name="_loading" />
+            <partial name="_LoggedIn" />
             @RenderBody()
         </main>
     </div>

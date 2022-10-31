@@ -1,0 +1,41 @@
+﻿@{
+    string _email = Accessor.HttpContext.Session.GetString("_email");
+    string _type = Accessor.HttpContext.Session.GetString("_type");
+    string _role = Accessor.HttpContext.Session.GetString("_role");
+    bool logged_in = false;
+
+    if (!String.IsNullOrWhiteSpace(_email))
+    {
+        if (!String.IsNullOrWhiteSpace(_type))
+        {
+            if (!String.IsNullOrWhiteSpace(_role))
+            {
+                logged_in = true;
+            }
+        }
+    }
+
+    string URL = Accessor.HttpContext.Request.Path;
+    bool isLoginPage = URL == "/Users/Login";
+    bool isRegisterPage = (URL == "/Teachers/Register") || (URL == "/Lecturers/Register");
+
+    if (logged_in == true)
+    {
+        Accessor.HttpContext.Session.SetString("_loggedIn", "true");
+
+        if (isRegisterPage || isLoginPage)
+        {
+            Context.Response.Redirect("/Users/Dashboard");
+        }
+    }
+
+    if (logged_in != true)
+    {
+        Accessor.HttpContext.Session.SetString("_loggedIn", "false");
+
+        if (!isRegisterPage && !isLoginPage)
+        {
+            Context.Response.Redirect("/Users/Login");
+        }
+    }
+}

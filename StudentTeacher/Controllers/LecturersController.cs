@@ -127,7 +127,7 @@ namespace StudentTeacher.Controllers
             u.Email = Email;
             u.Password = EncyptedPassword;
             u.Type = "VC Lecturer";
-            u.Role = "lecturer";
+            u.Role = "Lecturer";
             _context.Users.Add(u);
             _context.SaveChanges();
 
@@ -145,7 +145,7 @@ namespace StudentTeacher.Controllers
                 _context.Add(l);
                 await _context.SaveChangesAsync();
                 TempData["success"] = "Registration Successful!";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Login", "Users");
             }
             catch (Exception e)
             {
