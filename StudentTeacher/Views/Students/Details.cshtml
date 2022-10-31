@@ -252,7 +252,7 @@
                 {
                     <tr>
                     <td>
-                        @gradings[i].Grade
+                        @gradings[i].Date.ToShortDateString()
                     </td>
                     <td>
                         @gradings[i].Subject
@@ -264,7 +264,7 @@
                         @teachers[i]
                     </td>
                     <td>
-                        <a class="btn btn-success" asp-action="Details" asp-controller="Gradings">
+                        <a class="btn btn-success" asp-action="Details" asp-controller="Gradings" asp-route-id="@gradings[i].Number">
                             <i class="bi bi-info-circle"></i> Details
                         </a>
                     </td>
