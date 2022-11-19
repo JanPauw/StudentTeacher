@@ -281,6 +281,8 @@ namespace StudentTeacher.Models
             {
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.AmountOfClasses).HasColumnName("amountOfClasses");
+
                 entity.Property(e => e.Subject1)
                     .HasMaxLength(255)
                     .IsUnicode(false)

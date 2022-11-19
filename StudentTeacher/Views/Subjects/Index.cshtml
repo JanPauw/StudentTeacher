@@ -2,40 +2,173 @@
 
 @{
     ViewData["Title"] = "Index";
+    String Year = ViewBag.Year;
+    List<Subject> subjects = ViewBag.Subjects;
+    //Re-order Subjects Alphabetically
+    subjects = subjects.OrderBy(x => x.Subject1).ToList();
 }
 
-<h1>Index</h1>
+<h1>Subjects Management</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Subject1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.YearOfStudy)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Subject1)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.YearOfStudy)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="d-flex flex-row bg-white">
+    <div id="divYears" class="d-flex flex-column flex-shrink-0 p-3" style="width: 20%;">
+        <h2 style="text-decoration: underline">Year</h2>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                @if (Year.Equals("1"))
+                {
+                    <a href="#" class="nav-link active" aria-current="page">
+                        Year 1
+                    </a>
+                }
+                else
+                {
+                    <a asp-action="Index" asp-route-year="1" class="nav-link link-dark">
+                        Year 1
+                    </a>
+                }
+            </li>
+            <li class="nav-item">
+                @if (Year.Equals("2"))
+                {
+                    <a href="#" class="nav-link active" aria-current="page">
+                        Year 2
+                    </a>
+                }
+                else
+                {
+                    <a asp-action="Index" asp-route-year="2" class="nav-link link-dark">
+                        Year 2
+                    </a>
+                }
+            </li>
+            <li class="nav-item">
+                @if (Year.Equals("3"))
+                {
+                    <a href="#" class="nav-link active" aria-current="page">
+                        Year 3
+                    </a>
+                }
+                else
+                {
+                    <a asp-action="Index" asp-route-year="3" class="nav-link link-dark">
+                        Year 3
+                    </a>
+                }
+            </li>
+            <li class="nav-item">
+                @if (Year.Equals("4"))
+                {
+                    <a href="#" class="nav-link active" aria-current="page">
+                        Year 4
+                    </a>
+                }
+                else
+                {
+                    <a asp-action="Index" asp-route-year="4" class="nav-link link-dark">
+                        Year 4
+                    </a>
+                }
+            </li>
+        </ul>
+    </div>
+    <div id="divSubjects" class="d-flex flex-column flex-shrink-0 p-3" style="width: 80%;">
+        <div class="d-flex flex-row">
+            <h2 style="text-decoration: underline">Subjects</h2>
+            <a asp-action="Create" style="float: right !important;" class="btn btn-primary">
+                Add Subject
+            </a>
+        </div>
+        <hr />
+        <div id="Subjects" style="width: 100%;">
+            <table id="tblSubjects">
+                <thead>
+                    <tr>
+                        <th>
+                            Subject Name
+                        </th>
+                        <th>
+                            @*Edit*@
+                        </th>
+                        <th>
+                            @*Delete*@
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in subjects)
+                    {
+                        <tr>
+                            <td style="width: 70%">
+                                @item.Subject1
+                            </td>
+                            <td style="width: 15%; text-align: right;">
+                                <button style="width: 90%" class="btn btn-primary">
+                                    <i class="bi bi-pencil-square"></i>
+                                    Edit
+                                </button>
+                            </td>
+                            <td style="width: 15%">
+                                <button type="button" style="width: 90%" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Delete_@item.Id">
+                                    <i class="bi bi-trash-fill"></i>
+                                    Delete
+                                </button>
+
+                                @*Delete Modal*@
+                                <div class="modal fade" id="Delete_@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Confirm Delete?</h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                Delete subject "@item.Subject1" from Year @Year subject list?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Confirm</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        @*Edit Modal*@
+
+                        
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    #divYears {
+        background-color: #E9E9E9;
+    }
+
+    #divSubjects {
+        background-color: #F2F2F2;
+    }
+
+    @*Table Styling*@
+    #tblSubjects {
+        width: 100%;
+    }
+
+    #tblSubjects thead tr {
+            background-color: #084E62;
+        }
+
+        #tblSubjects thead th {
+            padding: 1%;
+            color: white;
+        }
+
+        #tblSubjects tbody td {
+            padding: 0.3%;
+            border-bottom: 1px solid grey;
+        }
+</style>

@@ -23,6 +23,9 @@
 
     List<Grading> gradings = ViewBag.Gradings;
     List<string> teachers = ViewBag.Teachers;
+
+    //Var to stop Year dropdown count
+    bool FoundCurrent = false;
 }
 
 @*Main Content*@
@@ -85,81 +88,93 @@
     <div style="float: right !important; width: 30% !important;" class="input-group mb-3">
         <label class="input-group-text" for="YearOfStudy">Year of Study: </label>
         <select name="YearOfStudy" id="YearOfStudy" class="form-select" onchange="YearSelected()">
-            @if (YearSelected == "1")
-            {
-                <option value="1" selected>
-                    1st Year @if (Model.YearOfStudy == 1)
-                    {
-                        <label>(Current)</label>
-                    }
-                </option>
-            }
-            else
-            {
-                <option value="1">
-                    1st Year @if (Model.YearOfStudy == 1)
-                    {
-                        <label>(Current)</label>
-                    }
-                </option>
-            }
+            @if (!FoundCurrent)
+                @if (YearSelected == "1")
+                {
+                    <option value="1" selected>
+                        1st Year @if (Model.YearOfStudy == 1)
+                        {
+                            <label>(Current)</label>
+                        }
+                    </option>
 
-            @if (YearSelected == "2")
-            {
-                <option value="2" selected>
-                    2nd Year @if (Model.YearOfStudy == 2)
-                    {
-                        <label>(Current)</label>
-                    }
-                </option>
-            }
-            else
-            {
-                <option value="2">
-                    2nd Year @if (Model.YearOfStudy == 2)
-                    {
-                        <label>(Current)</label>
-                    }
-                </option>
-            }
+                    FoundCurrent = true;
+                }
+                else
+                {
+                    <option value="1">
+                        1st Year @if (Model.YearOfStudy == 1)
+                        {
+                            <label>(Current)</label>
+                        }
+                    </option>
+                }
 
-            @if (YearSelected == "3")
-            {
-                <option value="3" selected>
-                    3rd Year @if (Model.YearOfStudy == 3)
-                    {
-                        <label>(Current)</label>
-                    }
-                </option>
-            }
-            else
-            {
-                <option value="3">
-                    3rd Year @if (Model.YearOfStudy == 3)
-                    {
-                        <label>(Current)</label>
-                    }
-                </option>
-            }
+            @if (!FoundCurrent)
+                @if (YearSelected == "2")
+                {
+                    <option value="2" selected>
+                        2nd Year @if (Model.YearOfStudy == 2)
+                        {
+                            <label>(Current)</label>
+                        }
+                    </option>
 
-            @if (YearSelected == "4")
-            {
-                <option value="4" selected>
-                    4th Year @if (Model.YearOfStudy == 4)
-                    {
-                        <label>(Current)</label>
-                    }
-                </option>
-            }
-            else
-            {
-                <option value="4">
-                    4th Year @if (Model.YearOfStudy == 4)
-                    {
-                        <label>(Current)</label>
-                    }
-                </option>
-            }
+                    FoundCurrent = true;
+                }
+                else
+                {
+                    <option value="2">
+                        2nd Year @if (Model.YearOfStudy == 2)
+                        {
+                            <label>(Current)</label>
+                        }
+                    </option>
+                }
+
+            @if (!FoundCurrent)
+                @if (YearSelected == "3")
+                {
+                    <option value="3" selected>
+                        3rd Year @if (Model.YearOfStudy == 3)
+                        {
+                            <label>(Current)</label>
+                        }
+                    </option>
+
+                    FoundCurrent = true;
+                }
+                else
+                {
+                    <option value="3">
+                        3rd Year @if (Model.YearOfStudy == 3)
+                        {
+                            <label>(Current)</label>
+                        }
+                    </option>
+                }
+
+            @if (!FoundCurrent)
+                @if (YearSelected == "4")
+                {
+                    <option value="4" selected>
+                        4th Year @if (Model.YearOfStudy == 4)
+                        {
+                            <label>(Current)</label>
+                        }
+                    </option>
+
+                    FoundCurrent = true;
+                }
+                else
+                {
+                    <option value="4">
+                        4th Year @if (Model.YearOfStudy == 4)
+                        {
+                            <label>(Current)</label>
+                        }
+                    </option>
+                }
         </select>
     </div>
     <table id="tblEducation">
@@ -182,7 +197,7 @@
     <hr />
     <br />
     <label class="h1">
-        Gradings: Year @year
+        Gradings per Subject
     </label>
     @if (_role.Equals("Teacher"))
     {
@@ -190,6 +205,47 @@
             <i class="bi bi-plus-circle"></i> Add Grading
         </a>
     }
+    <br />
+
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Accordion Item #1
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Accordion Item #2
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Accordion Item #3
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                </div>
+            </div>
+        </div>
+    </div>
+
     <br />
     <table id="tblGradings">
         <thead>
