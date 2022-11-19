@@ -38,6 +38,9 @@ create table dbo.Users (
     PRIMARY KEY (Email)
 )
 
+insert into Users
+values ('admin@studentteacher.co.za', 'etair0mMHrbojg90EdvO0g==', 'Admin', 'Admin');
+
 -- VC Campus Table Creation
 create table dbo.Campus (
     Code varchar(8) not null,
@@ -47,6 +50,8 @@ create table dbo.Campus (
 
     PRIMARY KEY (Code)
 )
+-- insert into Campus 
+-- values ('PORT1234', 'Eatsern Cape', 'Port Elizabeth', 'VCPE');
 
 -- School Table Creation
 create table Schools (
