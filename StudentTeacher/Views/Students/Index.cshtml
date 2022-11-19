@@ -4,12 +4,11 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Students
+    <a asp-action="Create" style="float: right;" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add Student</a>
+</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table id="studentTable">
     <thead>
         <tr>
             <th>
@@ -31,11 +30,70 @@
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Number">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Number" asp-route-year="@item.YearOfStudy">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Number">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Number" style="float: right; width: 100px;" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Edit</a> 
+                <a asp-action="Details" asp-route-id="@item.Number" asp-route-year="@item.YearOfStudy" style="float: right; width: 100px; margin-right: 5px;" class="btn btn-primary"><i class="bi bi-info-circle"></i> Details</a> 
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+
+                <style>
+    main {
+        width: 100% !important;
+        background-color: white;
+        padding: 3%;
+    }
+
+    main {
+        box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+        width: 100%;
+    }
+
+    #tblName th, #tblName td {
+        width: 50%;
+    }
+
+    #tblNumber th, #tblNumber td {
+        width: 50%;
+    }
+
+    #tblModules th, #tblModules td {
+        width: 30%;
+    }
+
+    #tblGradings th, #tblGradings td {
+        width: 20%;
+    }
+
+    table {
+        width: 100%;
+    }
+
+        table thead tr {
+            background-color: #084E62;
+        }
+
+        table th {
+            padding: 1%;
+            color: white;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table tbody tr:nth-child(odd) {
+            background-color: #E9E9E9;
+        }
+
+        table tbody td {
+            width: 25%;
+            padding: 1%;
+            color: black;
+        }
+</style>
