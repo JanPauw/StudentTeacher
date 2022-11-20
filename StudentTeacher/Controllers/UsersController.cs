@@ -140,6 +140,14 @@ namespace StudentTeacher.Controllers
                 return RedirectToAction("Login", "Users");
             }
 
+            var FilterAction = HttpContext.Request.Query["filterAction"];
+
+            if (string.IsNullOrWhiteSpace(FilterAction))
+            {
+                return RedirectToAction("Dashboard", "Users", new { filterAction = 0 });
+            }
+            
+
             //check which user is logged in by role
             switch (_role)
             {

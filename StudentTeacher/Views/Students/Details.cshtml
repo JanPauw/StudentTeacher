@@ -16,6 +16,7 @@
 
     //Set Session Variables for Adding Grading
     Accessor.HttpContext.Session.SetString("_studentNumber", Model.Number);
+
     var YearSelected = Accessor.HttpContext.Request.Query["year"];
     int year = int.Parse(YearSelected);
 
