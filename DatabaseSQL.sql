@@ -11,6 +11,7 @@ select * from Planning;
 select * from Execution;
 select * from Overall;
 select * from Commentary;
+select * from Subjects;
 
 -- Drop Table * --
 drop table Users;
@@ -25,6 +26,7 @@ drop table Planning;
 drop table Execution;
 drop table Overall;
 drop table Commentary;
+drop table Subjects;
 
 --User Table Creation--
 create table dbo.Users (
@@ -183,6 +185,21 @@ create table Commentary (
     FOREIGN KEY (GradingNumber) REFERENCES Gradings(Number)
 )
 
+create table Subjects (
+    id int IDENTITY(1, 1) not null,
+    subject varchar(255) not null,
+    yearOfStudy varchar(255) not null,
+    amountOfClasses int not null,
+
+    PRIMARY KEY (id)
+)
+
+truncate table Gradings;
+truncate table Planning;
+truncate table Execution;
+truncate table Overall;
+truncate table Commentary
+
 -- Currently Unsused Table Ides --
 --Module Table Creation--
 
@@ -216,3 +233,6 @@ create table Commentary (
 --     FOREIGN KEY (Lecturer) REFERENCES dbo.Lecturers(Number),
 --     FOREIGN KEY (Module) REFERENCES dbo.Modules(Number)
 -- )
+
+-- EfCore Commands
+-- dotnet ef dbcontext scaffold "Data Source=xisd.database.windows.net;Initial Catalog=XISD_POE;User ID=user;Password=,,PassnowSQL1;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False" Microsoft.EntityFrameworkCore.SqlServer -o Model

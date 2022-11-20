@@ -8,5 +8,6 @@ namespace StudentTeacher.Models
         public int Id { get; set; }
         public string Subject1 { get; set; } = null!;
         public string YearOfStudy { get; set; } = null!;
+        public int AmountOfClasses { get; set; }
     }
 }

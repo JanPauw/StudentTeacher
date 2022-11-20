@@ -21,7 +21,24 @@ namespace StudentTeacher.Controllers
         // GET: Subjects
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Subjects.ToListAsync());
+            //get year from url
+            string year = HttpContext.Request.Query["year"].ToString();
+
+            if (String.IsNullOrWhiteSpace(year))
+            {
+                year = "1";
+            }
+            else if (!year.Equals("1") && !year.Equals("2") && !year.Equals("3") && !year.Equals("4"))
+            {
+                year = "1";
+            }
+
+            ViewBag.Year = year;
+
+            //get year subjects
+            List<Subject> subjects = await _context.Subjects.Where(x => x.YearOfStudy.Contains(year)).ToListAsync();
+            ViewBag.Subjects = subjects; 
+            return View(await _context.Subjects.ToListAsync());
         }
 
         // GET: Subjects/Details/5
@@ -130,7 +147,11 @@ namespace StudentTeacher.Controllers
                 return NotFound();
             }
 
-            return View(subject);
+            _context.Subjects.Remove(subject);
+            await _context.SaveChangesAsync();
+
+            TempData["success"] = "Subject deleted!";
+            return RedirectToAction("Index");
         }
 
         // POST: Subjects/Delete/5
@@ -147,14 +168,14 @@ namespace StudentTeacher.Controllers
             {
                 _context.Subjects.Remove(subject);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool SubjectExists(int id)
         {
-          return _context.Subjects.Any(e => e.Id == id);
+            return _context.Subjects.Any(e => e.Id == id);
         }
     }
 }
