@@ -92,15 +92,23 @@ namespace StudentTeacher.Controllers
             List<Grading> gradings = _context.Gradings.Where(x => x.Student == student.Number && x.YearOfStudy == year).ToList();
             ViewBag.Gradings = gradings;
 
+            //Get Student Subjects
+            List<Subject> subjects = await _context.Subjects.Where(x => x.YearOfStudy.Contains(YearSelected)).OrderBy(x => x.Subject1).ToListAsync();
+            ViewBag.Subjects = subjects;
+
             List<string> TeacherNames = new List<string>();
+            List<int> totals = new List<int>();
 
             foreach (var item in gradings)
             {
                 Teacher t = _context.Teachers.Find(item.Teacher);
                 TeacherNames.Add("" + t.FirstName + " " + t.LastName);
+                
+                totals.Add(GetTotalMarks(item.Number));
             }
 
             ViewBag.Teachers = TeacherNames;
+            ViewBag.MarksTotals = totals;
 
             return View(student);
         }
@@ -283,6 +291,29 @@ namespace StudentTeacher.Controllers
         private bool StudentExists(string id)
         {
             return _context.Students.Any(e => e.Number == id);
+        }
+
+        public int GetTotalMarks(int id)
+        {
+            //Get Objects 
+            var planning = _context.Plannings.Where(x => x.GradingNumber == id).SingleOrDefault();
+            var execution = _context.Executions.Where(x => x.GradingNumber == id).SingleOrDefault();
+            var overall = _context.Overalls.Where(x => x.GradingNumber == id).SingleOrDefault();
+
+            //Check if any object returned null
+            if (planning == null || execution == null || overall == null)
+            {
+                return 0;
+            }
+
+            //Planning Total
+            var planningTotal = planning.SectionAtoD + planning.SectionE;
+            //Execution Total
+            var executionTotal = execution.Intro + execution.Teaching + execution.Closure + execution.Assessment;
+            //Overall Total
+            var overallTotal = overall.Presence + overall.Environment;
+
+            return (planningTotal + executionTotal + overallTotal);
         }
     }
 }

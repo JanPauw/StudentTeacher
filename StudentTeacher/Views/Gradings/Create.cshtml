@@ -3,6 +3,7 @@
 
     string TeacherCode = ViewBag.TeacherCode;
     string StudentCode = ViewBag.StudentCode;
+    List<Subject> subjects = ViewBag.Subjects;
 }
 <form id="AddGrading" method="post" asp-action="Create">
     <h1>Add Grading</h1>
@@ -17,7 +18,12 @@
             <label for="floatingGrade">Class Grade</label>
         </div>
         <div class="form-floating mb-3">
-            <input name="Subject" type="text" class="form-control" id="floatingSubject" placeholder="3">
+            <select name="Subject" class="form-select" id="floatingSubject" required>
+                @foreach (var subject in subjects)
+                {
+                    <option value="@subject.Subject1" >@subject.Subject1</option>
+                }
+            </select>
             <label for="floatingSubject">Class Subject</label>
         </div>
         <div class="form-floating mb-3">

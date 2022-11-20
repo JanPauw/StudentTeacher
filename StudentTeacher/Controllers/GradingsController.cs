@@ -77,6 +77,10 @@ namespace StudentTeacher.Controllers
             ViewBag.TeacherCode = teacher.Number;
             ViewBag.StudentCode = student.Number;
 
+            //Get Subjects for Student
+            List<Subject> subjects = _context.Subjects.Where(x => x.YearOfStudy.Contains("" + student.YearOfStudy)).OrderBy(x => x.Subject1).ToList();
+            ViewBag.Subjects = subjects;
+
             return View();
         }
 
@@ -87,8 +91,8 @@ namespace StudentTeacher.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
             int Grade, string Topic, string Subject,
-            string SectionAtoD, string SectionE, string Intro, string Teaching, string Closure,
-            string Assessment, string Presence, string Environment,
+            string Arating, string Erating, string INTROrating, string EXErating, string CLOSURErating,
+            string ASSESSMENTrating, string PRESENCErating, string ENVIRONMENTrating,
             string ComSectionAtoD, string ComSectionE, string ComIntro, string ComTeaching, string ComClosure,
             string ComAssessment, string ComPresence, string ComEnvironment,
             string StudentCode, string TeacherCode)
@@ -131,42 +135,42 @@ namespace StudentTeacher.Controllers
             #endregion
 
             #region Check if Radios are not null
-            if (SectionAtoD.ToString() == null)
+            if (Arating.ToString() == null)
             {
                 TempData["error"] = "Invalid rating selected!";
                 return View();
             }
-            if (SectionE.ToString() == null)
+            if (Erating.ToString() == null)
             {
                 TempData["error"] = "Invalid rating selected!";
                 return View();
             }
-            if (Intro.ToString() == null)
+            if (INTROrating.ToString() == null)
             {
                 TempData["error"] = "Invalid rating selected!";
                 return View();
             }
-            if (Teaching.ToString() == null)
+            if (EXErating.ToString() == null)
             {
                 TempData["error"] = "Invalid rating selected!";
                 return View();
             }
-            if (Closure.ToString() == null)
+            if (CLOSURErating.ToString() == null)
             {
                 TempData["error"] = "Invalid rating selected!";
                 return View();
             }
-            if (Assessment.ToString() == null)
+            if (ASSESSMENTrating.ToString() == null)
             {
                 TempData["error"] = "Invalid rating selected!";
                 return View();
             }
-            if (Presence.ToString() == null)
+            if (PRESENCErating.ToString() == null)
             {
                 TempData["error"] = "Invalid rating selected!";
                 return View();
             }
-            if (Environment.ToString() == null)
+            if (ENVIRONMENTrating.ToString() == null)
             {
                 TempData["error"] = "Invalid rating selected!";
                 return View();
@@ -243,8 +247,8 @@ namespace StudentTeacher.Controllers
             //Planning Section
             Planning planning = new Planning();
 
-            planning.SectionAtoD = int.Parse(SectionAtoD);
-            planning.SectionE = int.Parse(SectionE);
+            planning.SectionAtoD = int.Parse(Arating);
+            planning.SectionE = int.Parse(Erating);
 
             planning.GradingNumber = grading.Number;
             planning.GradingNumberNavigation = grading;
@@ -255,10 +259,10 @@ namespace StudentTeacher.Controllers
             //Execution Section
             Execution execution = new Execution();
 
-            execution.Intro = int.Parse(Intro);
-            execution.Teaching = int.Parse(Teaching);
-            execution.Closure = int.Parse(Closure);
-            execution.Assessment = int.Parse(Assessment);
+            execution.Intro = int.Parse(INTROrating);
+            execution.Teaching = int.Parse(EXErating);
+            execution.Closure = int.Parse(CLOSURErating);
+            execution.Assessment = int.Parse(ASSESSMENTrating);
 
             execution.GradingNumber = grading.Number;
             execution.GradingNumberNavigation = grading;
@@ -269,8 +273,8 @@ namespace StudentTeacher.Controllers
             //Overall Section
             Overall overall = new Overall();
 
-            overall.Presence = int.Parse(Presence);
-            overall.Environment = int.Parse(Environment);
+            overall.Presence = int.Parse(PRESENCErating);
+            overall.Environment = int.Parse(ENVIRONMENTrating);
 
             overall.GradingNumber = grading.Number;
             overall.GradingNumberNavigation = grading;

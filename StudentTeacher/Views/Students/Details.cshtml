@@ -23,6 +23,8 @@
 
     List<Grading> gradings = ViewBag.Gradings;
     List<string> teachers = ViewBag.Teachers;
+    List<Subject> subjects = ViewBag.Subjects;
+    List<int> totals = ViewBag.MarksTotals;
 
     //Var to stop Year dropdown count
     bool FoundCurrent = false;
@@ -208,54 +210,11 @@
     }
     <br />
 
-    <div class="accordion" id="accordionExample">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    Accordion Item #1
-                </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                </div>
-            </div>
-        </div>
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingTwo">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Accordion Item #2
-                </button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                </div>
-            </div>
-        </div>
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingThree">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    Accordion Item #3
-                </button>
-            </h2>
-            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <br />
     <table id="tblGradings">
         <thead>
             <tr>
                 <th>
                     Date
-                </th>
-                <th>
-                    Subject
                 </th>
                 <th>
                     Topic
@@ -264,37 +223,116 @@
                     Teacher
                 </th>
                 <th>
+                    Total
+                </th>
+                <th>
                     Details
                 </th>
             </tr>
         </thead>
-        <tbody>
-
-            @for (int i = 0; i < gradings.Count; i++)
-            {
-                <tr>
-                    <td>
-                        @gradings[i].Date.ToShortDateString()
-                    </td>
-                    <td>
-                        @gradings[i].Subject
-                    </td>
-                    <td>
-                        @gradings[i].Topic
-                    </td>
-                    <td>
-                        @teachers[i]
-                    </td>
-                    <td>
-                        <a class="btn btn-success" asp-action="Details" asp-controller="Gradings" asp-route-id="@gradings[i].Number">
-                            <i class="bi bi-info-circle"></i> Details
-                        </a>
-                    </td>
-                </tr>
-            }
-
-        </tbody>
     </table>
+
+    <div class="accordion" id="accordionExample">
+        @{
+            var first = true;
+        }
+        @foreach (var subject in subjects)
+        {
+
+
+            @if (first)
+            {
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading_@subject.Id">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@subject.Id" aria-expanded="true" aria-controls="collapse_@subject.Id">
+                            @subject.Subject1
+                        </button>
+                    </h2>
+                    <div id="collapse_@subject.Id" class="accordion-collapse collapse show" aria-labelledby="heading_@subject.Id" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <table id="tblGradings">
+                                <tbody>
+                                    @for (int i = 0; i < gradings.Count; i++)
+                                    {
+                                        if (gradings[i].Subject.Equals(subject.Subject1))
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @gradings[i].Date.ToShortDateString()
+                                                </td>
+                                                <td>
+                                                    @gradings[i].Topic
+                                                </td>
+                                                <td>
+                                                    @teachers[i]
+                                                </td>
+                                                <td>
+                                                    @totals[i] / 80
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-success" asp-action="Details" asp-controller="Gradings" asp-route-id="@gradings[i].Number">
+                                                        <i class="bi bi-info-circle"></i> Details
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                first = false;
+            }
+            else
+            {
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading_@subject.Id">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@subject.Id" aria-expanded="false" aria-controls="collapse_@subject.Id">
+                            @subject.Subject1
+                        </button>
+                    </h2>
+                    <div id="collapse_@subject.Id" class="accordion-collapse collapse" aria-labelledby="heading_@subject.Id" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <table id="tblGradings">
+                                <tbody>
+                                    @for (int i = 0; i < gradings.Count; i++)
+                                    {
+                                        if (gradings[i].Subject.Equals(subject.Subject1))
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @gradings[i].Date.ToShortDateString()
+                                                </td>
+                                                <td>
+                                                    @gradings[i].Topic
+                                                </td>
+                                                <td>
+                                                    @teachers[i]
+                                                </td>
+                                                <td>
+                                                    @totals[i] / 80
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-success" asp-action="Details" asp-controller="Gradings" asp-route-id="@gradings[i].Number">
+                                                        <i class="bi bi-info-circle"></i> Details
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <br />
+
     <br />
     <br />
     <br />
@@ -358,6 +396,10 @@
             padding: 1%;
             color: black;
         }
+
+    .accordion-body {
+        padding: 0 !important;
+    }
 </style>
 
 
