@@ -120,6 +120,7 @@ namespace StudentTeacher.Controllers
                 listImports.Clear();
 
                 var fileextension = Path.GetExtension(file.FileName);
+
                 var filename = Guid.NewGuid().ToString() + fileextension;
                 var filepath = Path.Combine(this._env.WebRootPath, "files", filename);
                 using (FileStream fs = System.IO.File.Create(filepath))

@@ -1,6 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Bulk Import";
     List<Campus> CampusList = ViewBag.Campuses;
+
+    var fileChosen = false;
 }
 
 <div id="Lec_Login">
@@ -11,7 +13,7 @@
     <form method="post" asp-action="UploadData" enctype="multipart/form-data">
         <div class="form-group">
             <div class="input-group mb-3">
-                <input name="file" type="file" class="form-control" id="inputGroupFile02">
+                <input name="file" type="file" class="form-control" id="file" onselect="DisableSubmit()" required>
                 <label class="input-group-text" for="inputGroupFile02">Upload</label>
             </div>
             <select class="form-select" name="Campus">
@@ -23,12 +25,13 @@
         </div>
         <br />
         <div id="buttons">
-            <button type="submit" class="btn btn-primary">
+            <button id="upload" type="submit" class="btn btn-primary">
                 <i class="bi bi-upload"></i> Import Data
             </button>
         </div>
     </form>
 </div>
+
 
 <style>
     #Lec_Login {
