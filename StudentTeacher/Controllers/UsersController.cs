@@ -214,7 +214,32 @@ namespace StudentTeacher.Controllers
             }
             #endregion
 
-
+            #region Gradings Search
+            if (SearchType == "gradings")
+            {
+                switch (SearchOption)
+                {
+                    case "1":
+                        ViewBag.Gradings = _context.Gradings.ToList();
+                        break;
+                    case "2":
+                        ViewBag.Gradings = _context.Gradings.Where(x => x.StudentNavigation.Number.Contains(Search)).ToList();
+                        break;
+                    case "3":
+                        ViewBag.Gradings = _context.Gradings.Where(x => (x.TeacherNavigation.FirstName + " " + x.TeacherNavigation.LastName).Contains(Search)).ToList();
+                        break;
+                    case "4":
+                        ViewBag.Gradings = _context.Gradings.Where(x => ("" + x.YearOfStudy).Contains(Search)).ToList();
+                        break;
+                    case "5":
+                        ViewBag.Gradings = _context.Gradings.Where(x => x.Subject.Contains(Search)).ToList();
+                        break;
+                    default:
+                        ViewBag.Gradings = _context.Gradings.ToList();
+                        break;
+                }
+            }
+            #endregion
 
             //(admin dashboard)
             return View();
