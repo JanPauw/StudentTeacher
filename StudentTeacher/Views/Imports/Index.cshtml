@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Bulk Import";
     List<Campus> CampusList = ViewBag.Campuses;
 }
@@ -60,5 +59,31 @@
 
     #buttons button, #buttons a {
         width: 100%;
+    }
+
+    /*Responive design*/
+
+    @@media only screen and (max-width:1024px) {
+        #Lec_Login {
+            width: 50% !important;
+        }
+    }
+
+    @@media only screen and (max-width:768px) {
+        #Lec_Login {
+            width: 60% !important;
+        }
+    }
+
+    @@media only screen and (max-width:425px) {
+        #Lec_Login {
+            width: 100% !important;
+        }
+    }
+
+    @@media only screen and (max-width:320px) {
+        #Lec_Login {
+            width: 100% !important;
+        }
     }
 </style>

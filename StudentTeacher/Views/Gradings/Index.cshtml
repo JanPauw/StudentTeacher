@@ -5,45 +5,46 @@
 }
 
 <h1>Gradings</h1>
+<div id="divGradings" class="table-responsive">
+    <table id="gradingsTable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Student)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Teacher)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Subject)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Student)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Teacher)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Subject)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Number" style="float: right; width: 100px;" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Edit</a>
+                        <a id="btnDetails" asp-action="Details" asp-route-id="@item.Number" style="float: right; width: 100px; margin-right: 5px;" class="btn btn-primary"><i class="bi bi-info-circle"></i> Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
-<table id="gradingsTable">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Student)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Teacher)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Subject)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Student)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Teacher)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Subject)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Number" style="float: right; width: 100px;" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Edit</a>
-                <a asp-action="Details" asp-route-id="@item.Number" style="float: right; width: 100px; margin-right: 5px;" class="btn btn-primary"><i class="bi bi-info-circle"></i> Details</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-
-
-                <style>
+<style>
     main {
         width: 100% !important;
         background-color: white;
@@ -100,4 +101,40 @@
             padding: 1%;
             color: black;
         }
+
+
+    /*Responive design*/
+
+    @@media only screen and (max-width:1024px) {
+        #btnDetails {
+            margin-right: 2px !important;
+        }
+    }
+
+    @@media only screen and (max-width:768px) {
+        #btnDetails {
+            margin-right: 0px !important;
+            margin-top: 5px !important;
+        }
+
+        #divGradings table th {
+            min-width: 20vw !important;
+        }
+    }
+
+    @@media only screen and (max-width:425px) {
+        #divGradings table th {
+            min-width: 40vw !important;
+        }
+    }
+
+    @@media only screen and (max-width:320px) {
+        #divGradings table th {
+            min-width: 40vw !important;
+        }
+
+        a {
+            width: 100px;
+        }
+    }
 </style>

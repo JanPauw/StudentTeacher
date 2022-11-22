@@ -6,45 +6,46 @@
 
 <h1>Lecturers</h1>
 
-<table id="lecturerTable">
-    <thead>
-        <tr>
-            <th>
-                Full Name
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Campus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div id="divLecturers" class="table-responsive">
+    <table id="lecturerTable">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Campus)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Number" style="float: right; width: 100px;" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Edit</a> 
-                    <a asp-action="Details" asp-route-id="@item.Number" style="float: right; width: 100px; margin-right: 5px;" class="btn btn-primary"><i class="bi bi-info-circle"></i> Details</a> 
-                </td>
+                <th>
+                    Full Name
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Campus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Campus)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Number" style="float: right; width: 100px;" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Edit</a>
+                        <a id="btnDetails" asp-action="Details" asp-route-id="@item.Number" style="float: right; width: 100px; margin-right: 5px;" class="btn btn-primary"><i class="bi bi-info-circle"></i> Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
-
-                    <style>
+<style>
     main {
         width: 100% !important;
         background-color: white;
@@ -101,4 +102,41 @@
             padding: 1%;
             color: black;
         }
+
+    /*Responive design*/
+
+    @@media only screen and (max-width:1024px) {
+        #btnDetails {
+            margin-right: 2px !important;
+        }
+    }
+
+
+
+    @@media only screen and (max-width:768px) {
+        #btnDetails {
+            margin-right: 0px !important;
+            margin-top: 5px !important;
+        }
+
+        #divLecturers table th {
+            min-width: 20vw !important;
+        }
+    }
+
+    @@media only screen and (max-width:425px) {
+        #divLecturers table th {
+            min-width: 40vw !important;
+        }
+    }
+
+    @@media only screen and (max-width:320px) {
+        #divLecturers table th {
+            min-width: 40vw !important;
+        }
+
+        a {
+            width: 100px;
+        }
+    }
 </style>
