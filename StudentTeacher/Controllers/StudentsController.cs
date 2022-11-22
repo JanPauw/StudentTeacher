@@ -131,6 +131,8 @@ namespace StudentTeacher.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(string Number, string FirstName, string LastName, string Year)
         {
+            ViewBag.ListCampuses = _context.Campuses.ToList();
+
             #region Input Validation
             //check that firstname is not empty
             if (String.IsNullOrEmpty(FirstName))
