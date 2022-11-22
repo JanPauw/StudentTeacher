@@ -19,6 +19,7 @@
                 <div class="form-floating mb-3">
                     <input asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
+                    <label for="floatingInput">Campus Name</label>
                 </div>
 
                 <div class="form-floating mb-3">
@@ -32,11 +33,13 @@
                         <option value="North West">North West</option>
                         <option value="Western Cape">Western Cape</option>
                     </select>
+                    <label for="floatingInput">Province</label>
                 </div>
 
                 <div class="form-floating mb-3">
                     <input asp-for="City" class="form-control" />
                     <span asp-validation-for="City" class="text-danger"></span>
+                    <label for="floatingInput">City</label>
                 </div>
 
                 <div id="buttons">

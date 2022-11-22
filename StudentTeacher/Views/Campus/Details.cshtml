@@ -79,9 +79,6 @@
                     Name
                 </th>
                 <th>
-                    Campus
-                </th>
-                <th>
                     Quintile
                 </th>
             </tr>
@@ -95,9 +92,6 @@
                     </td>
                     <td>
                         @school.Name
-                    </td>
-                    <td>
-                        @school.Campus
                     </td>
                     <td>
                         @school.Quintile
@@ -129,9 +123,6 @@
                 <th>
                     Year of study
                 </th>
-                <th>
-                    Campus
-                </th>
             </tr>
         </thead>
         <tbody>
@@ -150,9 +141,6 @@
                     </td>
                     <td>
                         @student.YearOfStudy
-                    </td>
-                    <td>
-                        @student.Campus
                     </td>
                 </tr>
             }
@@ -239,6 +227,16 @@
 
 
     /*Responive design*/
+    @@media only screen and (max-width:2560px) {
+        #btnDetails {
+            margin-right: 2px !important;
+        }
+
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+    }
 
      @@media only screen and (max-width:1440px) {
         #btnDetails {
