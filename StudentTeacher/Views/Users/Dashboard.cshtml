@@ -33,7 +33,7 @@
     <label class="h5">Welcome</label>
     <hr />
     <label class="h2">Varisty College Students</label>
-    <div style="float: right; width: 40%;" class="input-group mb-3">
+    <div style="float: right; width: 100%;" class="input-group mb-3">
         <select id="studentFilter" name="studentFilter" class="form-select" style="max-width: 40% !important">
 
             <option value="1">Student Number</option>
@@ -273,7 +273,7 @@
     <br />
     <hr />
     <label class="h2">Recent Gradings</label>
-    <div style="float: right; width: 40%;" class="input-group mb-3">
+    <div style="float: right; width: 100%;" class="input-group mb-3">
         <select id="gradingFilter" name="gradingFilter" class="form-select" style="max-width: 40% !important">
             <option value="1">Date</option>
             <option value="2">Student</option>
@@ -659,4 +659,52 @@
                 padding: 1%;
                 color: black;
             }
+
+
+
+            /*Responive design*/
+    
+    @@media only screen and (max-width:1440px) {
+        /* For Large Laptops: */
+        #Lec_Login {
+            width: 50%;
+        }
+    }
+
+    @@media only screen and (max-width:1024px) {
+        /* For Laptops: */
+        #Lec_Login {
+            width: 50%;
+        }
+    }
+
+    @@media only screen and (max-width:768px) {
+        /* For Tablets: */
+        #Lec_Login {
+            width: 95%;
+        }
+
+        
+    }
+
+    @@media only screen and (max-width:425px) {
+        /* For Large Phones: */
+        #Lec_Login {
+            width: 95%;
+        }
+    }
+
+    @@media only screen and (max-width:375px) {
+        /* For Medium Phones: */
+        #Lec_Login {
+            width: 100%;
+        }
+    }
+
+    @@media only screen and (max-width:320px) {
+        /* For Small Phones: */
+        #Lec_Login {
+            width: 100%;
+        }
+    }
 </style>
