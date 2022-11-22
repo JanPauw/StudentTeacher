@@ -2,29 +2,310 @@
 
 @{
     ViewData["Title"] = "Details";
+    List<Student> students = ViewBag.StudentList;
+    List<School> schools = ViewBag.SchoolList;
 }
 
-<h1>Details</h1>
+@*Main Content*@
+<label class="h1">Campus Details: @Model.Name</label>
+<div id="div1" class="table-responsive">
+    <a id="btnEdit" style="float: right;" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Code">
+        <i class="bi bi-pencil-square"></i> Edit Details
+    </a>
+    <br />
+    <table id="tblNameCode">
+        <thead>
+            <tr>
+                <th>
+                    Campus Name
+                </th>
+                <th>
+                    Campus Code
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Model.Name
+                </td>
+                <td>
+                    @Model.Code
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+</div>
+<div id="div1" class="table-responsive">
+    <table id="tblCityProvince">
+        <thead>
+            <tr>
+                <th>
+                    City
+                </th>
+                <th>
+                    Province
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Model.City
+                </td>
+                <td>
+                    @Model.Province
+                </td>
+            </tr>
+            <tr>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<br />
+<hr />
+<br />
 
-<div>
-    <h4>Campus</h4>
+<label class="h1">Related Schools</label>
+<div id="div1" class="table-responsive">
+    <table id="tblSchools">
+        <thead>
+            <tr>
+                <th>
+                    Code
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Campus
+                </th>
+                <th>
+                    Quintile
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var school in @schools)
+            {
+                <tr>
+                    <td>
+                        @school.Code
+                    </td>
+                    <td>
+                        @school.Name
+                    </td>
+                    <td>
+                        @school.Campus
+                    </td>
+                    <td>
+                        @school.Quintile
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<br />
+<hr />
+<br />
+
+<label class="h1">Students</label>
+<div id="div1" class="table-responsive">
+    <table id="tblStudentsInSchool">
+        <thead>
+            <tr>
+                <th>
+                    Student Number
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Qaulification
+                </th>
+                <th>
+                    Year of study
+                </th>
+                <th>
+                    Campus
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var student in @students)
+            {
+                <tr>
+                    <td>
+                        @student.Number
+                    </td>
+                    <td>
+                        @student.FirstName @student.LastName
+                    </td>
+                    <td>
+                        @student.Qualification
+                    </td>
+                    <td>
+                        @student.YearOfStudy
+                    </td>
+                    <td>
+                        @student.Campus
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+    <br />
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Province)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Province)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.City)
-        </dd>
-    </dl>
+    <br />
+
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Code">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+<style>
+    main {
+        width: 100% !important;
+        background-color: white;
+        padding: 3%;
+    }
+
+    main {
+        box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+        width: 100%;
+    }
+
+    tbl-content {
+        overflow-x: auto;
+    }
+
+    #tblName th, #tblName td {
+        width: 50%;
+    }
+
+    #tblNumber th, #tblNumber td {
+        width: 50%;
+    }
+
+    #tblModules th, #tblModules td {
+        width: 30%;
+    }
+
+    #tblGradings th, #tblGradings td {
+        width: 20%;
+    }
+
+    #tblStudentsInSchool th, #tblStudentsInSchool td {
+        width: 20%;
+    }
+
+    #tblGradingsAtSchool th, #tblGradingsAtSchool td {
+        width: 20%;
+    }
+
+    table {
+        width: 100%;
+    }
+
+        table thead tr {
+            background-color: #084E62;
+        }
+
+        table th {
+            padding: 1%;
+            color: white;
+        }
+
+
+
+        table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table tbody tr:nth-child(odd) {
+            background-color: #E9E9E9;
+        }
+
+        table tbody td {
+            width: 25%;
+            padding: 1%;
+            color: black;
+        }
+
+
+    /*Responive design*/
+
+     @@media only screen and (max-width:1440px) {
+        #btnDetails {
+            margin-right: 2px !important;
+        }
+
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+    }
+
+    @@media only screen and (max-width:1024px) {
+        #btnDetails {
+            margin-right: 2px !important;
+        }
+
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+    }
+
+    @@media only screen and (max-width:768px) {
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+
+       #div1, #div2, #div3, #div4 {
+            width: 100%;
+        }
+
+        #div1 table th {
+            min-width: 20vw !important;
+        }
+    }
+
+    @@media only screen and (max-width:425px) {
+        #div1 table th {
+            min-width: 40vw !important;
+        }
+
+        /*#div1, #div2, #div3, #div4 {
+            width: 100%;
+        }*/
+
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+    }
+
+    
+
+
+    @@media only screen and (max-width:320px) {
+        #divCampusses table th {
+            min-width: 40vw !important;
+        }
+
+        /*#div1, #div2, #div3, #div4 {
+            width: 100%;
+        }*/
+
+        a {
+            width: 100px;
+        }
+    }
+</style>

@@ -39,6 +39,12 @@ namespace StudentTeacher.Controllers
                 return NotFound();
             }
 
+            List<Student> studentList = _context.Students.Where(x => x.Campus == id).ToList();
+            List<School> schoolList = _context.Schools.Where(x => x.Campus == id).ToList();
+
+            ViewBag.StudentList = studentList;
+            ViewBag.SchoolList = schoolList;
+
             return View(campus);
         }
 
