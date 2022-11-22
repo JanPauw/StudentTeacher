@@ -32,9 +32,10 @@
 }
 
 @*Main Content*@
-<div>
-    <label class="h1">Student Details: @Model.FirstName @Model.LastName</label>
-    <a style="float: right;" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Number">
+
+<label class="h1">Student Details: @Model.FirstName @Model.LastName</label>
+<div id="div1" class="table-responsive">
+    <a id="btnEdit" style="float: right;" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Number">
         <i class="bi bi-pencil-square"></i> Edit Details
     </a>
     <br />
@@ -87,100 +88,102 @@
     <br />
     <hr />
     <br />
+</div>
 
-    <label class="h1">Education Status</label>
-    <div style="float: right !important; width: 30% !important;" class="input-group mb-3">
-        <label class="input-group-text" for="YearOfStudy">Year of Study: </label>
-        <select name="YearOfStudy" id="YearOfStudy" class="form-select" onchange="YearSelected()">
-            @if (!FoundCurrent)
-                @if (YearSelected == "1")
-                {
-                    <option value="1" selected>
-                        1st Year @if (Model.YearOfStudy == 1)
-                        {
-                            <label>(Current)</label>
-                            FoundCurrent = true;
-                        }
-                    </option>
-                }
-                else
-                {
-                    <option value="1">
-                        1st Year @if (Model.YearOfStudy == 1)
-                        {
-                            <label>(Current)</label>
-                            FoundCurrent = true;
-                        }
-                    </option>
-                }
+<label class="h1">Education Status</label>
+<div id="div2" style="float: right !important; width: 30% !important;" class="input-group mb-3" class="table-responsive">
+    <label class="input-group-text" for="YearOfStudy">Year of Study: </label>
+    <select name="YearOfStudy" id="YearOfStudy" class="form-select" onchange="YearSelected()">
+        @if (!FoundCurrent)
+            @if (YearSelected == "1")
+            {
+                <option value="1" selected>
+                    1st Year @if (Model.YearOfStudy == 1)
+                    {
+                        <label>(Current)</label>
+                        FoundCurrent = true;
+                    }
+                </option>
+            }
+            else
+            {
+                <option value="1">
+                    1st Year @if (Model.YearOfStudy == 1)
+                    {
+                        <label>(Current)</label>
+                        FoundCurrent = true;
+                    }
+                </option>
+            }
 
-            @if (!FoundCurrent)
-                @if (YearSelected == "2")
-                {
-                    <option value="2" selected>
-                        2nd Year @if (Model.YearOfStudy == 2)
-                        {
-                            <label>(Current)</label>
-                            FoundCurrent = true;
-                        }
-                    </option>
-                }
-                else
-                {
-                    <option value="2">
-                        2nd Year @if (Model.YearOfStudy == 2)
-                        {
-                            <label>(Current)</label>
-                            FoundCurrent = true;
-                        }
-                    </option>
-                }
+        @if (!FoundCurrent)
+            @if (YearSelected == "2")
+            {
+                <option value="2" selected>
+                    2nd Year @if (Model.YearOfStudy == 2)
+                    {
+                        <label>(Current)</label>
+                        FoundCurrent = true;
+                    }
+                </option>
+            }
+            else
+            {
+                <option value="2">
+                    2nd Year @if (Model.YearOfStudy == 2)
+                    {
+                        <label>(Current)</label>
+                        FoundCurrent = true;
+                    }
+                </option>
+            }
 
-            @if (!FoundCurrent)
-                @if (YearSelected == "3")
-                {
-                    <option value="3" selected>
-                        3rd Year @if (Model.YearOfStudy == 3)
-                        {
-                            <label>(Current)</label>
-                            FoundCurrent = true;
-                        }
-                    </option>
-                }
-                else
-                {
-                    <option value="3">
-                        3rd Year @if (Model.YearOfStudy == 3)
-                        {
-                            <label>(Current)</label>
-                            FoundCurrent = true;
-                        }
-                    </option>
-                }
+        @if (!FoundCurrent)
+            @if (YearSelected == "3")
+            {
+                <option value="3" selected>
+                    3rd Year @if (Model.YearOfStudy == 3)
+                    {
+                        <label>(Current)</label>
+                        FoundCurrent = true;
+                    }
+                </option>
+            }
+            else
+            {
+                <option value="3">
+                    3rd Year @if (Model.YearOfStudy == 3)
+                    {
+                        <label>(Current)</label>
+                        FoundCurrent = true;
+                    }
+                </option>
+            }
 
-            @if (!FoundCurrent)
-                @if (YearSelected == "4")
-                {
-                    <option value="4" selected>
-                        4th Year @if (Model.YearOfStudy == 4)
-                        {
-                            <label>(Current)</label>
-                            FoundCurrent = true;
-                        }
-                    </option>
-                }
-                else
-                {
-                    <option value="4">
-                        4th Year @if (Model.YearOfStudy == 4)
-                        {
-                            <label>(Current)</label>
-                            FoundCurrent = true;
-                        }
-                    </option>
-                }
-        </select>
-    </div>
+        @if (!FoundCurrent)
+            @if (YearSelected == "4")
+            {
+                <option value="4" selected>
+                    4th Year @if (Model.YearOfStudy == 4)
+                    {
+                        <label>(Current)</label>
+                        FoundCurrent = true;
+                    }
+                </option>
+            }
+            else
+            {
+                <option value="4">
+                    4th Year @if (Model.YearOfStudy == 4)
+                    {
+                        <label>(Current)</label>
+                        FoundCurrent = true;
+                    }
+                </option>
+            }
+    </select>
+</div>
+<div id="div3" class="table-responsive">
     <table id="tblEducation">
         <thead>
             <tr>
@@ -197,147 +200,148 @@
             </tr>
         </tbody>
     </table>
-    <br />
-    <hr />
-    <br />
-    <label class="h1">
-        Gradings per Subject
-    </label>
-    @if (_role.Equals("Teacher"))
-    {
-        <a asp-action="Create" asp-controller="Gradings" style="float: right;" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Add Grading
-        </a>
-    }
-    <br />
-
-    <table id="tblGradings">
-        <thead>
-            <tr>
-                <th>
-                    Date
-                </th>
-                <th>
-                    Topic
-                </th>
-                <th>
-                    Teacher
-                </th>
-                <th>
-                    Total
-                </th>
-                <th>
-                    Details
-                </th>
-            </tr>
-        </thead>
-    </table>
-
-    <div class="accordion" id="accordionExample">
-        @{
-            var first = true;
-        }
-        @foreach (var subject in subjects)
-        {
-
-
-            @if (first)
-            {
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading_@subject.Id">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@subject.Id" aria-expanded="true" aria-controls="collapse_@subject.Id">
-                            @subject.Subject1
-                        </button>
-                    </h2>
-                    <div id="collapse_@subject.Id" class="accordion-collapse collapse show" aria-labelledby="heading_@subject.Id" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <table id="tblGradings">
-                                <tbody>
-                                    @for (int i = 0; i < gradings.Count; i++)
-                                    {
-                                        if (gradings[i].Subject.Equals(subject.Subject1))
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @gradings[i].Date.ToShortDateString()
-                                                </td>
-                                                <td>
-                                                    @gradings[i].Topic
-                                                </td>
-                                                <td>
-                                                    @teachers[i]
-                                                </td>
-                                                <td>
-                                                    @totals[i] / 80
-                                                </td>
-                                                <td>
-                                                    <a class="btn btn-success" asp-action="Details" asp-controller="Gradings" asp-route-id="@gradings[i].Number">
-                                                        <i class="bi bi-info-circle"></i> Details
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                first = false;
-            }
-            else
-            {
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading_@subject.Id">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@subject.Id" aria-expanded="false" aria-controls="collapse_@subject.Id">
-                            @subject.Subject1
-                        </button>
-                    </h2>
-                    <div id="collapse_@subject.Id" class="accordion-collapse collapse" aria-labelledby="heading_@subject.Id" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <table id="tblGradings">
-                                <tbody>
-                                    @for (int i = 0; i < gradings.Count; i++)
-                                    {
-                                        if (gradings[i].Subject.Equals(subject.Subject1))
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @gradings[i].Date.ToShortDateString()
-                                                </td>
-                                                <td>
-                                                    @gradings[i].Topic
-                                                </td>
-                                                <td>
-                                                    @teachers[i]
-                                                </td>
-                                                <td>
-                                                    @totals[i] / 80
-                                                </td>
-                                                <td>
-                                                    <a class="btn btn-success" asp-action="Details" asp-controller="Gradings" asp-route-id="@gradings[i].Number">
-                                                        <i class="bi bi-info-circle"></i> Details
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            }
-        }
-    </div>
-
-    <br />
-
-    <br />
-    <br />
-    <br />
 </div>
+<br />
+<hr />
+<br />
+<label class="h1">
+    Gradings per Subject
+</label>
+@if (_role.Equals("Teacher"))
+{
+    <a asp-action="Create" asp-controller="Gradings" style="float: right;" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Add Grading
+    </a>
+}
+<br />
+
+<div id="div4" class="table-responsive">
+<table id="tblGradings">
+    <thead>
+        <tr>
+            <th>
+                Date
+            </th>
+            <th>
+                Topic
+            </th>
+            <th>
+                Teacher
+            </th>
+            <th>
+                Total
+            </th>
+            <th>
+                Details
+            </th>
+        </tr>
+    </thead>
+</table>
+
+<div class="accordion" id="accordionExample">
+    @{
+        var first = true;
+    }
+    @foreach (var subject in subjects)
+    {
+
+
+        @if (first)
+        {
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_@subject.Id">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@subject.Id" aria-expanded="true" aria-controls="collapse_@subject.Id">
+                        @subject.Subject1
+                    </button>
+                </h2>
+                <div id="collapse_@subject.Id" class="accordion-collapse collapse show" aria-labelledby="heading_@subject.Id" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <table id="tblGradings">
+                            <tbody>
+                                @for (int i = 0; i < gradings.Count; i++)
+                                {
+                                    if (gradings[i].Subject.Equals(subject.Subject1))
+                                    {
+                                        <tr>
+                                            <td>
+                                                @gradings[i].Date.ToShortDateString()
+                                            </td>
+                                            <td>
+                                                @gradings[i].Topic
+                                            </td>
+                                            <td>
+                                                @teachers[i]
+                                            </td>
+                                            <td>
+                                                @totals[i] / 80
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-success" asp-action="Details" asp-controller="Gradings" asp-route-id="@gradings[i].Number">
+                                                    <i class="bi bi-info-circle"></i> Details
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            first = false;
+        }
+        else
+        {
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_@subject.Id">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@subject.Id" aria-expanded="false" aria-controls="collapse_@subject.Id">
+                        @subject.Subject1
+                    </button>
+                </h2>
+                <div id="collapse_@subject.Id" class="accordion-collapse collapse" aria-labelledby="heading_@subject.Id" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <table id="tblGradings">
+                            <tbody>
+                                @for (int i = 0; i < gradings.Count; i++)
+                                {
+                                    if (gradings[i].Subject.Equals(subject.Subject1))
+                                    {
+                                        <tr>
+                                            <td>
+                                                @gradings[i].Date.ToShortDateString()
+                                            </td>
+                                            <td>
+                                                @gradings[i].Topic
+                                            </td>
+                                            <td>
+                                                @teachers[i]
+                                            </td>
+                                            <td>
+                                                @totals[i] / 80
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-success" asp-action="Details" asp-controller="Gradings" asp-route-id="@gradings[i].Number">
+                                                    <i class="bi bi-info-circle"></i> Details
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<br />
+
+<br />
+<br />
+<br />
 
 
 <style>
@@ -401,6 +405,91 @@
     .accordion-body {
         padding: 0 !important;
     }
+
+
+    /*Responive design*/
+    @@media only screen and (max-width:2560px) {
+        #btnDetails {
+            margin-right: 2px !important;
+        }
+
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+    }
+
+    @@media only screen and (max-width:1440px) {
+        #btnDetails {
+            margin-right: 2px !important;
+        }
+
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+    }
+
+    @@media only screen and (max-width:1024px) {
+        #btnDetails {
+            margin-right: 2px !important;
+        }
+
+        #div1, #div2, #div3, #div4 {
+            width: 100%;
+        }
+
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+    }
+
+    @@media only screen and (max-width:768px) {
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+
+        #div1, #div2, #div3, #div4 {
+            width: 100%;
+        }
+
+            #div1 table th {
+                min-width: 20vw !important;
+            }
+    }
+
+    @@media only screen and (max-width:425px) {
+        #div1 table th {
+            min-width: 40vw !important;
+        }
+
+        
+
+
+
+
+
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+    }
+
+    @@media only screen and (max-width:320px) {
+        #divCampusses table th {
+            min-width: 40vw !important;
+        }
+        /*#div1, #div2, #div3, #div4 {
+                        width: 100%;
+                    }*/
+
+        a {
+            width: 100px;
+        }
+    }
+
 </style>
 
 
@@ -417,8 +506,8 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
     <script type="text/javascript">
-        $(function () {
-            $('.select2').each(function () {
+        $(function() {
+            $('.select2').each(function() {
                 $(this).select2({
                     theme: "bootstrap-5",
                     width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',

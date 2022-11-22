@@ -2,41 +2,199 @@
 
 @{
     ViewData["Title"] = "Details";
+    //Email to use in table
+    string email = Model.Number + "@vcconnect.edu.za";
 }
 
-<h1>Details</h1>
-
+@*Main Content*@
+<label class="h1">Teacher Details: @Model.FirstName @Model.LastName</label>
 <div>
-    <h4>Lecturer</h4>
+    <a id="btnEdit" style="float: right;" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Number">
+        <i class="bi bi-pencil-square"></i> Edit Details
+    </a>
+    <br />
+    <table id="tblName">
+        <thead>
+            <tr>
+                <th>
+                    First Name
+                </th>
+                <th>
+                    Last Name
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Model.FirstName
+                </td>
+                <td>
+                    @Model.LastName
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<br />
+<div id="div1" class="table-responsive">
+    <table id="tblNumber">
+        <thead>
+            <tr>
+                <th>
+                    Lecturer Number
+                </th>
+                <th>
+                    Campus
+                </th>
+                <th>
+                    Email
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Model.Number
+                </td>
+                <td>
+                    @Model.Campus
+                </td>
+                <td>
+                    <a href="mailto:@email">@email</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CampusNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CampusNavigation.Code)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EmailNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EmailNavigation.Email)
-        </dd>
-    </dl>
+    <br />
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Number">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<style>
+    main {
+        width: 100% !important;
+        background-color: white;
+        padding: 3%;
+    }
+
+    main {
+        box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+        width: 100%;
+    }
+
+    #tblName th, #tblName td {
+        width: 50%;
+    }
+
+    #tblNumber th, #tblNumber td {
+        width: 40%;
+    }
+
+    #tblModules th, #tblModules td {
+        width: 30%;
+    }
+
+    #tblGradings th, #tblGradings td {
+        width: 20%;
+    }
+
+    table {
+        width: 100%;
+    }
+
+        table thead tr {
+            background-color: #084E62;
+        }
+
+        table th {
+            padding: 1%;
+            color: white;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table tbody tr:nth-child(odd) {
+            background-color: #E9E9E9;
+        }
+
+        table tbody td {
+            width: 25%;
+            padding: 1%;
+            color: black;
+        }
+
+    /*Responive design*/
+    @@media only screen and (max-width:2560px) {
+        #btnDetails {
+            margin-right: 2px !important;
+        }
+
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+    }
+
+    @@media only screen and (max-width:1440px) {
+        #btnDetails {
+            margin-right: 2px !important;
+        }
+
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+    }
+
+    @@media only screen and (max-width:1024px) {
+        #btnDetails {
+            margin-right: 2px !important;
+        }
+
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+    }
+
+    @@media only screen and (max-width:768px) {
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+
+        #div1 {
+            width: 100%;
+        }
+
+            #div1 table th {
+                min-width: 20vw !important;
+            }
+    }
+
+    @@media only screen and (max-width:425px) {
+        #div1 table th {
+            min-width: 40vw !important;
+        }
+
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+    }
+
+    @@media only screen and (max-width:320px) {
+        #divCampusses table th {
+            min-width: 40vw !important;
+        }
+
+        a {
+            width: 100px;
+        }
+    }
+</style>
