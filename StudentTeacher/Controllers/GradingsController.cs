@@ -43,6 +43,32 @@ namespace StudentTeacher.Controllers
                 return NotFound();
             }
 
+            //get marks allocations
+            var SectionAtoD = _context.Plannings.Where(x => x.GradingNumber == id).SingleOrDefault().SectionAtoD;
+            var SectionE = _context.Plannings.Where(x => x.GradingNumber == id).SingleOrDefault().SectionE;
+
+            var Intro = _context.Executions.Where(x => x.GradingNumber == id).SingleOrDefault().Intro;
+            var Teaching = _context.Executions.Where(x => x.GradingNumber == id).SingleOrDefault().Teaching;
+            var Closure = _context.Executions.Where(x => x.GradingNumber == id).SingleOrDefault().Closure;
+            var Assessment = _context.Executions.Where(x => x.GradingNumber == id).SingleOrDefault().Assessment;
+
+            var Presence = _context.Overalls.Where(x => x.GradingNumber == id).SingleOrDefault().Presence;
+            var Environment = _context.Overalls.Where(x => x.GradingNumber == id).SingleOrDefault().Environment;
+
+            //send variables through ViewBag
+            ViewBag.SectionAtoD = SectionAtoD;
+            ViewBag.SectionE = SectionE;
+            ViewBag.Intro = Intro;
+            ViewBag.Teaching = Teaching;
+            ViewBag.Closure = Closure;
+            ViewBag.Assessment = Assessment;
+            ViewBag.Presence = Presence;
+            ViewBag.Environment = Environment;
+
+            //get commentaries for this grading
+            List<Commentary> comments = await _context.Commentaries.Where(x => x.GradingNumber == id).ToListAsync();
+            ViewBag.Comments = comments;
+
             return View(grading);
         }
 
