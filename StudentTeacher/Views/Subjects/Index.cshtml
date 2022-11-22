@@ -8,90 +8,37 @@
     subjects = subjects.OrderBy(x => x.Subject1).ToList();
 }
 
-<h1>Subjects Management</h1>
-
-<div class="card d-flex flex-row bg-white">
-    <div id="divYears" class="card card-body" style="width: 20%;">
-        <h2 style="text-decoration: underline">Year</h2>
-        <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item">
-                @if (Year.Equals("1"))
-                {
-                    <a href="#" class="nav-link active" aria-current="page">
-                        Year 1
-                    </a>
-                }
-                else
-                {
-                    <a asp-action="Index" asp-route-year="1" class="nav-link link-dark">
-                        Year 1
-                    </a>
-                }
-            </li>
-            <li class="nav-item">
-                @if (Year.Equals("2"))
-                {
-                    <a href="#" class="nav-link active" aria-current="page">
-                        Year 2
-                    </a>
-                }
-                else
-                {
-                    <a asp-action="Index" asp-route-year="2" class="nav-link link-dark">
-                        Year 2
-                    </a>
-                }
-            </li>
-            <li class="nav-item">
-                @if (Year.Equals("3"))
-                {
-                    <a href="#" class="nav-link active" aria-current="page">
-                        Year 3
-                    </a>
-                }
-                else
-                {
-                    <a asp-action="Index" asp-route-year="3" class="nav-link link-dark">
-                        Year 3
-                    </a>
-                }
-            </li>
-            <li class="nav-item">
-                @if (Year.Equals("4"))
-                {
-                    <a href="#" class="nav-link active" aria-current="page">
-                        Year 4
-                    </a>
-                }
-                else
-                {
-                    <a asp-action="Index" asp-route-year="4" class="nav-link link-dark">
-                        Year 4
-                    </a>
-                }
-            </li>
-        </ul>
+<label class="h1">Subjects Management</label>
+<div style="width: 100%;">
+    <div id="SelectYear" class="input-group mb-3" style="width: 30%;">
+      <label class="input-group-text" for="inputGroupSelect01">Year of Study</label>
+      <select class="form-select" id="inputGroupSelect01" onchange="YearSelected()">
+        <option value="1" selected="@(Year == "1")">1st Year</option>
+        <option value="2" selected="@(Year == "2")">2nd Year</option>
+        <option value="3" selected="@(Year == "3")">3rd Year</option>
+        <option value="4" selected="@(Year == "4")">4th Year</option>
+      </select>
     </div>
-    <div id="divSubjects" class="card-body" style="width: 80%;">
+</div>
+<div class="card overflow-hidden">
+    <div class="card-header">
         <div class="d-flex flex-row justify-content-between">
             <h2 style="text-decoration: underline">Subjects</h2>
-            <a asp-action="Create" class="btn btn-success">
+            <a asp-action="Create" asp-route-year="@Year" class="btn btn-success">
                 <i class="bi bi-plus-circle"></i> Add Subject
             </a>
         </div>
-        <hr />
+    </div>
+    <div id="divSubjects" class="card-body" style="width: 100%;">
         <div id="Subjects" style="width: 100%;">
             <table id="tblSubjects">
                 <thead>
                     <tr>
                         <th>
-                            Subject Name
+                            Subject
                         </th>
                         <th>
                             @*Edit*@
-                        </th>
-                        <th>
-                            @*Delete*@
                         </th>
                     </tr>
                 </thead>
@@ -99,21 +46,18 @@
                     @foreach (var item in subjects)
                     {
                         <tr>
-                            <td style="width: 70%">
+                            <td style="width: 50%">
                                 @item.Subject1
                             </td>
-                            <td style="width: 15%; text-align: right;">
-                                <button style="width: 90%" class="btn btn-primary">
+                            <td style="width: 50%; text-align: right;">
+                                <button class="btn btn-primary btnEdit">
                                     <i class="bi bi-pencil-square"></i>
                                     Edit
                                 </button>
-                            </td>
-                            <td style="width: 15%">
-                                <button type="button" style="width: 90%" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Delete_@item.Id">
+                                <button type="button" class="btn btn-danger btnDelete" data-bs-toggle="modal" data-bs-target="#Delete_@item.Id">
                                     <i class="bi bi-trash-fill"></i>
                                     Delete
-                                </button>
-
+                                </button>                             
                                 @*Delete Modal*@
                                 <div class="modal fade" id="Delete_@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -121,7 +65,7 @@
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="exampleModalLongTitle">Confirm Delete?</h5>
                                             </div>
-                                            <div class="modal-body">
+                                            <div class="modal-body" style="text-align: left;">
                                                 Delete subject "@item.Subject1" from Year @Year subject list?
                                             </div>
                                             <div class="modal-footer">
@@ -181,4 +125,41 @@
             padding: 0.3%;
             border-bottom: 1px solid grey;
         }
+
+    @@media only screen and (max-width:1440px) {
+    /* For Large Laptops: */
+        
+    }
+
+    @@media only screen and (max-width:1024px) {
+        /* For Laptops: */
+       
+    }
+
+    @@media only screen and (max-width:768px) {
+        /* For Tablets: */
+        #SelectYear{
+            width: 100% !important;
+        }
+    }
+
+    @@media only screen and (max-width:425px) {
+        /* For Large Phones: */
+        #SelectYear{
+            width: 100% !important;
+        }
+
+        #tblSubjects .btnEdit, #tblSubjects .btnDelete {
+            width: 80% !important;
+        }
+    }
 </style>
+
+<script>
+    function YearSelected() {
+        d = document.getElementById("inputGroupSelect01").value;
+        currentUrl = window.location.href.split('?')[0];
+        newUrl = currentUrl + "?year=" + d;
+        window.location.href = newUrl;
+    }
+</script>
