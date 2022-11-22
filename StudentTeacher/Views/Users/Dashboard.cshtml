@@ -16,8 +16,8 @@
     <label class="h5">Welcome</label>
     <hr />
     <label class="h2">Varisty College Students</label>
-    <form asp-action="Dashboard">
-        <div id="filterStudents" style="float: right; width: 40%;" class="input-group mb-3">
+    <form style="width: 100%;" asp-action="Dashboard">
+        <div id="filterStudents" style="width: 40%;" class="input-group mb-3">
             <select id="studentFilter" name="SearchOption" class="form-select" style="max-width: 40% !important">
                 <option value="1">Student Number</option>
                 <option value="2">Name & Surname</option>
@@ -30,87 +30,83 @@
             <button class="btn btn-primary" type="submit" id="button-addon2" onclick="getStudentFilterResult()"> <i class="bi bi-search"></i> Search</button>
         </div>
     </form>
-    <div id="DivStudents">
-        <div id="StudentsTop">
-            <table>
-                <thead>
+    <div id="DivStudents" class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Student Number
+                    </th>
+                    <th>
+                        Name & Surname
+                    </th>
+                    <th>
+                        Qualification
+                    </th>
+                    <th>
+                        Year of Study
+                    </th>
+                    <th>
+                        Campus
+                    </th>
+                    <th>
+                        Details
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in students)
+                {
                     <tr>
-                        <th>
-                            Student Number
-                        </th>
-                        <th>
-                            Name & Surname
-                        </th>
-                        <th>
-                            Qualification
-                        </th>
-                        <th>
-                            Year of Study
-                        </th>
-                        <th>
-                            Campus
-                        </th>
-                        <th>
-                            Details
-                        </th>
+                        <td>
+                            @item.Number
+                        </td>
+                        <td>
+                            @item.FirstName @item.LastName
+                        </td>
+                        <td>
+                            @item.Qualification
+                        </td>
+                        <td>
+                            @item.YearOfStudy
+                        </td>
+                        <td>
+                            @item.CampusNavigation.Name
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-controller="Students" asp-route-id="@item.Number" class="btn btn-success">
+                                <i class="bi bi-info-circle"></i> Details
+                            </a>
+                        </td>
                     </tr>
-                </thead>
-            </table>
-        </div>
-        <div id="StudentsBot">
-            <table>
-                <tbody>
-                    @foreach (var item in students)
-                    {
-                        <tr>
-                            <td>
-                                @item.Number
-                            </td>
-                            <td>
-                                @item.FirstName @item.LastName
-                            </td>
-                            <td>
-                                @item.Qualification
-                            </td>
-                            <td>
-                                @item.YearOfStudy
-                            </td>
-                            <td>
-                                @item.CampusNavigation.Name
-                            </td>
-                            <td>
-                                <a asp-action="Details" asp-controller="Students" asp-route-id="@item.Number" class="btn btn-success">
-                                    <i class="bi bi-info-circle"></i> Details
-                                </a>
-                            </td>
-                        </tr>
-                    }
+                }
 
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
 
     <br />
     <hr />
     <label class="h2">Recent Gradings</label>
-    <form>
-        <div style="float: right; width: 40%;" class="input-group mb-3">
-            <select id="gradingFilter" name="SearchOption" class="form-select" style="max-width: 40% !important">
-                <option value="1">Date</option>
-                <option value="2">Student</option>
-                <option value="3">Teacher</option>
-                <option value="4">Year of Study</option>
-                <option value="5">Subject</option>
-            </select>
-            <input name="SearchType" type="text" value="gradings" hidden />
-            <input type="text" class="form-control" id="gradingCriteria" name="Search" placeholder="Search..." aria-label="Recipient's username" aria-describedby="button-addon2">
-            <button class="btn btn-primary" type="submit" id="button-addon2"> <i class="bi bi-search"></i> Search</button>
-        </div>
-    </form>
-    <div id="DivGradings">
-        <div id="GradingsTop">
-            <table>
+    <div style="width: 100%; text-align: right;">
+        <form method="post" asp-action="Dashboard" style="width: 100%;">
+            <div id="filterGradings" style="width: 40%;" class="input-group mb-3">
+                <select id="gradingFilter" name="SearchOption" class="form-select" style="max-width: 40% !important">
+                    <option value="1">Date</option>
+                    <option value="2">Student</option>
+                    <option value="3">Teacher</option>
+                    <option value="4">Year of Study</option>
+                    <option value="5">Subject</option>
+                </select>
+                <input name="SearchType" type="text" value="gradings" hidden />
+                <input type="text" class="form-control" id="gradingCriteria" name="Search" placeholder="Search..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button class="btn btn-primary" type="submit" id="button-addon2"> <i class="bi bi-search"></i> Search</button>
+            </div>
+        </form>
+    </div>
+    <div>
+        <div id="DivGradings" class="table-responsive">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>
@@ -133,10 +129,6 @@
                         </th>
                     </tr>
                 </thead>
-            </table>
-        </div>
-        <div id="GradingsBot">
-            <table>
                 <tbody>
                     @foreach (var item in gradings)
                     {
@@ -171,32 +163,6 @@
     <br />
 </div>
 
-@*<script>
-    function getStudentFilterResult() {
-        var e = document.getElementById("studentFilter");
-        var value1 = e.value;
-
-        var f = document.getElementById("criteria");
-        var value2 = f.value;
-
-        var g = document.getElementById("gradingFilter");
-        var value3 = g.value || 0;
-
-        var h = document.getElementById("gradingCriteria");
-        var value4 = h.value;
-
-        currentUrl = window.location.href.split('?')[0];
-        newUrl = currentUrl + "?filterAction=" + value1 + "&criteria=" + value2 + "&gradingFilterAction=" + value3 + "&gradingCriteria=" + value4;
-        window.location.href = newUrl;
-    }
-
-
-
-</script>*@
-
-
-
-
 <style>
     #nav_Dashboard {
         color: #495057;
@@ -218,135 +184,102 @@
         width: 100%;
     }
 
+
+
+    
+
     #DivStudents {
-        width: 100%;
     }
 
-    #StudentsTop {
-        width: 100%;
-    }
-
-        #StudentsTop table {
-            width: 100%;
+        #DivStudents table {
         }
 
-            #StudentsTop table tr {
+            #DivStudents table thead tr {
                 background-color: #084E62;
             }
 
-            #StudentsTop table th {
-                width: 16%;
+            #DivStudents table th {
                 padding: 1%;
                 color: white;
             }
 
-    #StudentsBot {
-        width: 100%;
-    }
-
-        #StudentsBot table {
-            width: 100%;
-        }
-
-            #StudentsBot table tr:nth-child(even) {
+            #DivStudents table tbody tr:nth-child(even) {
                 background-color: #f2f2f2;
             }
 
-            #StudentsBot table tr:nth-child(odd) {
+            #DivStudents table tbody tr:nth-child(odd) {
                 background-color: #E9E9E9;
             }
 
-            #StudentsBot table td {
-                width: 16%;
+            #DivStudents table td {
                 padding: 1%;
                 color: black;
             }
 
-    #GradingsTop {
-        width: 100%;
+    #DivGradings {
+        width: 100% !important;
     }
 
-        #GradingsTop table {
-            width: 100%;
+        #DivGradings table {
         }
 
-            #GradingsTop table tr {
+            #DivGradings table tr {
                 background-color: #084E62;
             }
 
-            #GradingsTop table th {
-                width: 16%;
+            #DivGradings table th {
                 padding: 1%;
-                color: white;
+                color: white;*/
             }
 
-    #GradingsBot {
-        width: 100%;
-    }
-
-        #GradingsBot table {
-            width: 100%;
-        }
-
-            #GradingsBot table tr:nth-child(even) {
+            #DivGradings table tbody tr:nth-child(even) {
                 background-color: #f2f2f2;
             }
 
-            #GradingsBot table tr:nth-child(odd) {
+            #DivGradings table tbody tr:nth-child(odd) {
                 background-color: #E9E9E9;
             }
 
-            #GradingsBot table td {
-                width: 16%;
+            #DivGradings table td {
                 padding: 1%;
                 color: black;
             }
 
 
 
-            /*Responive design*/
+    /*Responive design*/
 
     @@media only screen and (max-width:1440px) {
         /* For Large Laptops: */
-        #Lec_Login {
-            width: 50%;
+        #filterStudents, #filterGradings {
+            width: 40% !important;
         }
     }
 
     @@media only screen and (max-width:1024px) {
         /* For Laptops: */
-        #Lec_Login {
-            width: 50%;
+        #filterStudents, #filterGradings {
+            width: 100% !important;
         }
     }
 
     @@media only screen and (max-width:768px) {
-        /* For Tablets: */
-        #Lec_Login {
-            width: 95%;
+        #DivGradings table th {
+            min-width: 20vw !important;
         }
 
-
+        #DivStudents table th {
+            min-width: 20vw !important;
+        }
     }
 
     @@media only screen and (max-width:425px) {
-        /* For Large Phones: */
-        #Lec_Login {
-            width: 95%;
+        #DivGradings table th {
+            min-width: 40vw !important;
         }
-    }
 
-    @@media only screen and (max-width:375px) {
-        /* For Medium Phones: */
-        #Lec_Login {
-            width: 100%;
-        }
-    }
-
-    @@media only screen and (max-width:320px) {
-        /* For Small Phones: */
-        #Lec_Login {
-            width: 100%;
+        #DivStudents table th {
+            min-width: 40vw !important;
         }
     }
 </style>
