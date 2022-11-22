@@ -10,8 +10,8 @@
 
 <h1>Subjects Management</h1>
 
-<div class="d-flex flex-row bg-white">
-    <div id="divYears" class="d-flex flex-column flex-shrink-0 p-3" style="width: 20%;">
+<div class="card d-flex flex-row bg-white">
+    <div id="divYears" class="card card-body" style="width: 20%;">
         <h2 style="text-decoration: underline">Year</h2>
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item">
@@ -72,11 +72,11 @@
             </li>
         </ul>
     </div>
-    <div id="divSubjects" class="d-flex flex-column flex-shrink-0 p-3" style="width: 80%;">
-        <div class="d-flex flex-row">
+    <div id="divSubjects" class="card-body" style="width: 80%;">
+        <div class="d-flex flex-row justify-content-between">
             <h2 style="text-decoration: underline">Subjects</h2>
-            <a asp-action="Create" style="float: right !important;" class="btn btn-primary">
-                Add Subject
+            <a asp-action="Create" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Add Subject
             </a>
         </div>
         <hr />
@@ -136,7 +136,7 @@
 
                         @*Edit Modal*@
 
-                        
+
                     }
                 </tbody>
             </table>
@@ -145,12 +145,22 @@
 </div>
 
 <style>
+        main {
+        width: 100% !important;
+        background-color: white;
+        padding: 3%;
+    }
+
+    main {
+        box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
+    }
+
     #divYears {
-        background-color: #E9E9E9;
+        background-color: white /*#E9E9E9*/;
     }
 
     #divSubjects {
-        background-color: #F2F2F2;
+        background-color: white /*#F2F2F2*/;
     }
 
     @*Table Styling*@

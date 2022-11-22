@@ -93,11 +93,10 @@
 <h2 class="h2">Mark Allocation</h2>
 <hr />
 <div class="card" id="SectionA">
-    <div class="card-body">
+    <div class="card-header">
         <label class="h3">SECTION A: LESSON PLANNING</label>
         <label class="h4" style="float: right;">Section: @(SectionAtoD + SectionE) / 20</label>
     </div>
-    <hr />
     <div class="card-body" id="SectionAtoD">
         <label class="h5">Sections A to D (of lesson plan)</label>
         <label class="h6" style="float: right;">@(SectionAtoD) / 10</label>
@@ -170,11 +169,10 @@
 </div>
 <br />
 <div class="card" id="SectionB">
-    <div class="card-body">
+    <div class="card-header">
         <label class="h3">SECTION B: EXECUTION OF LESSON AS PER THE LESSON PLAN</label>
         <label class="h4" style="float: right;">Section: @(Intro + Teaching + Closure + Assessment) / 40</label>
     </div>
-    <hr />
     <div class="card-body" id="Intro">
         <label class="h5">Introductory Phase</label>
         <label class="h6" style="float: right;">@(Intro) / 10</label>
@@ -286,7 +284,7 @@
         <br />
         <div class="rate">
             <fieldset class="rate">
-                <input type="radio" id="ASSESSMENTrating10" name="ASSESSMENTrating" value="10" disabled checked="@(Assessment == 10)" />
+                <input type="radio" id="ASSESSMENTrating10" name="ASSESSMENTrating" value=" 10" disabled checked="@(Assessment == 10)" />
                 <label for="ASSESSMENTrating10" title="5 stars"></label>
                 <input type="radio" id="ASSESSMENTrating9" name="ASSESSMENTrating" value="9" disabled checked="@(Assessment == 9)" />
                 <label class="half" for="ASSESSMENTrating9" title="4 1/2 stars"></label>
@@ -317,11 +315,10 @@
 </div>
 <br />
 <div class="card" id="SectionC">
-    <div class="card-body">
+    <div class="card-header">
         <label class="h3">SECTION C: OVERALL SENSE OF THE LESSON</label>
         <label class="h4" style="float: right;">Section: @(Presence + Environment) / 20</label>
     </div>
-    <hr />
     <div class="card-body" id="Presence">
         <label class="h5">Classroom Presence</label>
         <label class="h6" style="float: right;">@(Presence) / 10</label>

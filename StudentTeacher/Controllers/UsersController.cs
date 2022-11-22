@@ -128,7 +128,7 @@ namespace StudentTeacher.Controllers
         }
 
         //GET: Users/Dashboard
-        public async Task<IActionResult> Dashboard()
+        public async Task<IActionResult> Dashboard(string? SearchType, string? SearchOption, string? Search)
         {
             //get role of logged in user
             string _role = HttpContext.Session.GetString("_role");
@@ -140,13 +140,13 @@ namespace StudentTeacher.Controllers
                 return RedirectToAction("Login", "Users");
             }
 
-            var FilterAction = HttpContext.Request.Query["filterAction"];
+            //var FilterAction = HttpContext.Request.Query["filterAction"];
 
-            if (string.IsNullOrWhiteSpace(FilterAction))
-            {
-                return RedirectToAction("Dashboard", "Users", new { filterAction = 0 });
-            }
-            
+            //if (string.IsNullOrWhiteSpace(FilterAction))
+            //{
+            //    return RedirectToAction("Dashboard", "Users", new { filterAction = 0 });
+            //}
+
 
             //check which user is logged in by role
             switch (_role)
@@ -169,6 +169,52 @@ namespace StudentTeacher.Controllers
             ViewBag.Lecturers = _context.Lecturers.ToList();
             ViewBag.Gradings = _context.Gradings.OrderByDescending(x => x.Date).ToList();
             ViewBag.Campuses = _context.Campuses.ToList();
+
+            #region Check for Null or Empty in Searches
+            if (String.IsNullOrEmpty(SearchType))
+            {
+                return View();
+            }
+
+            if (String.IsNullOrEmpty(SearchOption))
+            {
+                return View();
+            }
+
+            if (String.IsNullOrEmpty(Search))
+            {
+                return View();
+            }
+            #endregion
+
+            #region Students Search
+            if (SearchType == "students")
+            {
+                switch (SearchOption)
+                {
+                    case "1":
+                        ViewBag.Students = _context.Students.Where(x => x.Number.Contains(Search)).ToList();
+                        break;
+                    case "2":
+                        ViewBag.Students = _context.Students.Where(x => (x.FirstName + " " + x.LastName).Contains(Search)).ToList();
+                        break;
+                    case "3":
+                        ViewBag.Students = _context.Students.Where(x => x.Qualification.Contains(Search)).ToList();
+                        break;
+                    case "4":
+                        ViewBag.Students = _context.Students.Where(x => ("" + x.YearOfStudy).Contains(Search)).ToList();
+                        break;
+                    case "5":
+                        ViewBag.Students = _context.Students.Where(x => x.CampusNavigation.Name.Contains(Search)).ToList();
+                        break;
+                    default:
+                        ViewBag.Students = _context.Students.ToList();
+                        break;
+                }
+            }
+            #endregion
+
+
 
             //(admin dashboard)
             return View();

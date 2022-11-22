@@ -22,6 +22,10 @@ namespace StudentTeacher.Controllers
         // GET: Students
         public async Task<IActionResult> Index()
         {
+            //get schools
+            List<School> schools = await _context.Schools.ToListAsync();
+            ViewBag.Schools = schools;
+
             return View(await _context.Students.ToListAsync());
         }
 

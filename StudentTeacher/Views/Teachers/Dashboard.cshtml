@@ -1,7 +1,465 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Dashboard";
+
+    //Get Lists to Display on Front-End
+    List<Student> students = ViewBag.Students;
+    List<School> schools = ViewBag.Schools;
+    List<Teacher> teachers = ViewBag.Teachers;
+    List<Lecturer> lecturers = ViewBag.Lecturers;
+    List<Grading> gradings = ViewBag.Gradings;
+    List<Campus> campuses = ViewBag.Campuses;
+
+
+    var FilterAction = Accessor.HttpContext.Request.Query["filterAction"];
+    int filterAction = int.Parse(FilterAction);
+
+    var FilterCriteria = Accessor.HttpContext.Request.Query["criteria"];
+    string criteria = FilterCriteria;
 }
 
-<h1>Dashboard</h1>
+<div id="Tea_Dash">
+    <label class="h1">Dashboard</label>
+    <br />
+    <label class="h5">Welcome</label>
+    <hr />
+    <label class="h2">Varsity College Students</label>
+    <div style="float: right; width: 40%;" class="input-group mb-3">
+        <select id="studentFilter" name="studentFilter" class="form-select" style="max-width: 40% !important">
+            <option value="1">Student Number</option>
+            <option value="2">Name & Surname</option>
+            <option value="3">Qualification</option>
+            <option value="4">Year of Study</option>
+            <option value="5">Campus</option>
+        </select>
+        <input type="text" id="criteria" name="criteria" class="form-control" placeholder="Search..." aria-label="Recipient's username" aria-describedby="button-addon2">
+        <button class="btn btn-primary" type="button" id="button-addon2" onclick="getStudentFilterResult()"> <i class="bi bi-search"></i> Search</button>
+    </div>
+    <div id="DivStudents">
+        <div id="StudentsTop">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Student Number
+                        </th>
+                        <th>
+                            Name & Surname
+                        </th>
+                        <th>
+                            Qualification
+                        </th>
+                        <th>
+                            Year of Study
+                        </th>
+                        <th>
+                            Campus
+                        </th>
+                        <th>
+                            Details
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div id="StudentsBot">
+            <table>
+                <tbody>
 
+                    @{
+                        //default table on page load
+                        if (filterAction == 0)
+                        {
+                            foreach (var item in students)
+                            {
+                                Campus c = campuses.Where(x => x.Code == item.Campus).SingleOrDefault();
+                                <tr>
+                                    <td>
+                                        @item.Number
+                                    </td>
+                                    <td>
+                                        @item.FirstName @item.LastName
+                                    </td>
+                                    <td>
+                                        @item.Qualification
+                                    </td>
+                                    <td>
+                                        @item.YearOfStudy
+                                    </td>
+                                    <td>
+                                        @c.Name
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-controller="Students" asp-route-id="@item.Number" class="btn btn-success">
+                                            <i class="bi bi-info-circle"></i> Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                        //filter according to student number
+                        if (filterAction == 1)
+                        {
+                            foreach (var item in students.Where(x => x.Number == criteria))
+                            {
+                                Campus c = campuses.Where(x => x.Code == item.Campus).SingleOrDefault();
+                                <tr>
+                                    <td>
+                                        @item.Number
+                                    </td>
+                                    <td>
+                                        @item.FirstName @item.LastName
+                                    </td>
+                                    <td>
+                                        @item.Qualification
+                                    </td>
+                                    <td>
+                                        @item.YearOfStudy
+                                    </td>
+                                    <td>
+                                        @c.Name
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-controller="Students" asp-route-id="@item.Number" class="btn btn-success">
+                                            <i class="bi bi-info-circle"></i> Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                        //filter according to name & surname OR name || surname
+                        if (filterAction == 2)
+                        {
+                            foreach (var item in students.Where(x => (x.FirstName.ToString() + " " + x.LastName.ToString()).ToLower().Contains(criteria.ToLower())))
+                            {
+                                Campus c = campuses.Where(x => x.Code == item.Campus).SingleOrDefault();
+                                <tr>
+                                    <td>
+                                        @item.Number
+                                    </td>
+                                    <td>
+                                        @item.FirstName @item.LastName
+                                    </td>
+                                    <td>
+                                        @item.Qualification
+                                    </td>
+                                    <td>
+                                        @item.YearOfStudy
+                                    </td>
+                                    <td>
+                                        @c.Name
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-controller="Students" asp-route-id="@item.Number" class="btn btn-success">
+                                            <i class="bi bi-info-circle"></i> Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                        //filter according to qualification
+                        if (filterAction == 3)
+                        {
+                            foreach (var item in students.Where(x => x.Qualification == criteria))
+                            {
+                                Campus c = campuses.Where(x => x.Code == item.Campus).SingleOrDefault();
+                                <tr>
+                                    <td>
+                                        @item.Number
+                                    </td>
+                                    <td>
+                                        @item.FirstName @item.LastName
+                                    </td>
+                                    <td>
+                                        @item.Qualification
+                                    </td>
+                                    <td>
+                                        @item.YearOfStudy
+                                    </td>
+                                    <td>
+                                        @c.Name
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-controller="Students" asp-route-id="@item.Number" class="btn btn-success">
+                                            <i class="bi bi-info-circle"></i> Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                        //filter according to year of study
+                        if (filterAction == 4)
+                        {
+                            foreach (var item in students.Where(x => x.YearOfStudy.Equals(Convert.ToInt32(criteria))))
+                            {
+                                Campus c = campuses.Where(x => x.Code == item.Campus).SingleOrDefault();
+                                <tr>
+                                    <td>
+                                        @item.Number
+                                    </td>
+                                    <td>
+                                        @item.FirstName @item.LastName
+                                    </td>
+                                    <td>
+                                        @item.Qualification
+                                    </td>
+                                    <td>
+                                        @item.YearOfStudy
+                                    </td>
+                                    <td>
+                                        @c.Name
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-controller="Students" asp-route-id="@item.Number" class="btn btn-success">
+                                            <i class="bi bi-info-circle"></i> Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                        //filter according to campus name
+                        if (filterAction == 5)
+                        {
+                            foreach (var item in students.Where(x => x.CampusNavigation.Name.ToLower().Equals(criteria.ToLower())))
+                            {
+                                Campus c = campuses.Where(x => x.Code == item.Campus).SingleOrDefault();
+                                <tr>
+                                    <td>
+                                        @item.Number
+                                    </td>
+                                    <td>
+                                        @item.FirstName @item.LastName
+                                    </td>
+                                    <td>
+                                        @item.Qualification
+                                    </td>
+                                    <td>
+                                        @item.YearOfStudy
+                                    </td>
+                                    <td>
+                                        @c.Name
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-controller="Students" asp-route-id="@item.Number" class="btn btn-success">
+                                            <i class="bi bi-info-circle"></i> Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <br />
+    <hr />
+    <label class="h2">Recent Gradings</label>
+    <div style="float: right; width: 40%;" class="input-group mb-3">
+        <select class="form-select" style="max-width: 40% !important">
+            <option value="">Date</option>
+            <option value="">Student</option>
+            <option value="">Teacher</option>
+            <option value="">Year of Study</option>
+            <option value="">Subject</option>
+        </select>
+        <input type="text" class="form-control" placeholder="Search..." aria-label="Recipient's username" aria-describedby="button-addon2">
+        <button class="btn btn-primary" type="button" id="button-addon2"> <i class="bi bi-search"></i> Search</button>
+    </div>
+    <div id="DivGradings">
+        <div id="GradingsTop">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Student
+                        </th>
+                        <th>
+                            Teacher
+                        </th>
+                        <th>
+                            Year of Study
+                        </th>
+                        <th>
+                            Subject
+                        </th>
+                        <th>
+                            Details
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div id="GradingsBot">
+            <table>
+                <tbody>
+
+                    @foreach (var item in gradings)
+                    {
+                        Teacher t = teachers.Where(x => x.Number == item.Teacher).SingleOrDefault();
+                        string t_name = t.FirstName.Substring(0, 1) + ". " + t.LastName;
+                        <tr>
+                            <td>
+                                @item.Date.ToShortDateString()
+                            </td>
+                            <td>
+                                @item.Student
+                            </td>
+                            <td>
+                                @t_name
+                            </td>
+                            <td>
+                                @item.YearOfStudy
+                            </td>
+                            <td>
+                                @item.Subject
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-controller="Gradings" asp-route-id="@item.Number" class="btn btn-success">
+                                    <i class="bi bi-info-circle"></i> Details
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+    <br />
+</div>
+
+<script>
+
+    function getStudentFilterResult() {
+        var e = document.getElementById("studentFilter");
+        var value1 = e.value;
+
+        var f = document.getElementById("criteria");
+        var value2 = f.value;
+
+        currentUrl = window.location.href.split('?')[0];
+        newUrl = currentUrl + "?filterAction=" + value1 + "&criteria=" + value2;
+        window.location.href = newUrl;
+    }
+
+
+
+</script>
+
+
+
+
+<style>
+    #nav_Dashboard {
+        color: #495057;
+        background-color: #fff;
+        border-color: #dee2e6 #dee2e6 #fff;
+    }
+
+    main {
+        width: 100% !important;
+        background-color: white;
+        padding: 3%;
+    }
+
+    main {
+        box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    #Tea_Dash {
+        width: 100%;
+    }
+
+    #DivStudents {
+        width: 100%;
+    }
+
+    #StudentsTop {
+        width: 100%;
+    }
+
+        #StudentsTop table {
+            width: 100%;
+        }
+
+            #StudentsTop table tr {
+                background-color: #084E62;
+            }
+
+            #StudentsTop table th {
+                width: 16%;
+                padding: 1%;
+                color: white;
+            }
+
+    #StudentsBot {
+        width: 100%;
+    }
+
+        #StudentsBot table {
+            width: 100%;
+        }
+
+            #StudentsBot table tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            #StudentsBot table tr:nth-child(odd) {
+                background-color: #E9E9E9;
+            }
+
+            #StudentsBot table td {
+                width: 16%;
+                padding: 1%;
+                color: black;
+            }
+
+    #GradingsTop {
+        width: 100%;
+    }
+
+        #GradingsTop table {
+            width: 100%;
+        }
+
+            #GradingsTop table tr {
+                background-color: #084E62;
+            }
+
+            #GradingsTop table th {
+                width: 16%;
+                padding: 1%;
+                color: white;
+            }
+
+    #GradingsBot {
+        width: 100%;
+    }
+
+        #GradingsBot table {
+            width: 100%;
+        }
+
+            #GradingsBot table tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            #GradingsBot table tr:nth-child(odd) {
+                background-color: #E9E9E9;
+            }
+
+            #GradingsBot table td {
+                width: 16%;
+                padding: 1%;
+                color: black;
+            }
+</style>

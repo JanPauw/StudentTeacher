@@ -79,6 +79,7 @@ namespace StudentTeacher.Controllers
             string _studentNumber = HttpContext.Session.GetString("_studentNumber");
             //Test valid Student Number
             Student student = _context.Students.Find(_studentNumber);
+
             if (student == null)
             {
                 return RedirectToAction("Index", "Students");
@@ -107,6 +108,9 @@ namespace StudentTeacher.Controllers
             List<Subject> subjects = _context.Subjects.Where(x => x.YearOfStudy.Contains("" + student.YearOfStudy)).OrderBy(x => x.Subject1).ToList();
             ViewBag.Subjects = subjects;
 
+            //get student Year of Study to populate grade
+            ViewBag.YearOfStudy = student.YearOfStudy;
+
             return View();
         }
 
@@ -116,7 +120,7 @@ namespace StudentTeacher.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            int Grade, string Topic, string Subject,
+            string Grade, string Topic, string Subject,
             string Arating, string Erating, string INTROrating, string EXErating, string CLOSURErating,
             string ASSESSMENTrating, string PRESENCErating, string ENVIRONMENTrating,
             string ComSectionAtoD, string ComSectionE, string ComIntro, string ComTeaching, string ComClosure,
@@ -141,7 +145,18 @@ namespace StudentTeacher.Controllers
             #endregion
 
             #region Check that Class info is valid
-            if (Grade < 1 || Grade > 7)
+            int iGrade;
+            try
+            {
+                iGrade = int.Parse(Grade);
+            }
+            catch
+            {
+                TempData["error"] = "Invalid Grade Entered!";
+                return View();
+            }
+
+            if (iGrade < 4 || iGrade > 7)
             {
                 TempData["error"] = "Invalid Grade Entered!";
                 return View();
@@ -262,7 +277,7 @@ namespace StudentTeacher.Controllers
             grading.TeacherNavigation = teacher;
             grading.YearOfStudy = student.YearOfStudy;
             grading.Date = DateTime.Now;
-            grading.Grade = Grade;
+            grading.Grade = iGrade;
             grading.Topic = Topic;
             grading.Subject = Subject;
 
