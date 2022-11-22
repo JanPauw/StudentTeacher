@@ -29,6 +29,20 @@ namespace StudentTeacher.Controllers
         // GET: Dashboard
         public IActionResult Dashboard()
         {
+            //get current logged in teaacher
+            string email = HttpContext.Session.GetString("_email");
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return RedirectToAction("LogOut", "Users");
+            }
+
+            Teacher loggedIn = _context.Teachers.Where(x => x.Email == email).SingleOrDefault();
+
+            if (loggedIn == null)
+            {
+                return RedirectToAction("LogOut", "Users");
+            }
+
             //get role of logged in user
             string _role = HttpContext.Session.GetString("_role");
 
@@ -51,21 +65,50 @@ namespace StudentTeacher.Controllers
             {
                 case "Lecturer":
                     return RedirectToAction("Dashboard", "Lecturers");
-                    break;
                 case "Supervisor":
                     return RedirectToAction("Dashboard", "Lecturers");
-                    break;
             }
 
+            #region Get List of Teacher's Students
+            string school = loggedIn.School;
+
+            //get StudentSchools mathcing teacher school
+            List<StudentSchool> studentSchools = _context.StudentSchools.Where(x => x.School == school).ToList();
+            List<Student> studentList = new List<Student>();
+
+            foreach (var item in studentSchools)
+            {
+                //get student
+                Student s = _context.Students.Find(item.Student);
+
+                //check null
+                if (s == null)
+                {
+                    TempData["error"] = "Please contact system admin!";
+                    return RedirectToAction("LogOut", "Users");
+                }
+
+                StudentSchool ss = studentSchools.Where(x => x.Student == s.Number).SingleOrDefault();
+
+                //Check null
+                if (ss != null)
+                {
+                    studentList.Add(s);
+                }
+            }
+            #endregion
+
             //Info to disiplay on Dashboard
-            ViewBag.Students = _context.Students.ToList();
+            ViewBag.Students = studentList;
             ViewBag.Schools = _context.Schools.ToList();
             ViewBag.Teachers = _context.Teachers.ToList();
             ViewBag.Lecturers = _context.Lecturers.ToList();
             ViewBag.Gradings = _context.Gradings.OrderByDescending(x => x.Date).ToList();
             ViewBag.Campuses = _context.Campuses.ToList();
 
-            //(admin dashboard)
+
+
+            //(dashboard)
             return View();
         }
 
