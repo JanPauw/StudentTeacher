@@ -141,12 +141,13 @@ namespace StudentTeacher.Controllers
             }
 
             var FilterAction = HttpContext.Request.Query["filterAction"];
+            var GradingFilterAction = HttpContext.Request.Query["GradingFilterAction"];
 
             if (string.IsNullOrWhiteSpace(FilterAction))
             {
-                return RedirectToAction("Dashboard", "Users", new { filterAction = 0 });
+                return RedirectToAction("Dashboard", "Users", new { filterAction = 0, GradingFilterAction = 0 });
             }
-            
+
 
             //check which user is logged in by role
             switch (_role)
