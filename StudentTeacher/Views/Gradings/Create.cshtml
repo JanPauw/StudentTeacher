@@ -3,6 +3,7 @@
 
     string TeacherCode = ViewBag.TeacherCode;
     string StudentCode = ViewBag.StudentCode;
+    int YearOfStudy = ViewBag.YearOfStudy;
     List<Subject> subjects = ViewBag.Subjects;
 }
 <form id="AddGrading" method="post" asp-action="Create">
@@ -14,7 +15,12 @@
     <div class="tab" id="AdditionalInfo">
         <h3>Class Information</h3>
         <div class="form-floating mb-3">
-            <input name="Grade" type="number" class="form-control" id="floatingGrade" placeholder="3">
+            <select name="Grade" class="form-select" id="floatingGrade">
+                <option value="4" selected="@(YearOfStudy == 1)">Grade 4</option>
+                <option value="5" selected="@(YearOfStudy == 2)">Grade 5</option>
+                <option value="6" selected="@(YearOfStudy == 3)">Grade 6</option>
+                <option value="7" selected="@(YearOfStudy == 4)">Grade 7</option>
+            </select>
             <label for="floatingGrade">Class Grade</label>
         </div>
         <div class="form-floating mb-3">

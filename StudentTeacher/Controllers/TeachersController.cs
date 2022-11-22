@@ -29,6 +29,43 @@ namespace StudentTeacher.Controllers
         // GET: Dashboard
         public IActionResult Dashboard()
         {
+            //get role of logged in user
+            string _role = HttpContext.Session.GetString("_role");
+
+            //Check that Role is set in Sessions
+            if (String.IsNullOrWhiteSpace(_role))
+            {
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login", "Users");
+            }
+
+            var FilterAction = HttpContext.Request.Query["filterAction"];
+
+            if (string.IsNullOrWhiteSpace(FilterAction))
+            {
+                return RedirectToAction("Dashboard", "Teachers", new { filterAction = 0 });
+            }
+
+            //check which user is logged in by role
+            switch (_role)
+            {
+                case "Lecturer":
+                    return RedirectToAction("Dashboard", "Lecturers");
+                    break;
+                case "Supervisor":
+                    return RedirectToAction("Dashboard", "Lecturers");
+                    break;
+            }
+
+            //Info to disiplay on Dashboard
+            ViewBag.Students = _context.Students.ToList();
+            ViewBag.Schools = _context.Schools.ToList();
+            ViewBag.Teachers = _context.Teachers.ToList();
+            ViewBag.Lecturers = _context.Lecturers.ToList();
+            ViewBag.Gradings = _context.Gradings.OrderByDescending(x => x.Date).ToList();
+            ViewBag.Campuses = _context.Campuses.ToList();
+
+            //(admin dashboard)
             return View();
         }
 
