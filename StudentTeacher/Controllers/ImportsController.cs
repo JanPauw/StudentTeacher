@@ -439,7 +439,104 @@ namespace StudentTeacher.Controllers
                 using (MemoryStream stream = new MemoryStream())
                 {
                     wb.SaveAs(stream);
-                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Students.xlsx");
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "BulkImport.xlsx");
+                }
+            }
+        }
+
+        [HttpPost]
+        public async Task<FileResult> ExportStudentGradings(string StudentNumber, string SelectedYear)
+        {
+            if (string.IsNullOrEmpty(StudentNumber) || string.IsNullOrEmpty(SelectedYear))
+            {
+                return null;
+            }
+
+            //get student
+            Student student = await _context.Students.FindAsync(StudentNumber);
+            if (student == null)
+            {
+                return null;
+            }
+
+            //get gradings
+            List<Grading> gradings = await _context.Gradings.Where(x => x.Student == student.Number && "" + x.YearOfStudy == SelectedYear).ToListAsync();
+
+            DataTable dt = new DataTable("Grid");
+            dt.Columns.AddRange(new DataColumn[24] { new DataColumn("Date"),
+                                            new DataColumn("Year of Study"),
+                                            new DataColumn("Teacher"),
+                                            new DataColumn("Student Number"),
+                                            new DataColumn("Student Name and Surname"),
+                                            new DataColumn("Grade"),
+                                            new DataColumn("Subject"),
+                                            new DataColumn("Topic"),
+                                            new DataColumn("Sections A to D (of lesson plan)"),
+                                            new DataColumn("Sections A to D Commentary"),
+                                            new DataColumn("Section E"),
+                                            new DataColumn("Section E Commentary"),
+                                            new DataColumn("Introductory Phase"),
+                                            new DataColumn("Introductory Phase Commentary"),
+                                            new DataColumn("Teaching and Learning Phase"),
+                                            new DataColumn("Teaching and Learning Phase Commentary"),
+                                            new DataColumn("Closure Phase"),
+                                            new DataColumn("Closure Phase Commentary"),
+                                            new DataColumn("Assessment"),
+                                            new DataColumn("Assessment Commentary"),
+                                            new DataColumn("Classroom Presence"),
+                                            new DataColumn("Classroom Presence Commentary"),
+                                            new DataColumn("Learning Environment"),
+                                            new DataColumn("Learning Environment Commentary")
+            });
+
+            foreach (var grading in gradings)
+            {
+                #region get details from other classes
+                //get teacher
+                Teacher teacher = await _context.Teachers.FindAsync(grading.Teacher);
+                //Commentary
+                List<Commentary> comments = await _context.Commentaries.Where(x => x.GradingNumber == grading.Number).ToListAsync();
+                //get marks
+                Planning planning = await _context.Plannings.Where(x => x.GradingNumber == grading.Number).SingleOrDefaultAsync();
+                Execution execution = await _context.Executions.Where(x => x.GradingNumber == grading.Number).SingleOrDefaultAsync();
+                Overall overall = await _context.Overalls.Where(x => x.GradingNumber == grading.Number).SingleOrDefaultAsync();
+                #endregion
+
+                dt.Rows.Add(
+                    grading.Date,
+                    grading.YearOfStudy,
+                    teacher.FirstName + " " + teacher.LastName,
+                    student.Number,
+                    student.FirstName + " " + student.LastName,
+                    grading.Grade,
+                    grading.Subject,
+                    grading.Topic,
+                    planning.SectionAtoD,
+                    comments.Where(x => x.Criteria.Equals("SectionAtoD")).SingleOrDefault().Comment,
+                    planning.SectionE,
+                    comments.Where(x => x.Criteria.Equals("SectionE")).SingleOrDefault().Comment,
+                    execution.Intro,
+                    comments.Where(x => x.Criteria.Equals("Intro")).SingleOrDefault().Comment,
+                    execution.Teaching,
+                    comments.Where(x => x.Criteria.Equals("Teaching")).SingleOrDefault().Comment,
+                    execution.Closure,
+                    comments.Where(x => x.Criteria.Equals("Closure")).SingleOrDefault().Comment,
+                    execution.Assessment,
+                    comments.Where(x => x.Criteria.Equals("Assessment")).SingleOrDefault().Comment,
+                    overall.Presence,
+                    comments.Where(x => x.Criteria.Equals("Presence")).SingleOrDefault().Comment,
+                    overall.Environment,
+                    comments.Where(x => x.Criteria.Equals("Environment")).SingleOrDefault().Comment
+                    ) ;
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", student.Number + "_Gradings.xlsx");
                 }
             }
         }

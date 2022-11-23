@@ -35,34 +35,34 @@
 
 <label class="h1">Student Details: @Model.FirstName @Model.LastName</label>
 
-    <a id="btnEdit" style="float: right;" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Number">
-        <i class="bi bi-pencil-square"></i> Edit Details
-    </a>
-    <br />
-    <table id="tblName">
-        <thead>
-            <tr>
-                <th>
-                    First Name
-                </th>
-                <th>
-                    Last Name
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    @Model.FirstName
-                </td>
-                <td>
-                    @Model.LastName
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <br />
-    <div id="div1" class="table-responsive">
+<a id="btnEdit" style="float: right;" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Number">
+    <i class="bi bi-pencil-square"></i> Edit Details
+</a>
+<br />
+<table id="tblName">
+    <thead>
+        <tr>
+            <th>
+                First Name
+            </th>
+            <th>
+                Last Name
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Model.FirstName
+            </td>
+            <td>
+                @Model.LastName
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<div id="div1" class="table-responsive">
     <table id="tblNumber">
         <thead>
             <tr>
@@ -208,135 +208,156 @@
 <label class="h1">
     Gradings per Subject
 </label>
-@if (_role.Equals("Teacher"))
-{
-    <a asp-action="Create" asp-controller="Gradings" style="float: right;" class="btn btn-primary">
-        <i class="bi bi-plus-circle"></i> Add Grading
-    </a>
-}
+
 <br />
 
 <div id="div4" class="table-responsive">
-<table id="tblGradings">
-    <thead>
-        <tr>
-            <th>
-                Date
-            </th>
-            <th>
-                Topic
-            </th>
-            <th>
-                Teacher
-            </th>
-            <th>
-                Total
-            </th>
-            <th>
-                Details
-            </th>
-        </tr>
-    </thead>
-</table>
-
-<div class="accordion" id="accordionExample">
-    @{
-        var first = true;
-    }
-    @foreach (var subject in subjects)
+    @if (_role.Equals("Lecturer") || _role.Equals("Admin"))
     {
-
-
-        @if (first)
-        {
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="heading_@subject.Id">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@subject.Id" aria-expanded="true" aria-controls="collapse_@subject.Id">
-                        @subject.Subject1
-                    </button>
-                </h2>
-                <div id="collapse_@subject.Id" class="accordion-collapse collapse show" aria-labelledby="heading_@subject.Id" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <table id="tblGradings">
-                            <tbody>
-                                @for (int i = 0; i < gradings.Count; i++)
-                                {
-                                    if (gradings[i].Subject.Equals(subject.Subject1))
-                                    {
-                                        <tr>
-                                            <td>
-                                                @gradings[i].Date.ToShortDateString()
-                                            </td>
-                                            <td>
-                                                @gradings[i].Topic
-                                            </td>
-                                            <td>
-                                                @teachers[i]
-                                            </td>
-                                            <td>
-                                                @totals[i] / 80
-                                            </td>
-                                            <td>
-                                                <a class="btn btn-success" asp-action="Details" asp-controller="Gradings" asp-route-id="@gradings[i].Number">
-                                                    <i class="bi bi-info-circle"></i> Details
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            first = false;
-        }
-        else
-        {
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="heading_@subject.Id">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@subject.Id" aria-expanded="false" aria-controls="collapse_@subject.Id">
-                        @subject.Subject1
-                    </button>
-                </h2>
-                <div id="collapse_@subject.Id" class="accordion-collapse collapse" aria-labelledby="heading_@subject.Id" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <table id="tblGradings">
-                            <tbody>
-                                @for (int i = 0; i < gradings.Count; i++)
-                                {
-                                    if (gradings[i].Subject.Equals(subject.Subject1))
-                                    {
-                                        <tr>
-                                            <td>
-                                                @gradings[i].Date.ToShortDateString()
-                                            </td>
-                                            <td>
-                                                @gradings[i].Topic
-                                            </td>
-                                            <td>
-                                                @teachers[i]
-                                            </td>
-                                            <td>
-                                                @totals[i] / 80
-                                            </td>
-                                            <td>
-                                                <a class="btn btn-success" asp-action="Details" asp-controller="Gradings" asp-route-id="@gradings[i].Number">
-                                                    <i class="bi bi-info-circle"></i> Details
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        }
+        <form asp-action="ExportStudentGradings" asp-controller="Imports" method="post" target="_blank">
+            <input name="StudentNumber" value="@Model.Number" type="text" hidden required />
+            <input name="SelectedYear" value="@YearSelected" type="text" hidden required />
+            <a asp-action="Create" asp-controller="Gradings" style="float: right;" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Add Grading
+            </a>
+            <button style="float: right; margin-right:5px;" class="btn btn-success" type="submit">
+                <i class="bi bi-download"></i>
+                Export Gradings
+            </button>
+        </form>
+        <br />
+        <br />
+        
     }
-</div>
+    @if (_role.Equals("Teacher"))
+    {
+        <a asp-action="Create" asp-controller="Gradings" style="float: right;" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Add Grading
+        </a>
+        <br />
+        <br />
+    }
+    
+    <table id="tblGradings">
+        <thead>
+            <tr>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Topic
+                </th>
+                <th>
+                    Teacher
+                </th>
+                <th>
+                    Total
+                </th>
+                <th>
+                    Details
+                </th>
+            </tr>
+        </thead>
+    </table>
+
+    <div class="accordion" id="accordionExample">
+        @{
+            var first = true;
+        }
+        @foreach (var subject in subjects)
+        {
+
+
+            @if (first)
+            {
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading_@subject.Id">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@subject.Id" aria-expanded="true" aria-controls="collapse_@subject.Id">
+                            @subject.Subject1
+                        </button>
+                    </h2>
+                    <div id="collapse_@subject.Id" class="accordion-collapse collapse show" aria-labelledby="heading_@subject.Id" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <table id="tblGradings">
+                                <tbody>
+                                    @for (int i = 0; i < gradings.Count; i++)
+                                    {
+                                        if (gradings[i].Subject.Equals(subject.Subject1))
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @gradings[i].Date.ToShortDateString()
+                                                </td>
+                                                <td>
+                                                    @gradings[i].Topic
+                                                </td>
+                                                <td>
+                                                    @teachers[i]
+                                                </td>
+                                                <td>
+                                                    @totals[i] / 80
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-success" asp-action="Details" asp-controller="Gradings" asp-route-id="@gradings[i].Number">
+                                                        <i class="bi bi-info-circle"></i> Details
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                first = false;
+            }
+            else
+            {
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading_@subject.Id">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@subject.Id" aria-expanded="false" aria-controls="collapse_@subject.Id">
+                            @subject.Subject1
+                        </button>
+                    </h2>
+                    <div id="collapse_@subject.Id" class="accordion-collapse collapse" aria-labelledby="heading_@subject.Id" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <table id="tblGradings">
+                                <tbody>
+                                    @for (int i = 0; i < gradings.Count; i++)
+                                    {
+                                        if (gradings[i].Subject.Equals(subject.Subject1))
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @gradings[i].Date.ToShortDateString()
+                                                </td>
+                                                <td>
+                                                    @gradings[i].Topic
+                                                </td>
+                                                <td>
+                                                    @teachers[i]
+                                                </td>
+                                                <td>
+                                                    @totals[i] / 80
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-success" asp-action="Details" asp-controller="Gradings" asp-route-id="@gradings[i].Number">
+                                                        <i class="bi bi-info-circle"></i> Details
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
 </div>
 
 <br />
@@ -487,7 +508,7 @@
             width: 50%;
         }
 
-         #tblGradings {
+        #tblGradings {
             width: 200% !important;
         }
 
@@ -496,11 +517,11 @@
         }
     }
 
-     @@media only screen and (max-width:375px) {
+    @@media only screen and (max-width:375px) {
         #divCampusses table th {
             min-width: 40vw !important;
         }
-        
+
         #div2 {
             float: none !important;
             display: inline !important;
@@ -515,8 +536,8 @@
             float: left;
             width: 50%;
         }
-        
-         #tblGradings {
+
+        #tblGradings {
             width: 200% !important;
         }
 
@@ -534,7 +555,7 @@
         #divCampusses table th {
             min-width: 40vw !important;
         }
-        
+
         #div2 {
             float: none !important;
             display: inline !important;
@@ -549,7 +570,7 @@
             float: left;
             width: 50%;
         }
-        
+
         #tblGradings {
             width: 200% !important;
         }
@@ -557,7 +578,7 @@
         .accordion-header {
             width: 201% !important;
         }
-      
+
 
         a {
             width: 100px;
@@ -580,8 +601,8 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
     <script type="text/javascript">
-        $(function() {
-            $('.select2').each(function() {
+        $(function () {
+            $('.select2').each(function () {
                 $(this).select2({
                     theme: "bootstrap-5",
                     width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
