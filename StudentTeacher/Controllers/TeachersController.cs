@@ -93,7 +93,7 @@ namespace StudentTeacher.Controllers
             #endregion
 
             //Info to disiplay on Dashboard
-            ViewBag.Poes = studentList;
+            ViewBag.Students = studentList;
             ViewBag.Schools = _context.Schools.ToList();
             ViewBag.Teachers = _context.Teachers.ToList();
             ViewBag.Lecturers = _context.Lecturers.ToList();
