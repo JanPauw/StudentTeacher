@@ -1,4 +1,5 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Add School";
 
     //Get List of Campuses from Back-End
@@ -38,7 +39,7 @@
                     {
                         <option value="@campus.Name">@campus.Name</option>
                     }
-                    
+
                 </select>
                 <label for="floatingInput">Campus</label>
             </div>
@@ -46,6 +47,7 @@
         <br />
         <div id="buttons">
             <button type="submit" class="btn btn-success">Add Student</button>
+            <a asp-action="Index" class="btn btn-succes" style="background-color: #084E62; color: white; margin-top: 4px;">Back</a>
         </div>
     </form>
 </div>
@@ -79,5 +81,37 @@
 
     #buttons button, #buttons a {
         width: 100%;
+    }
+
+    /*Responive design*/
+
+    @@media only screen and (max-width:1024px) {
+        #Lec_Login {
+            width: 50%;
+        }
+    }
+
+    @@media only screen and (max-width:768px) {
+        #Lec_Login {
+            width: 60%;
+        }
+    }
+
+    @@media only screen and (max-width:425px) {
+        #Lec_Login {
+            width: 100%;
+        }
+    }
+
+    @@media only screen and (max-width:375px) {
+        #Lec_Login {
+            width: 100%;
+        }
+    }
+
+    @@media only screen and (max-width:320px) {
+        #Lec_Login {
+            width: 100%;
+        }
     }
 </style>

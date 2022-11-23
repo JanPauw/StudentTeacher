@@ -1,7 +1,288 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Dashboard";
+
+    //Get Lists to Display on Front-End
+    List<Student> students = ViewBag.Students;
+    List<Grading> gradings = (List<Grading>)ViewBag.Gradings;
 }
 
-<h1>Dashboard</h1>
+
+<div id="Tea_Dash">
+    <label class="h1">Dashboard</label>
+    <br />
+    <label class="h5">Welcome</label>
+    <hr />
+    <label class="h2">Varisty College Students</label>
+    <form style="width: 100%;" asp-action="Dashboard">
+        <div id="filterStudents" style="width: 40%;" class="input-group mb-3">
+            <select id="studentFilter" name="SearchOption" class="form-select" style="max-width: 40% !important">
+                <option value="1">Student Number</option>
+                <option value="2">Name & Surname</option>
+                <option value="3">Qualification</option>
+                <option value="4">Year of Study</option>
+                <option value="5">Campus</option>
+            </select>
+            <input name="SearchType" type="text" value="students" hidden />
+            <input type="text" id="criteria" name="Search" class="form-control" placeholder="Search..." aria-label="Recipient's username" aria-describedby="button-addon2">
+            <button class="btn btn-primary" type="submit" id="button-addon2" onclick="getStudentFilterResult()"> <i class="bi bi-search"></i> Search</button>
+        </div>
+    </form>
+    <div id="DivStudents" class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Student Number
+                    </th>
+                    <th>
+                        Name & Surname
+                    </th>
+                    <th>
+                        Qualification
+                    </th>
+                    <th>
+                        Year of Study
+                    </th>
+                    <th>
+                        Campus
+                    </th>
+                    <th>
+                        Details
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (students != null)
+                    {
+                        foreach (var item in students)
+                        {
+                            <tr>
+                                <td>
+                                    @item.Number
+                                </td>
+                                <td>
+                                    @item.FirstName @item.LastName
+                                </td>
+                                <td>
+                                    @item.Qualification
+                                </td>
+                                <td>
+                                    @item.YearOfStudy
+                                </td>
+                                <td>
+                                    @item.CampusNavigation.Name
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-controller="Students" asp-route-id="@item.Number" class="btn btn-success">
+                                        <i class="bi bi-info-circle"></i> Details
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <br />
+    <hr />
+    <label class="h2">Recent Gradings</label>
+    <div style="width: 100%; text-align: right;">
+        <form method="post" asp-action="Dashboard" style="width: 100%;">
+            <div id="filterGradings" style="width: 40%;" class="input-group mb-3">
+                <select id="gradingFilter" name="SearchOption" class="form-select" style="max-width: 40% !important">
+                    <option value="1">Date</option>
+                    <option value="2">Student</option>
+                    <option value="3">Teacher</option>
+                    <option value="4">Year of Study</option>
+                    <option value="5">Subject</option>
+                </select>
+                <input name="SearchType" type="text" value="gradings" hidden />
+                <input type="text" class="form-control" id="gradingCriteria" name="Search" placeholder="Search..." aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button class="btn btn-primary" type="submit" id="button-addon2"> <i class="bi bi-search"></i> Search</button>
+            </div>
+        </form>
+    </div>
+    <div>
+        <div id="DivGradings" class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Student Number
+                        </th>
+                        <th>
+                            Teacher
+                        </th>
+                        <th>
+                            Year of Study
+                        </th>
+                        <th>
+                            Subject
+                        </th>
+                        <th>
+                            Details
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in gradings)
+                    {
+                        <tr>
+                            <td>
+                                @item.Date.ToShortDateString()
+                            </td>
+                            <td>
+                                @item.Student
+                            </td>
+                            <td>
+                                @item.TeacherNavigation.FirstName.Substring(0, 1) @item.TeacherNavigation.LastName
+                            </td>
+                            <td>
+                                @item.YearOfStudy
+                            </td>
+                            <td>
+                                @item.Subject
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-controller="Gradings" asp-route-id="@item.Number" class="btn btn-success">
+                                    <i class="bi bi-info-circle"></i> Details
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+    <br />
+</div>
+
+<style>
+    #nav_Dashboard {
+        color: #495057;
+        background-color: #fff;
+        border-color: #dee2e6 #dee2e6 #fff;
+    }
+
+    main {
+        width: 100% !important;
+        background-color: white;
+        padding: 3%;
+    }
+
+    main {
+        box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    #Tea_Dash {
+        width: 100%;
+    }
+
+
+
+
+
+    #DivStudents {
+    }
+
+        #DivStudents table {
+        }
+
+            #DivStudents table thead tr {
+                background-color: #084E62;
+            }
+
+            #DivStudents table th {
+                padding: 1%;
+                color: white;
+            }
+
+            #DivStudents table tbody tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            #DivStudents table tbody tr:nth-child(odd) {
+                background-color: #E9E9E9;
+            }
+
+            #DivStudents table td {
+                padding: 1%;
+                color: black;
+            }
+
+    #DivGradings {
+        width: 100% !important;
+    }
+
+        #DivGradings table {
+        }
+
+            #DivGradings table tr {
+                background-color: #084E62;
+            }
+
+            #DivGradings table th {
+                padding: 1%;
+                color: white;
+                */
+            }
+
+            #DivGradings table tbody tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            #DivGradings table tbody tr:nth-child(odd) {
+                background-color: #E9E9E9;
+            }
+
+            #DivGradings table td {
+                padding: 1%;
+                color: black;
+            }
+
+
+
+    /*Responive design*/
+
+    @@media only screen and (max-width:1440px) {
+        /* For Large Laptops: */
+        #filterStudents, #filterGradings {
+            width: 40% !important;
+        }
+    }
+
+    @@media only screen and (max-width:1024px) {
+        /* For Laptops: */
+        #filterStudents, #filterGradings {
+            width: 100% !important;
+        }
+    }
+
+    @@media only screen and (max-width:768px) {
+        #DivGradings table th {
+            min-width: 20vw !important;
+        }
+
+        #DivStudents table th {
+            min-width: 20vw !important;
+        }
+    }
+
+    @@media only screen and (max-width:425px) {
+        #DivGradings table th {
+            min-width: 40vw !important;
+        }
+
+        #DivStudents table th {
+            min-width: 40vw !important;
+        }
+    }
+</style>
 

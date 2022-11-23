@@ -14,7 +14,7 @@
                 <label for="floatingInput">First Name</label>
             </div>
             <div class="form-floating mb-3">
-                <input name="LastName" type="text" class="form-control" id="floatingLastName" placeholder="eg. Doe" required value="@ViewBag.lastName"/>
+                <input name="LastName" type="text" class="form-control" id="floatingLastName" placeholder="eg. Doe" required value="@ViewBag.lastName" />
                 <label for="floatingInput">Last Name</label>
             </div>
         </div>
@@ -27,38 +27,73 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
-
-            
-<style>
-    #Lec_Login {
-        width: 35%;
-        margin: auto;
-        margin-top: 3%;
-        padding: 3%;
-        box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
-        text-align: center;
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     }
 
-    #Lec_Login {
-        background-color: white;
-    }
 
-        #Lec_Login img {
-            width: 80%;
-        }
-
-    #tbl_or {
-        width: 100%;
-    }
-
-        #tbl_or td {
-            width: 33%;
+    <style>
+        #Lec_Login {
+            width: 35%;
+            margin: auto;
+            margin-top: 3%;
+            padding: 3%;
+            box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
-    #buttons button, #buttons a {
-        width: 100%;
-    }
-</style>
+        #Lec_Login {
+            background-color: white;
+        }
+
+            #Lec_Login img {
+                width: 80%;
+            }
+
+        #tbl_or {
+            width: 100%;
+        }
+
+            #tbl_or td {
+                width: 33%;
+                text-align: center;
+            }
+
+        #buttons button, #buttons a {
+            width: 100%;
+        }
+
+        /*Responive design*/
+
+        @@media only screen and (max-width:1024px) {
+            #Lec_Login {
+                width: 50%;
+            }
+        }
+
+        @@media only screen and (max-width:768px) {
+            #Lec_Login {
+                width: 60%;
+            }
+        }
+
+        @@media only screen and (max-width:425px) {
+            #Lec_Login {
+                width: 100%;
+            }
+        }
+
+        @@media only screen and (max-width:375px) {
+            #Lec_Login {
+                width: 100%;
+            }
+        }
+
+        @@media only screen and (max-width:320px) {
+            #Lec_Login {
+                width: 100%;
+            }
+        }
+
+    </style>

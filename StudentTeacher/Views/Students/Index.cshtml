@@ -8,7 +8,7 @@
 
 <h1>
     Students
-    <a asp-action="Create" style="float: right;" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add Student</a>
+    <a id="btnAdd" asp-action="Create" style="float: right;" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add Student</a>
 </h1>
 
 <div id="divStudents" class="table-responsive">
@@ -130,6 +130,11 @@
         #divStudents table th {
             min-width: 40vw !important;
         }
+
+        #btnDetails {
+            margin-right: 0px !important;
+            margin-top: 5px !important;
+        }
     }
 
     @@media only screen and (max-width:320px) {
@@ -139,6 +144,11 @@
 
         a {
             width: 100px;
+        }
+
+        #btnAdd {
+            margin-right: 0px !important;
+            margin-top: 5px !important;
         }
 
         #divStudents {

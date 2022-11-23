@@ -9,7 +9,7 @@
 @*Main Content*@
 <div>
     <label class="h1">School Details: @Model.Name</label>
-    <a style="float: right;" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Code">
+    <a id="btnEdit" style="float: right;" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Code">
         <i class="bi bi-pencil-square"></i> Edit Details
     </a>
     <br />
@@ -63,102 +63,106 @@
     <br />
 
     <label class="h1">Students</label>
-    <table id="tblStudentsInSchool">
-        <thead>
-            <tr>
-                <th>
-                    Student Number
-                </th>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Qaulification
-                </th>
-                <th>
-                    Year of study
-                </th>
-                <th>
-                    Campus
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach (var student in @students)
-            {
+    <div id="divStudents" class="table-responsive">
+        <table id="tblStudentsInSchool">
+            <thead>
                 <tr>
-                    <td>
-                        @student.Number
-                    </td>
-                    <td>
-                        @student.FirstName @student.LastName
-                    </td>
-                    <td>
-                        @student.Qualification
-                    </td>
-                    <td>
-                        @student.YearOfStudy
-                    </td>
-                    <td>
-                        @student.Campus
-                    </td>
+                    <th>
+                        Student Number
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Qaulification
+                    </th>
+                    <th>
+                        Year of study
+                    </th>
+                    <th>
+                        Campus
+                    </th>
                 </tr>
-            }
+            </thead>
+            <tbody>
 
-        </tbody>
-    </table>
-    <br />
+                @foreach (var student in @students)
+                {
+                    <tr>
+                        <td>
+                            @student.Number
+                        </td>
+                        <td>
+                            @student.FirstName @student.LastName
+                        </td>
+                        <td>
+                            @student.Qualification
+                        </td>
+                        <td>
+                            @student.YearOfStudy
+                        </td>
+                        <td>
+                            @student.Campus
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
     <hr />
     <br />
 
     <label class="h1">Gradings</label>
-    <table id="tblGradingsAtSchool">
-        <thead>
-            <tr>
-                <th>
-                    Date
-                </th>
-                <th>
-                    Student
-                </th>
-                <th>
-                    Teacher
-                </th>
-                <th>
-                    Year of Study
-                </th>
-                <th>
-                    Subject
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach (var grading in @gradings)
-            {
+    <div id="divStudents" class="table-responsive">
+        <table id="tblGradingsAtSchool">
+            <thead>
                 <tr>
-                    <td>
-                        @grading.Date
-                    </td>
-                    <td>
-                        @grading.Student
-                    </td>
-                    <td>
-                        @grading.Teacher
-                    </td>
-                    <td>
-                        @grading.YearOfStudy
-                    </td>
-                    <td>
-                        @grading.Subject
-                    </td>
-
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Student
+                    </th>
+                    <th>
+                        Teacher
+                    </th>
+                    <th>
+                        Year of Study
+                    </th>
+                    <th>
+                        Subject
+                    </th>
                 </tr>
-            }
+            </thead>
+            <tbody>
 
-        </tbody>
-    </table>
+                @foreach (var grading in @gradings)
+                {
+                    <tr>
+                        <td>
+                            @grading.Date
+                        </td>
+                        <td>
+                            @grading.Student
+                        </td>
+                        <td>
+                            @grading.Teacher
+                        </td>
+                        <td>
+                            @grading.YearOfStudy
+                        </td>
+                        <td>
+                            @grading.Subject
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
 </div>
 
 
@@ -233,5 +237,69 @@
             padding: 1%;
             color: black;
         }
+
+
+    /*Responive design*/
+
+
+    @@media only screen and (max-width:1024px) {
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+    }
+
+    @@media only screen and (max-width:425px) {
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+
+        td {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
+
+        thead tr th {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
+    }
+
+    @@media only screen and (max-width:375px) {
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+
+        td {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
+
+        thead tr th {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
+    }
+
+
+    @@media only screen and (max-width:320px) {
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+
+        td {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
+
+        thead tr th {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
+    }
+
 </style>
 
