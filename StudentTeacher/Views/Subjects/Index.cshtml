@@ -11,22 +11,22 @@
 <label class="h1">Subjects Management</label>
 <div style="width: 100%;">
     <div id="SelectYear" class="input-group mb-3" style="width: 30%;">
-      <label class="input-group-text" for="inputGroupSelect01">Year of Study</label>
-      <select class="form-select" id="inputGroupSelect01" onchange="YearSelected()">
-        <option value="1" selected="@(Year == "1")">1st Year</option>
-        <option value="2" selected="@(Year == "2")">2nd Year</option>
-        <option value="3" selected="@(Year == "3")">3rd Year</option>
-        <option value="4" selected="@(Year == "4")">4th Year</option>
-      </select>
+        <label class="input-group-text" for="inputGroupSelect01">Year of Study</label>
+        <select class="form-select" id="inputGroupSelect01" onchange="YearSelected()">
+            <option value="1" selected="@(Year == "1")">1st Year</option>
+            <option value="2" selected="@(Year == "2")">2nd Year</option>
+            <option value="3" selected="@(Year == "3")">3rd Year</option>
+            <option value="4" selected="@(Year == "4")">4th Year</option>
+        </select>
     </div>
 </div>
 <div class="card overflow-hidden">
     <div class="card-header">
         <div class="d-flex flex-row justify-content-between">
             <h2 style="text-decoration: underline">Subjects</h2>
-            <a asp-action="Create" asp-route-year="@Year" class="btn btn-success">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Add_Subject">
                 <i class="bi bi-plus-circle"></i> Add Subject
-            </a>
+            </button>
         </div>
     </div>
     <div id="divSubjects" class="card-body" style="width: 100%;">
@@ -50,14 +50,14 @@
                                 @item.Subject1
                             </td>
                             <td style="width: 50%; text-align: right;">
-                                <button class="btn btn-primary btnEdit">
+                                <button type="button" class="btn btn-primary btnEdit" data-bs-toggle="modal" data-bs-target="#Edit_@item.Id">
                                     <i class="bi bi-pencil-square"></i>
                                     Edit
                                 </button>
                                 <button type="button" class="btn btn-danger btnDelete" data-bs-toggle="modal" data-bs-target="#Delete_@item.Id">
                                     <i class="bi bi-trash-fill"></i>
                                     Delete
-                                </button>                             
+                                </button>
                                 @*Delete Modal*@
                                 <div class="modal fade" id="Delete_@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -75,12 +75,29 @@
                                         </div>
                                     </div>
                                 </div>
+                                @*Edit Modal*@
+                                <div class="modal fade" id="Edit_@item.Id" tabindex="-1" role="dialog" aria-labelledby="EditModalCenterTitle">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="EditModalLongTitle">Edit Subject</h5>
+                                            </div>
+                                            <form method="post" asp-action="Edit">
+                                                <div class="modal-body" style="text-align: left;">
+                                                    <input name="Subject" class="form-control" placeholder="Subject..." value="@item.Subject1" required />
+                                                    <input name="year" value="@Year" hidden />
+                                                    <input name="SubjectID" value="@item.Id" hidden />
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button class="btn btn-success" type="submit">Save</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
-
-                        @*Edit Modal*@
-
-
                     }
                 </tbody>
             </table>
@@ -88,16 +105,57 @@
     </div>
 </div>
 
+@*Add Modal*@
+<div class="modal fade" id="Add_Subject" tabindex="-1" role="dialog" aria-labelledby="AddModalCenterTitle">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="AddModalLongTitle">Add Subject</h5>
+            </div>
+            <form method="post" asp-action="Create">
+                <div class="modal-body" style="text-align: left;">
+                    <input type="text" name="Subject" class="form-control" placeholder="Subject..." required />
+                    <input type="text" name="year" value="@Year" hidden />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-success" type="submit">Add Subject</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <style>
         main {
+            height: 100vh !important;
+            
         width: 100% !important;
         background-color: white;
         padding: 3%;
+    }
+    body {
+        overflow-y: hidden !important;
     }
 
     main {
         box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
     }
+
+    /*Scrollable Tables - START*/
+    .table-responsive {
+        height: auto;
+        max-height: 75vh;
+        overflow-y: scroll auto;
+    }
+
+    thead tr:nth-child(1) th {
+        background: #084E62;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    /*Scrollable Tables - END*/
 
     #divYears {
         background-color: white /*#E9E9E9*/;
@@ -128,12 +186,12 @@
 
     @@media only screen and (max-width:1440px) {
     /* For Large Laptops: */
-        
+
     }
 
     @@media only screen and (max-width:1024px) {
         /* For Laptops: */
-       
+
     }
 
     @@media only screen and (max-width:768px) {

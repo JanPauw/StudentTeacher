@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Bibliography;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -70,15 +71,42 @@ namespace StudentTeacher.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Subject1,YearOfStudy")] Subject subject)
+        public async Task<IActionResult> Create(string Subject, string Year)
         {
-            if (ModelState.IsValid)
+            Subject subject = new Subject();
+
+            if (string.IsNullOrEmpty(Subject))
             {
-                _context.Add(subject);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                TempData["error"] = "Invalid Subject entered!";
+                return RedirectToAction("Index", "Subjects");
             }
-            return View(subject);
+
+            if (string.IsNullOrEmpty(Year))
+            {
+                TempData["error"] = "Invalid year selected!";
+                return RedirectToAction("Index", "Subjects");
+            }
+
+            try
+            {
+                int test = Convert.ToInt32(Year);
+            }
+            catch (Exception e)
+            {
+                TempData["error"] = "Invalid year selected!";
+                return RedirectToAction("Index", "Subjects");
+            }
+
+            subject.Subject1 = Subject;
+            subject.YearOfStudy = Year;
+            subject.AmountOfClasses = 0;
+
+            _context.Subjects.Add(subject);
+            await _context.SaveChangesAsync();
+
+            TempData["success"] = "Subject added successfully!";
+
+            return RedirectToAction("Index", "Subjects", new { year = Year}); ;
         }
 
         // GET: Subjects/Edit/5
@@ -102,34 +130,28 @@ namespace StudentTeacher.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Subject1,YearOfStudy")] Subject subject)
+        public async Task<IActionResult> Edit(int SubjectID, string Subject)
         {
-            if (id != subject.Id)
+            Subject s = _context.Subjects.Find(SubjectID);
+            if (s == null)
             {
-                return NotFound();
+                TempData["error"] = "Invalid Subject selected!";
+                return RedirectToAction("Index");
             }
 
-            if (ModelState.IsValid)
+            if (String.IsNullOrEmpty(Subject))
             {
-                try
-                {
-                    _context.Update(subject);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SubjectExists(subject.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                TempData["error"] = "Invalid subject entered!";
+                return RedirectToAction("Index", new { year = s.YearOfStudy });
             }
-            return View(subject);
+
+            s.Subject1 = Subject;
+
+            _context.Subjects.Update(s);
+            await _context.SaveChangesAsync();
+
+            TempData["success"] = "Subject updated!";
+            return RedirectToAction("Index", new { year = s.YearOfStudy });
         }
 
         // GET: Subjects/Delete/5
@@ -147,11 +169,13 @@ namespace StudentTeacher.Controllers
                 return NotFound();
             }
 
+            var year = subject.YearOfStudy;
+
             _context.Subjects.Remove(subject);
             await _context.SaveChangesAsync();
 
             TempData["success"] = "Subject deleted!";
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new {year = year});
         }
 
         // POST: Subjects/Delete/5

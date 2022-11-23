@@ -1,40 +1,490 @@
 ﻿@model StudentTeacher.Models.Grading
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Details";
+
+    //get variables out of viewbag
+    var SectionAtoD = ViewBag.SectionAtoD;
+    var SectionE = ViewBag.SectionE;
+    var Intro = ViewBag.Intro;
+    var Teaching = ViewBag.Teaching;
+    var Closure = ViewBag.Closure;
+    var Assessment = ViewBag.Assessment;
+    var Presence = ViewBag.Presence;
+    var Environment = ViewBag.Environment;
+
+    Teacher teacher = ViewBag.Teacher;
+    Student student = ViewBag.Student;
+    Grading grading = ViewBag.Grading;
+
+    List<Subject> subjects = ViewBag.Subjects;
+
+    List<Commentary> comments = ViewBag.Comments;
 }
-
-<h1>Edit</h1>
-
-<h4>Grading</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Number" />
-            <div class="form-group">
-                <label asp-for="Student" class="control-label"></label>
-                <select asp-for="Student" class="form-control" asp-items="ViewBag.Student"></select>
-                <span asp-validation-for="Student" class="text-danger"></span>
+<a class="btn btn-primary" asp-action="Details" asp-route-id="@Model.Number">
+    <i class="bi bi-arrow-left-circle"></i>
+    Back
+</a>
+<br />
+<br />
+<h1>Edit Grading</h1>
+<br />
+<form asp-action="Edit" method="post">
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Year of Study
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Model.Date.ToShortDateString()
+                </td>
+                <td>
+                    Year @Model.YearOfStudy
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Teacher
+                </th>
+                <th>
+                    Student
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @teacher.FirstName.Substring(0, 1) @teacher.LastName
+                </td>
+                <td>
+                    @student.FirstName @student.LastName | @Model.Student
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Grade & Subject
+                </th>
+                <th>
+                    Topic
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <select name="Grade" class="form-select" style="width: 29%; float: left;">
+                        <option value="4" selected="@(Model.Grade == 4)">Grade 4</option>
+                        <option value="5" selected="@(Model.Grade == 5)">Grade 5</option>
+                        <option value="6" selected="@(Model.Grade == 6)">Grade 6</option>
+                        <option value="7" selected="@(Model.Grade == 7)">Grade 7</option>
+                    </select>
+                    <select name="Subject" class="form-select" style="width: 69%; float: left;">
+                        @foreach (var item in subjects)
+                        {
+                            <option value="@item.Subject1" selected="@(item.Subject1 == Model.Subject)">@item.Subject1</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <input name="Topic" class="form-control" value="@Model.Topic" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <h2 class="h2">Mark Allocation</h2>
+    <hr />
+    <div class="card" id="SectionA">
+        <div class="card-header">
+            <label class="h3">SECTION A: LESSON PLANNING</label>
+            <label class="h4" style="float: right;">Section: @(SectionAtoD + SectionE) / 20</label>
+        </div>
+        <div class="card-body" id="SectionAtoD">
+            <label class="h5">Sections A to D (of lesson plan)</label>
+            <label class="h6" style="float: right;">@(SectionAtoD) / 10</label>
+            <br />
+            <div class="rate">
+                <fieldset class="rate">
+                    <input type="radio" id="Arating10" name="Arating" value="10" checked="@(SectionAtoD == 10)" />
+                    <label for="Arating10" title="5 stars"></label>
+                    <input type="radio" id="Arating9" name="Arating" value="9" checked="@(SectionAtoD == 9)" />
+                    <label class="half" for="Arating9" title="4 1/2 stars"></label>
+                    <input type="radio" id="Arating8" name="Arating" value="8" checked="@(SectionAtoD == 8)" />
+                    <label for="Arating8" title="4 stars"></label>
+                    <input type="radio" id="Arating7" name="Arating" value="7" checked="@(SectionAtoD == 7)" />
+                    <label class="half" for="Arating7" title="3 1/2 stars"></label>
+                    <input type="radio" id="Arating6" name="Arating" value="6" checked="@(SectionAtoD == 6)" />
+                    <label for="Arating6" title="3 stars"></label>
+                    <input type="radio" id="Arating5" name="Arating" value="5" checked="@(SectionAtoD == 5)" />
+                    <label class="half" for="Arating5" title="2 1/2 stars"></label>
+                    <input type="radio" id="Arating4" name="Arating" value="4" checked="@(SectionAtoD == 4)" />
+                    <label for="Arating4" title="2 stars"></label>
+                    <input type="radio" id="Arating3" name="Arating" value="3" checked="@(SectionAtoD == 3)" />
+                    <label class="half" for="Arating3" title="1 1/2 stars"></label>
+                    <input type="radio" id="Arating2" name="Arating" value="2" checked="@(SectionAtoD == 2)" />
+                    <label for="Arating2" title="1 star"></label>
+                    <input type="radio" id="Arating1" name="Arating" value="1" checked="@(SectionAtoD == 1)" />
+                    <label class="half" for="Arating1" title="1/2 star"></label>
+                </fieldset>
             </div>
-            <div class="form-group">
-                <label asp-for="Teacher" class="control-label"></label>
-                <select asp-for="Teacher" class="form-control" asp-items="ViewBag.Teacher"></select>
-                <span asp-validation-for="Teacher" class="text-danger"></span>
+            <br />
+            <h6>Comments:</h6>
+            <textarea id="ComSectionAtoD" name="ComSectionAtoD" rows="4" class="form-control">@Model.Commentaries.Where(x => x.Criteria == "SectionAtoD").SingleOrDefault().Comment.Trim()</textarea>
+        </div>
+        <hr />
+        <div class="card-body" id="SectionE">
+            <label class="h5">Section E (of lesson plan)</label>
+            <label class="h6" style="float: right;">@(SectionE) / 10</label>
+            <br />
+            <div class="rate">
+                <fieldset class="rate">
+                    <input type="radio" id="Erating10" name="Erating" value="10" checked="@(SectionE == 10)" />
+                    <label for="Erating10" title="5 stars"></label>
+                    <input type="radio" id="Erating9" name="Erating" value="9" checked="@(SectionE == 9)" />
+                    <label class="half" for="Erating9" title="4 1/2 stars"></label>
+                    <input type="radio" id="Erating8" name="Erating" value="8" checked="@(SectionE == 8)" />
+                    <label for="Erating8" title="4 stars"></label>
+                    <input type="radio" id="Erating7" name="Erating" value="7" checked="@(SectionE == 7)" />
+                    <label class="half" for="Erating7" title="3 1/2 stars"></label>
+                    <input type="radio" id="Erating6" name="Erating" value="6" checked="@(SectionE == 6)" />
+                    <label for="Erating6" title="3 stars"></label>
+                    <input type="radio" id="Erating5" name="Erating" value="5" checked="@(SectionE == 5)" />
+                    <label class="half" for="Erating5" title="2 1/2 stars"></label>
+                    <input type="radio" id="Erating4" name="Erating" value="4" checked="@(SectionE == 4)" />
+                    <label for="Erating4" title="2 stars"></label>
+                    <input type="radio" id="Erating3" name="Erating" value="3" checked="@(SectionE == 3)" />
+                    <label class="half" for="Erating3" title="1 1/2 stars"></label>
+                    <input type="radio" id="Erating2" name="Erating" value="2" checked="@(SectionE == 2)" />
+                    <label for="Erating2" title="1 star"></label>
+                    <input type="radio" id="Erating1" name="Erating" value="1" checked="@(SectionE == 1)" />
+                    <label class="half" for="Erating1" title="1/2 star"></label>
+                </fieldset>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                <button asp-action="Details" asp-route-id="@Model.Number" class="btn btn-succes" style="background-color: #084E62; color: white; margin-top: 4px;">Back</button>
-            </div>
-        </form>
+            <br />
+            <h6>Comments:</h6>
+            <textarea id="ComSectionE" name="ComSectionE" rows="4" class="form-control" placeholder="Enter commentary...">@Model.Commentaries.Where(x => x.Criteria == "SectionE").SingleOrDefault().Comment.Trim()</textarea>
+        </div>
     </div>
-</div>
+    <br />
+    <div class="card" id="SectionB">
+        <div class="card-header">
+            <label class="h3">SECTION B: EXECUTION OF LESSON AS PER THE LESSON PLAN</label>
+            <label class="h4" style="float: right;">Section: @(Intro + Teaching + Closure + Assessment) / 40</label>
+        </div>
+        <div class="card-body" id="Intro">
+            <label class="h5">Introductory Phase</label>
+            <label class="h6" style="float: right;">@(Intro) / 10</label>
+            <br />
+            <div class="rate">
+                <fieldset class="rate">
+                    <input type="radio" id="INTROrating10" name="INTROrating" value="10" checked="@(Intro == 10)" />
+                    <label for="INTROrating10" title="5 stars"></label>
+                    <input type="radio" id="INTROrating9" name="INTROrating" value="9" checked="@(Intro == 9)" />
+                    <label class="half" for="INTROrating9" title="4 1/2 stars"></label>
+                    <input type="radio" id="INTROrating8" name="INTROrating" value="8" checked="@(Intro == 8)" />
+                    <label for="INTROrating8" title="4 stars"></label>
+                    <input type="radio" id="INTROrating7" name="INTROrating" value="7" checked="@(Intro == 7)" />
+                    <label class="half" for="INTROrating7" title="3 1/2 stars"></label>
+                    <input type="radio" id="INTROrating6" name="INTROrating" value="6" checked="@(Intro == 6)" />
+                    <label for="INTROrating6" title="3 stars"></label>
+                    <input type="radio" id="INTROrating5" name="INTROrating" value="5" checked="@(Intro == 5)" />
+                    <label class="half" for="INTROrating5" title="2 1/2 stars"></label>
+                    <input type="radio" id="INTROrating4" name="INTROrating" value="4" checked="@(Intro == 4)" />
+                    <label for="INTROrating4" title="2 stars"></label>
+                    <input type="radio" id="INTROrating3" name="INTROrating" value="3" checked="@(Intro == 3)" />
+                    <label class="half" for="INTROrating3" title="1 1/2 stars"></label>
+                    <input type="radio" id="INTROrating2" name="INTROrating" value="2" checked="@(Intro == 2)" />
+                    <label for="INTROrating2" title="1 star"></label>
+                    <input type="radio" id="INTROrating1" name="INTROrating" value="1" checked="@(Intro == 1)" />
+                    <label class="half" for="INTROrating1" title="1/2 star"></label>
+                </fieldset>
+            </div>
+            <br />
+            <h6>Comments:</h6>
+            <textarea id="ComIntro" name="ComIntro" rows="4" class="form-control" placeholder="Enter commentary...">@Model.Commentaries.Where(x => x.Criteria == "Intro").SingleOrDefault().Comment.Trim()</textarea>
+        </div>
+        <hr />
+        <div class="card-body" id="Teaching">
+            <label class="h5">Teaching and Learning Phase</label>
+            <label class="h6" style="float: right;">@(Teaching) / 10</label>
+            <br />
+            <div class="rate">
+                <fieldset class="rate">
+                    <input type="radio" id="EXErating10" name="EXErating" value="10" checked="@(Teaching == 10)" />
+                    <label for="EXErating10" title="5 stars"></label>
+                    <input type="radio" id="EXErating9" name="EXErating" value="9" checked="@(Teaching == 9)" />
+                    <label class="half" for="EXErating9" title="4 1/2 stars"></label>
+                    <input type="radio" id="EXErating8" name="EXErating" value="8" checked="@(Teaching == 8)" />
+                    <label for="EXErating8" title="4 stars"></label>
+                    <input type="radio" id="EXErating7" name="EXErating" value="7" checked="@(Teaching == 7)" />
+                    <label class="half" for="EXErating7" title="3 1/2 stars"></label>
+                    <input type="radio" id="EXErating6" name="EXErating" value="6" checked="@(Teaching == 6)" />
+                    <label for="EXErating6" title="3 stars"></label>
+                    <input type="radio" id="EXErating5" name="EXErating" value="5" checked="@(Teaching == 5)" />
+                    <label class="half" for="EXErating5" title="2 1/2 stars"></label>
+                    <input type="radio" id="EXErating4" name="EXErating" value="4" checked="@(Teaching == 4)" />
+                    <label for="EXErating4" title="2 stars"></label>
+                    <input type="radio" id="EXErating3" name="EXErating" value="3" checked="@(Teaching == 3)" />
+                    <label class="half" for="EXErating3" title="1 1/2 stars"></label>
+                    <input type="radio" id="EXErating2" name="EXErating" value="2" checked="@(Teaching == 2)" />
+                    <label for="EXErating2" title="1 star"></label>
+                    <input type="radio" id="EXErating1" name="EXErating" value="1" checked="@(Teaching == 1)" />
+                    <label class="half" for="EXErating1" title="1/2 star"></label>
+                </fieldset>
+            </div>
+            <br />
+            <h6>Comments:</h6>
+            <textarea id="ComTeaching" name="ComTeaching" rows="4" class="form-control" placeholder="Enter commentary...">@Model.Commentaries.Where(x => x.Criteria == "Teaching").SingleOrDefault().Comment.Trim()</textarea>
+        </div>
+        <hr />
+        <div class="card-body" id="Closure">
+            <label class="h5">Closure Phase</label>
+            <label class="h6" style="float: right;">@(Closure) / 10</label>
+            <br />
+            <div class="rate">
+                <fieldset class="rate">
+                    <input type="radio" id="CLOSURErating10" name="CLOSURErating" value="10" checked="@(Closure == 10)" />
+                    <label for="CLOSURErating10" title="5 stars"></label>
+                    <input type="radio" id="CLOSURErating9" name="CLOSURErating" value="9" checked="@(Closure == 9)" />
+                    <label class="half" for="CLOSURErating9" title="4 1/2 stars"></label>
+                    <input type="radio" id="CLOSURErating8" name="CLOSURErating" value="8" checked="@(Closure == 8)" />
+                    <label for="CLOSURErating8" title="4 stars"></label>
+                    <input type="radio" id="CLOSURErating7" name="CLOSURErating" value="7" checked="@(Closure == 7)" />
+                    <label class="half" for="CLOSURErating7" title="3 1/2 stars"></label>
+                    <input type="radio" id="CLOSURErating6" name="CLOSURErating" value="6" checked="@(Closure == 6)" />
+                    <label for="CLOSURErating6" title="3 stars"></label>
+                    <input type="radio" id="CLOSURErating5" name="CLOSURErating" value="5" checked="@(Closure == 5)" />
+                    <label class="half" for="CLOSURErating5" title="2 1/2 stars"></label>
+                    <input type="radio" id="CLOSURErating4" name="CLOSURErating" value="4" checked="@(Closure == 4)" />
+                    <label for="CLOSURErating4" title="2 stars"></label>
+                    <input type="radio" id="CLOSURErating3" name="CLOSURErating" value="3" checked="@(Closure == 3)" />
+                    <label class="half" for="CLOSURErating3" title="1 1/2 stars"></label>
+                    <input type="radio" id="CLOSURErating2" name="CLOSURErating" value="2" checked="@(Closure == 2)" />
+                    <label for="CLOSURErating2" title="1 star"></label>
+                    <input type="radio" id="CLOSURErating1" name="CLOSURErating" value="1" checked="@(Closure == 1)" />
+                    <label class="half" for="CLOSURErating1" title="1/2 star"></label>
+                </fieldset>
+            </div>
+            <br />
+            <h6>Comments:</h6>
+            <textarea id="ComClosure" name="ComClosure" rows="4" class="form-control" placeholder="Enter commentary...">@Model.Commentaries.Where(x => x.Criteria == "Closure").SingleOrDefault().Comment.Trim()</textarea>
+        </div>
+        <hr />
+        <div class="card-body" id="Assessment">
+            <label class="h5">Assessment</label>
+            <label class="h6" style="float: right;">@(Assessment) / 10</label>
+            <br />
+            <div class="rate">
+                <fieldset class="rate">
+                    <input type="radio" id="ASSESSMENTrating10" name="ASSESSMENTrating" value=" 10" checked="@(Assessment == 10)" />
+                    <label for="ASSESSMENTrating10" title="5 stars"></label>
+                    <input type="radio" id="ASSESSMENTrating9" name="ASSESSMENTrating" value="9" checked="@(Assessment == 9)" />
+                    <label class="half" for="ASSESSMENTrating9" title="4 1/2 stars"></label>
+                    <input type="radio" id="ASSESSMENTrating8" name="ASSESSMENTrating" value="8" checked="@(Assessment == 8)" />
+                    <label for="ASSESSMENTrating8" title="4 stars"></label>
+                    <input type="radio" id="ASSESSMENTrating7" name="ASSESSMENTrating" value="7" checked="@(Assessment == 7)" />
+                    <label class="half" for="ASSESSMENTrating7" title="3 1/2 stars"></label>
+                    <input type="radio" id="ASSESSMENTrating6" name="ASSESSMENTrating" value="6" checked="@(Assessment == 6)" />
+                    <label for="ASSESSMENTrating6" title="3 stars"></label>
+                    <input type="radio" id="ASSESSMENTrating5" name="ASSESSMENTrating" value="5" checked="@(Assessment == 5)" />
+                    <label class="half" for="ASSESSMENTrating5" title="2 1/2 stars"></label>
+                    <input type="radio" id="ASSESSMENTrating4" name="ASSESSMENTrating" value="4" checked="@(Assessment == 4)" />
+                    <label for="ASSESSMENTrating4" title="2 stars"></label>
+                    <input type="radio" id="ASSESSMENTrating3" name="ASSESSMENTrating" value="3" checked="@(Assessment == 3)" />
+                    <label class="half" for="ASSESSMENTrating3" title="1 1/2 stars"></label>
+                    <input type="radio" id="ASSESSMENTrating2" name="ASSESSMENTrating" value="2" checked="@(Assessment == 2)" />
+                    <label for="ASSESSMENTrating2" title="1 star"></label>
+                    <input type="radio" id="ASSESSMENTrating1" name="ASSESSMENTrating" value="1" checked="@(Assessment == 1)" />
+                    <label class="half" for="ASSESSMENTrating1" title="1/2 star"></label>
+                </fieldset>
+            </div>
+            <br />
+            <h6>Comments:</h6>
+            <textarea id="ComAssessment" name="ComAssessment" rows="4" class="form-control" placeholder="Enter commentary...">@Model.Commentaries.Where(x => x.Criteria == "Assessment").SingleOrDefault().Comment.Trim()</textarea>
+        </div>
+    </div>
+    <br />
+    <div class="card" id="SectionC">
+        <div class="card-header">
+            <label class="h3">SECTION C: OVERALL SENSE OF THE LESSON</label>
+            <label class="h4" style="float: right;">Section: @(Presence + Environment) / 20</label>
+        </div>
+        <div class="card-body" id="Presence">
+            <label class="h5">Classroom Presence</label>
+            <label class="h6" style="float: right;">@(Presence) / 10</label>
+            <br />
+            <div class="rate">
+                <fieldset class="rate">
+                    <input type="radio" id="PRESENCErating10" name="PRESENCErating" value="10" checked="@(Presence == 10)" />
+                    <label for="PRESENCErating10" title="5 stars"></label>
+                    <input type="radio" id="PRESENCErating9" name="PRESENCErating" value="9" checked="@(Presence == 9)" />
+                    <label class="half" for="PRESENCErating9" title="4 1/2 stars"></label>
+                    <input type="radio" id="PRESENCErating8" name="PRESENCErating" value="8" checked="@(Presence == 8)" />
+                    <label for="PRESENCErating8" title="4 stars"></label>
+                    <input type="radio" id="PRESENCErating7" name="PRESENCErating" value="7" checked="@(Presence == 7)" />
+                    <label class="half" for="PRESENCErating7" title="3 1/2 stars"></label>
+                    <input type="radio" id="PRESENCErating6" name="PRESENCErating" value="6" checked="@(Presence == 6)" />
+                    <label for="PRESENCErating6" title="3 stars"></label>
+                    <input type="radio" id="PRESENCErating5" name="PRESENCErating" value="5" checked="@(Presence == 5)" />
+                    <label class="half" for="PRESENCErating5" title="2 1/2 stars"></label>
+                    <input type="radio" id="PRESENCErating4" name="PRESENCErating" value="4" checked="@(Presence == 4)" />
+                    <label for="PRESENCErating4" title="2 stars"></label>
+                    <input type="radio" id="PRESENCErating3" name="PRESENCErating" value="3" checked="@(Presence == 3)" />
+                    <label class="half" for="PRESENCErating3" title="1 1/2 stars"></label>
+                    <input type="radio" id="PRESENCErating2" name="PRESENCErating" value="2" checked="@(Presence == 2)" />
+                    <label for="PRESENCErating2" title="1 star"></label>
+                    <input type="radio" id="PRESENCErating1" name="PRESENCErating" value="1" checked="@(Presence == 1)" />
+                    <label class="half" for="PRESENCErating1" title="1/2 star"></label>
+                </fieldset>
+            </div>
+            <br />
+            <h6>Comments:</h6>
+            <textarea id="ComPresence" name="ComPresence" rows="4" class="form-control" placeholder="Enter commentary...">@Model.Commentaries.Where(x => x.Criteria == "Presence").SingleOrDefault().Comment.Trim()</textarea>
+        </div>
+        <hr />
+        <div class="card-body" id="Environment">
+            <label class="h5">Learning Environment</label>
+            <label class="h6" style="float: right;">@(Environment) / 10</label>
+            <br />
+            <div class="rate">
+                <fieldset class="rate">
+                    <input type="radio" id="ENVIRONMENTrating10" name="ENVIRONMENTrating" value="10" checked="@(Environment == 10)" />
+                    <label for="ENVIRONMENTrating10" title="5 stars"></label>
+                    <input type="radio" id="ENVIRONMENTrating9" name="ENVIRONMENTrating" value="9" checked="@(Environment == 9)" />
+                    <label class="half" for="ENVIRONMENTrating9" title="4 1/2 stars"></label>
+                    <input type="radio" id="ENVIRONMENTrating8" name="ENVIRONMENTrating" value="8" checked="@(Environment == 8)" />
+                    <label for="ENVIRONMENTrating8" title="4 stars"></label>
+                    <input type="radio" id="ENVIRONMENTrating7" name="ENVIRONMENTrating" value="7" checked="@(Environment == 7)" />
+                    <label class="half" for="ENVIRONMENTrating7" title="3 1/2 stars"></label>
+                    <input type="radio" id="ENVIRONMENTrating6" name="ENVIRONMENTrating" value="6" checked="@(Environment == 6)" />
+                    <label for="ENVIRONMENTrating6" title="3 stars"></label>
+                    <input type="radio" id="ENVIRONMENTrating5" name="ENVIRONMENTrating" value="5" checked="@(Environment == 5)" />
+                    <label class="half" for="ENVIRONMENTrating5" title="2 1/2 stars"></label>
+                    <input type="radio" id="ENVIRONMENTrating4" name="ENVIRONMENTrating" value="4" checked="@(Environment == 4)" />
+                    <label for="ENVIRONMENTrating4" title="2 stars"></label>
+                    <input type="radio" id="ENVIRONMENTrating3" name="ENVIRONMENTrating" value="3" checked="@(Environment == 3)" />
+                    <label class="half" for="ENVIRONMENTrating3" title="1 1/2 stars"></label>
+                    <input type="radio" id="ENVIRONMENTrating2" name="ENVIRONMENTrating" value="2" checked="@(Environment == 2)" />
+                    <label for="ENVIRONMENTrating2" title="1 star"></label>
+                    <input type="radio" id="ENVIRONMENTrating1" name="ENVIRONMENTrating" value="1" checked="@(Environment == 1)" />
+                    <label class="half" for="ENVIRONMENTrating1" title="1/2 star"></label>
+                </fieldset>
+            </div>
+            <br />
+            <h6>Comments:</h6>
+            <textarea id="ComEnvironment" name="ComEnvironment" rows="4" class="form-control" placeholder="Enter commentary...">@Model.Commentaries.Where(x => x.Criteria == "Environment").SingleOrDefault().Comment.Trim()</textarea>
+        </div>
+    </div>
+    <br />
+    <div id="divSaveChanges">
+        <button class="btn btn-success" type="submit">Save Changes</button>
+    </div>
+</form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<style>
+    main {
+        width: 100% !important;
+        background-color: white;
+        padding: 3%;
+    }
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    main {
+        box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+        width: 100%;
+    }
+
+        table thead tr {
+            background-color: #084E62;
+        }
+
+        table th {
+            padding: 1%;
+            color: white;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table tbody tr:nth-child(odd) {
+            background-color: #E9E9E9;
+        }
+
+        table tbody td {
+            width: 25%;
+            padding: 1%;
+            color: black;
+        }
+</style>
+
+@*Star Rating CSS: https://codepen.io/hesguru/pen/BaybqXv*@
+<style>
+    /* Base setup */
+    @@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
+
+    /* Ratings widget */
+    .rate {
+        display: inline-block;
+        border: 0;
+    }
+        /* Hide radio */
+        .rate > input {
+            display: none;
+        }
+        /* Order correctly by floating highest to the right */
+        .rate > label {
+            float: right;
+        }
+            /* The star of the show */
+            .rate > label:before {
+                display: inline-block;
+                font-size: 2rem;
+                padding: .3rem .2rem;
+                margin: 0;
+                cursor: pointer;
+                font-family: FontAwesome;
+                content: "\f005 "; /* full star */
+            }
+
+        /* Half star trick */
+        .rate .half:before {
+            content: "\f089 "; /* half star no outline */
+            position: absolute;
+            padding-right: 0;
+        }
+    /* Click + hover color */
+    input:checked ~ label, /* color current and previous stars on checked */
+    label:hover, label:hover ~ label {
+        color: gold;
+    }
+        /* color previous stars on hover */
+
+        /* Hover highlights */
+        input:checked + label:hover, input:checked ~ label:hover, /* highlight current and previous stars */
+        input:checked ~ label:hover ~ label, /* highlight previous selected stars for new rating */
+        label:hover ~ input:checked ~ label /* highlight previous selected stars */ {
+            color: gold;
+        }
+</style>

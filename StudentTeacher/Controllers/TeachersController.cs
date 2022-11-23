@@ -27,7 +27,7 @@ namespace StudentTeacher.Controllers
         }
 
         // GET: Dashboard
-        public IActionResult Dashboard()
+        public IActionResult Dashboard(string? SearchType, string? SearchOption, string? Search)
         {
             //get current logged in teacher
             string email = HttpContext.Session.GetString("_email");
@@ -52,13 +52,6 @@ namespace StudentTeacher.Controllers
             {
                 HttpContext.Session.Clear();
                 return RedirectToAction("Login", "Users");
-            }
-
-            var FilterAction = HttpContext.Request.Query["filterAction"];
-
-            if (string.IsNullOrWhiteSpace(FilterAction))
-            {
-                return RedirectToAction("Dashboard", "Teachers", new { filterAction = 0 });
             }
 
             //check which user is logged in by role
@@ -89,7 +82,7 @@ namespace StudentTeacher.Controllers
                     return RedirectToAction("LogOut", "Users");
                 }
 
-                StudentSchool ss = studentSchools.Where(x => x.Student == s.Number).SingleOrDefault();
+                StudentSchool ss = studentSchools.Where(x => x.Student == s.Number && x.PlacementYear == s.YearOfStudy).SingleOrDefault();
 
                 //Check null
                 if (ss != null)
@@ -100,14 +93,58 @@ namespace StudentTeacher.Controllers
             #endregion
 
             //Info to disiplay on Dashboard
-            ViewBag.Students = studentList;
+            ViewBag.Poes = studentList;
             ViewBag.Schools = _context.Schools.ToList();
             ViewBag.Teachers = _context.Teachers.ToList();
             ViewBag.Lecturers = _context.Lecturers.ToList();
             ViewBag.Gradings = _context.Gradings.Where(x => x.TeacherNavigation.Email == email).OrderByDescending(x => x.Date).ToList();
             ViewBag.Campuses = _context.Campuses.ToList();
 
+            #region Check for Null or Empty in Searches
+            if (String.IsNullOrEmpty(SearchType))
+            {
+                return View();
+            }
 
+            if (String.IsNullOrEmpty(SearchOption))
+            {
+                return View();
+            }
+
+            if (String.IsNullOrEmpty(Search))
+            {
+                return View();
+            }
+            #endregion
+
+            
+
+            #region Students Search
+            if (SearchType == "students")
+            {
+                switch (SearchOption)
+                {
+                    case "1":
+                        ViewBag.Students = studentList.Where(x => x.Number.Contains(Search)).ToList();
+                        break;
+                    case "2":
+                        ViewBag.Students = studentList.Where(x => (x.FirstName + " " + x.LastName).Contains(Search)).ToList();
+                        break;
+                    case "3":
+                        ViewBag.Students = studentList.Where(x => x.Qualification.Contains(Search)).ToList();
+                        break;
+                    case "4":
+                        ViewBag.Students = studentList.Where(x => ("" + x.YearOfStudy).Contains(Search)).ToList();
+                        break;
+                    case "5":
+                        ViewBag.Students = studentList.Where(x => x.CampusNavigation.Name.Contains(Search)).ToList();
+                        break;
+                    default:
+                        ViewBag.Students = studentList.ToList();
+                        break;
+                }
+            }
+            #endregion
 
             //(dashboard)
             return View();

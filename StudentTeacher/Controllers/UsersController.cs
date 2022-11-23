@@ -220,7 +220,7 @@ namespace StudentTeacher.Controllers
                 switch (SearchOption)
                 {
                     case "1":
-                        ViewBag.Gradings = _context.Gradings.ToList();
+                        ViewBag.Gradings = _context.Gradings.ToList(); //Date not implemented yet
                         break;
                     case "2":
                         ViewBag.Gradings = _context.Gradings.Where(x => x.StudentNavigation.Number.Contains(Search)).ToList();

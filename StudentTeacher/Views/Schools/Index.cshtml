@@ -53,6 +53,11 @@
         width: 100% !important;
         background-color: white;
         padding: 3%;
+        height: 100vh;
+    }
+
+    body {
+        overflow: hidden;
     }
 
     main {
@@ -79,8 +84,25 @@
         width: 20%;
     }
 
+    /*Scrollable Tables - START*/
+    .table-responsive {
+        height: auto;
+        max-height: 75vh;
+        overflow-y: scroll auto;
+    }
+
+    thead tr:nth-child(1) th {
+        background: #084E62;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    /*Scrollable Tables - END*/
+
     table {
         width: 100%;
+        border-collapse: collapse;
+        border: none !important;
     }
 
         table thead tr {
