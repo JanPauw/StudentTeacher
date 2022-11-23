@@ -47,7 +47,7 @@ steps:
   displayName: Run Visual studio tests
   inputs:
     command: test
-    projects: '*/Unit/.csproj'
+    projects: '**/*Unit*/*.csproj'
     arguments: '--configuration debug'
 
 - task: PublishBuildArtifacts@1
