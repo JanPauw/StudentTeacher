@@ -43,12 +43,12 @@ steps:
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
 
-- task: DotNetCoreCLI@2
-  displayName: Run Visual studio tests
-  inputs:
-    command: test
-    projects: '**/*Unit*/*.csproj'
-    arguments: '--configuration debug'
+#- task: DotNetCoreCLI@2
+#  displayName: Run Visual studio tests
+#  inputs:
+#    command: test
+#    projects: '**/*Unit*/*.csproj'
+#    arguments: '--configuration debug'
 
 - task: PublishBuildArtifacts@1
   displayName: 'publish artifacts'
