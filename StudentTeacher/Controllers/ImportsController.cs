@@ -1,6 +1,8 @@
 ﻿using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StudentTeacher.Models;
+using System.Data;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IWebHostEnvironment;
 
 namespace StudentTeacher.Controllers
@@ -364,6 +366,81 @@ namespace StudentTeacher.Controllers
             {
                 TempData["error"] = "Importing Failed!";
                 return RedirectToAction("Index", "Students");
+            }
+        }
+
+        public ActionResult Export()
+        {
+            return View();
+        }
+
+        //Exporting to Excel
+        [HttpPost]
+        public async Task<FileResult> ExportImport()
+        {
+            DataTable dt = new DataTable("Grid");
+            dt.Columns.AddRange(new DataColumn[16] { new DataColumn("Year of study within degree"),
+                                            new DataColumn("Student Surname"),
+                                            new DataColumn("Student Name"),
+                                            new DataColumn("Student Number"),
+                                            new DataColumn("Email Address"),
+                                            new DataColumn("Contact number"),
+                                            new DataColumn("Qualification (Foundation Phase or Intermediate Phase)"),
+                                            new DataColumn("Home Language"),
+                                            new DataColumn("Teaching Placment Year 1 (School Name)"),
+                                            new DataColumn("YEAR 1 QUINTILE CATEGORY "),
+                                            new DataColumn("Teaching Placment Year 2 (School Name)"),
+                                            new DataColumn("YEAR 2 QUINTILE CATEGORY "),
+                                            new DataColumn("Teaching Placment Year 3 (School Name)"),
+                                            new DataColumn("YEAR 3 QUINTILE CATEGORY "),
+                                            new DataColumn("Teaching Placment Year 4 (School Name)"),
+                                            new DataColumn("YEAR 4 QUINTILE CATEGORY")
+            });
+
+            List<Student> students = _context.Students.ToList();
+
+            foreach (var student in students)
+            {
+                //get student placements
+                StudentSchool Year1 = await _context.StudentSchools.Where(x => x.Student == student.Number && x.PlacementYear == 1).SingleOrDefaultAsync();
+                StudentSchool Year2 = await _context.StudentSchools.Where(x => x.Student == student.Number && x.PlacementYear == 2).SingleOrDefaultAsync();
+                StudentSchool Year3 = await _context.StudentSchools.Where(x => x.Student == student.Number && x.PlacementYear == 3).SingleOrDefaultAsync();
+                StudentSchool Year4 = await _context.StudentSchools.Where(x => x.Student == student.Number && x.PlacementYear == 4).SingleOrDefaultAsync();
+
+                //get schools
+                School school1 = await _context.Schools.FindAsync(Year1.School);
+                School school2 = await _context.Schools.FindAsync(Year2.School);
+                School school3 = await _context.Schools.FindAsync(Year3.School);
+                School school4 = await _context.Schools.FindAsync(Year4.School);
+
+                dt.Rows.Add(
+                    student.YearOfStudy,                        //Year of Study
+                    student.LastName,                           //Student Surname
+                    student.FirstName,                          //Student Name
+                    student.Number,                             //Student Number
+                    student.Number + "@vcconnect.edu.za",       //Student Email
+                    "N/A",                                      //Student Phone
+                    student.Qualification,                      //Qualification
+                    "N/A",                                      //Home Language
+                    school1.Name,                               //Teaching Placement Year 1
+                    school1.Quintile,                           //Quintile Category
+                    school2.Name,                               //Teaching Placement Year 1
+                    school2.Quintile,                           //Quintile Category
+                    school3.Name,                               //Teaching Placement Year 1
+                    school3.Quintile,                           //Quintile Category
+                    school4.Name,                               //Teaching Placement Year 1
+                    school4.Quintile                            //Quintile Category
+                    );
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Students.xlsx");
+                }
             }
         }
 

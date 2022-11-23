@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Export";
+}
+
+<div id="DivExports">
+    <label class="h1">Exports</label>
+    <br />
+    <label class="h6">Select an export option below...</label>
+    <hr />
+    <div id="ExportCards">
+        <div id="ExportImport" class="card">
+            <div class="card-header">
+                <label class="h4">Bulk Import File</label>
+            </div>
+            <div class="card-body">
+                <p>
+                    Export an updated version of the spreadsheet used to "Bulk Import".
+                </p>
+            </div>
+            <div class="card-footer">
+                <form method="post" asp-action="ExportImport" target="_blank">
+                    <button style="float: right;" class="btn btn-success" type="submit">
+                        <i class="bi bi-download"></i>
+                        Export Import File
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="Export Students">
+</div>
+
+<style>
+    main {
+        width: 100% !important;
+        background-color: white;
+        padding: 3%;
+    }
+
+    main {
+        box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
+    }
+</style>

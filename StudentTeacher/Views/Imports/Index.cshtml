@@ -30,6 +30,25 @@
             </button>
         </div>
     </form>
+    <br />
+    <div id="ExportImport" class="card">
+        <div class="card-header">
+            <label class="h4">Download Updated Spreadsheet</label>
+        </div>
+        <div class="card-body">
+            <p>
+                Export an updated version of the spreadsheet used to "Bulk Import".
+            </p>
+        </div>
+        <div class="card-footer">
+            <form method="post" asp-action="ExportImport" target="_blank">
+                <button style="margin: auto;" class="btn btn-success" type="submit">
+                    <i class="bi bi-download"></i>
+                    Export Import File
+                </button>
+            </form>
+        </div>
+    </div>
 </div>
 
 
@@ -37,7 +56,7 @@
     #Lec_Login {
         width: 35%;
         margin: auto;
-        margin-top: 10%;
+        margin-top: 6%;
         padding: 3%;
         box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
         text-align: center;
