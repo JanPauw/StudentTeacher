@@ -99,6 +99,21 @@
         box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
     }
 
+    /*Scrollable Tables - START*/
+    .table-responsive {
+        height: auto;
+        max-height: 75vh;
+        overflow-y: scroll auto;
+    }
+
+    thead tr:nth-child(1) th {
+        background: #084E62;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    /*Scrollable Tables - END*/
+
     #divYears {
         background-color: white /*#E9E9E9*/;
     }
