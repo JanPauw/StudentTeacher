@@ -17,7 +17,7 @@
 }
 
 <label class="h1">Grading Details</label>
-<a style="float: right;" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Number">
+<a id="btnEdit" style="float: right;" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Number">
     <i class="bi bi-pencil-square"></i> Edit Grading
 </a>
 <br />
@@ -466,7 +466,23 @@
         }
 
     /* Click + hover color */
-    input:checked ~ label /* color current and previous stars on checked */{
+    input:checked ~ label /* color current and previous stars on checked */ {
         color: gold;
+    }
+
+    /*Responive design*/
+
+    @@media only screen and (max-width:375px) {
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
+    }
+
+    @@media only screen and (max-width:320px) {
+        #btnEdit {
+            margin-right: 0px !important;
+            margin-bottom: 5px !important;
+        }
     }
 </style>
