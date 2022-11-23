@@ -357,7 +357,7 @@ namespace StudentTeacher.Controllers
                 }
                 #endregion
 
-                TempData["success"] = "Surely it worked?";
+                TempData["success"] = "Spreadsheet imported successfully!";
                 return RedirectToAction("Index", "Students");
             }
             catch (Exception e)
