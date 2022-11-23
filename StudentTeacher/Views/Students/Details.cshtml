@@ -34,7 +34,7 @@
 @*Main Content*@
 
 <label class="h1">Student Details: @Model.FirstName @Model.LastName</label>
-<div id="div1" class="table-responsive">
+
     <a id="btnEdit" style="float: right;" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Number">
         <i class="bi bi-pencil-square"></i> Edit Details
     </a>
@@ -62,6 +62,7 @@
         </tbody>
     </table>
     <br />
+    <div id="div1" class="table-responsive">
     <table id="tblNumber">
         <thead>
             <tr>
@@ -91,8 +92,8 @@
 </div>
 
 <label class="h1">Education Status</label>
-<div id="div2" style="float: right !important; width: 30% !important;" class="input-group mb-3" class="table-responsive">
-    <label class="input-group-text" for="YearOfStudy">Year of Study: </label>
+<div id="div2" style="float: right; width: 30% !important;" class="input-group mb-3" class="table-responsive">
+    <label id="lblYearOfStudy" class="input-group-text" for="YearOfStudy">Year of Study: </label>
     <select name="YearOfStudy" id="YearOfStudy" class="form-select" onchange="YearSelected()">
         @if (!FoundCurrent)
             @if (YearSelected == "1")
@@ -336,6 +337,7 @@
         }
     }
 </div>
+</div>
 
 <br />
 
@@ -465,25 +467,97 @@
             min-width: 40vw !important;
         }
 
-        
-
-
-
-
-
         #btnEdit {
             margin-right: 0px !important;
             margin-bottom: 5px !important;
         }
+
+        #div2 {
+            float: none !important;
+            display: inline !important;
+        }
+
+        #YearOfStudy {
+            float: right;
+            width: 50%;
+        }
+
+        #lblYearOfStudy {
+            float: left;
+            width: 50%;
+        }
+
+         #tblGradings {
+            width: 200% !important;
+        }
+
+        .accordion-header {
+            width: 201% !important;
+        }
     }
+
+     @@media only screen and (max-width:375px) {
+        #divCampusses table th {
+            min-width: 40vw !important;
+        }
+        
+        #div2 {
+            float: none !important;
+            display: inline !important;
+        }
+
+        #YearOfStudy {
+            float: right;
+            width: 50%;
+        }
+
+        #lblYearOfStudy {
+            float: left;
+            width: 50%;
+        }
+        
+         #tblGradings {
+            width: 200% !important;
+        }
+
+        .accordion-header {
+            width: 201% !important;
+        }
+
+        a {
+            width: 100px;
+        }
+    }
+
 
     @@media only screen and (max-width:320px) {
         #divCampusses table th {
             min-width: 40vw !important;
         }
-        /*#div1, #div2, #div3, #div4 {
-                        width: 100%;
-                    }*/
+        
+        #div2 {
+            float: none !important;
+            display: inline !important;
+        }
+
+        #YearOfStudy {
+            float: right;
+            width: 50%;
+        }
+
+        #lblYearOfStudy {
+            float: left;
+            width: 50%;
+        }
+        
+        #tblGradings {
+            width: 200% !important;
+        }
+
+        .accordion-header {
+            width: 201% !important;
+        }
+      
 
         a {
             width: 100px;
