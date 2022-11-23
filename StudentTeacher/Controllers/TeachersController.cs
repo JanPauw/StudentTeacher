@@ -97,7 +97,8 @@ namespace StudentTeacher.Controllers
             ViewBag.Schools = _context.Schools.ToList();
             ViewBag.Teachers = _context.Teachers.ToList();
             ViewBag.Lecturers = _context.Lecturers.ToList();
-            ViewBag.Gradings = _context.Gradings.Where(x => x.TeacherNavigation.Email == email).OrderByDescending(x => x.Date).ToList();
+            List<Grading> gradings = _context.Gradings.Where(x => x.TeacherNavigation.Email == email).OrderByDescending(x => x.Date).ToList();
+            ViewBag.Gradings = gradings;
             ViewBag.Campuses = _context.Campuses.ToList();
 
             #region Check for Null or Empty in Searches
@@ -131,7 +132,7 @@ namespace StudentTeacher.Controllers
                         ViewBag.Students = studentList.Where(x => (x.FirstName + " " + x.LastName).Contains(Search)).ToList();
                         break;
                     case "3":
-                        ViewBag.Students = studentList.Where(x => x.Qualification.Contains(Search)).ToList();
+                        ViewBag.Students = studentList.Where(x => x.Qualification.ToLower().Contains(Search.ToLower())).ToList();
                         break;
                     case "4":
                         ViewBag.Students = studentList.Where(x => ("" + x.YearOfStudy).Contains(Search)).ToList();
@@ -145,6 +146,35 @@ namespace StudentTeacher.Controllers
                 }
             }
             #endregion
+
+
+            #region Gradings Search
+            if (SearchType == "gradings")
+            {
+                switch (SearchOption)
+                {
+                    case "1":
+                        ViewBag.Gradings = gradings.ToList(); //Date not implemented yet
+                        break;
+                    case "2":
+                        ViewBag.Gradings = gradings.Where(x => x.StudentNavigation.Number.Contains(Search)).ToList();
+                        break;
+                    case "3":
+                        ViewBag.Gradings = gradings.Where(x => (x.TeacherNavigation.FirstName + " " + x.TeacherNavigation.LastName).Contains(Search)).ToList();
+                        break;
+                    case "4":
+                        ViewBag.Gradings = gradings.Where(x => ("" + x.YearOfStudy).Contains(Search)).ToList();
+                        break;
+                    case "5":
+                        ViewBag.Gradings = gradings.Where(x => x.Subject.Contains(Search)).ToList();
+                        break;
+                    default:
+                        ViewBag.Gradings = gradings.ToList();
+                        break;
+                }
+            }
+            #endregion
+
 
             //(dashboard)
             return View();
