@@ -28,6 +28,36 @@ namespace StudentTeacher.Controllers
 
         public async Task<IActionResult> Dashboard()
         {
+            //get current logged in lecturer
+            string email = HttpContext.Session.GetString("_email");
+
+            Lecturer loggedIn = _context.Lecturers.Where(x => x.Email == email).SingleOrDefault();
+
+            if (loggedIn == null)
+            {
+                return RedirectToAction("LogOut", "Users");
+            }
+
+
+            string campus = loggedIn.Campus;
+
+            //get StudentSchools mathcing teacher school
+            List<Student> students = _context.Students.Where(x => x.Campus == campus).ToList();
+            List<Grading> studentGradings = new List<Grading>();
+            if (students != null)
+            {
+                foreach (var item in students)
+                {
+
+                    foreach (var grading in item.Gradings)
+                    {
+                        studentGradings.Add(grading);
+                    }
+                }
+
+            }
+            ViewBag.Gradings = studentGradings.OrderByDescending(x => x.Date).ToList();
+
             return View();
         }
 

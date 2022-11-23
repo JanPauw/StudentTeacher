@@ -29,8 +29,9 @@ namespace StudentTeacher.Controllers
         // GET: Dashboard
         public IActionResult Dashboard()
         {
-            //get current logged in teaacher
+            //get current logged in teacher
             string email = HttpContext.Session.GetString("_email");
+
             if (string.IsNullOrWhiteSpace(email))
             {
                 return RedirectToAction("LogOut", "Users");
@@ -103,7 +104,7 @@ namespace StudentTeacher.Controllers
             ViewBag.Schools = _context.Schools.ToList();
             ViewBag.Teachers = _context.Teachers.ToList();
             ViewBag.Lecturers = _context.Lecturers.ToList();
-            ViewBag.Gradings = _context.Gradings.OrderByDescending(x => x.Date).ToList();
+            ViewBag.Gradings = _context.Gradings.Where(x => x.TeacherNavigation.Email == email).OrderByDescending(x => x.Date).ToList();
             ViewBag.Campuses = _context.Campuses.ToList();
 
 
