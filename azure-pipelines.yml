@@ -28,27 +28,12 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-# ...
-# do this after you've built your app, near the end of your pipeline in most cases
-# for example, you do this before you deploy to an Azure web app on Windows
 - task: DotNetCoreCLI@2
+  displayName: Run Visual studio tests
   inputs:
-    command: publish
-    publishWebProjects: True
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: True
-
-#- task: DotNetCoreCLI@2
-#  displayName: Run Visual studio tests
-#  inputs:
-#    command: test
-#    projects: '**/*Unit*/*.csproj'
-#    arguments: '--configuration debug'
+    command: test
+    projects: '**/*Unit*/*.csproj'
+    arguments: '--configuration debug'
 
 - task: PublishBuildArtifacts@1
   displayName: 'publish artifacts'
