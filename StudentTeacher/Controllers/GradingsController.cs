@@ -418,8 +418,60 @@ namespace StudentTeacher.Controllers
             {
                 return NotFound();
             }
-            ViewData["Student"] = new SelectList(_context.Students, "Number", "Number", grading.Student);
-            ViewData["Teacher"] = new SelectList(_context.Teachers, "Number", "Number", grading.Teacher);
+
+            //get marks allocations
+            var SectionAtoD = _context.Plannings.Where(x => x.GradingNumber == id).SingleOrDefault().SectionAtoD;
+            var SectionE = _context.Plannings.Where(x => x.GradingNumber == id).SingleOrDefault().SectionE;
+
+            var Intro = _context.Executions.Where(x => x.GradingNumber == id).SingleOrDefault().Intro;
+            var Teaching = _context.Executions.Where(x => x.GradingNumber == id).SingleOrDefault().Teaching;
+            var Closure = _context.Executions.Where(x => x.GradingNumber == id).SingleOrDefault().Closure;
+            var Assessment = _context.Executions.Where(x => x.GradingNumber == id).SingleOrDefault().Assessment;
+
+            var Presence = _context.Overalls.Where(x => x.GradingNumber == id).SingleOrDefault().Presence;
+            var Environment = _context.Overalls.Where(x => x.GradingNumber == id).SingleOrDefault().Environment;
+
+            //send variables through ViewBag
+            ViewBag.SectionAtoD = SectionAtoD;
+            ViewBag.SectionE = SectionE;
+            ViewBag.Intro = Intro;
+            ViewBag.Teaching = Teaching;
+            ViewBag.Closure = Closure;
+            ViewBag.Assessment = Assessment;
+            ViewBag.Presence = Presence;
+            ViewBag.Environment = Environment;
+
+            //get commentaries for this grading
+            List<Commentary> comments = await _context.Commentaries.Where(x => x.GradingNumber == id).ToListAsync();
+            ViewBag.Comments = comments;
+
+            //get teacher
+            Teacher t = _context.Teachers.Find(grading.Teacher);
+
+            if (t == null)
+            {
+                return RedirectToAction("Details", new { id = id });
+            }
+
+            ViewBag.Teacher = t;
+
+            //get student
+            Student s = _context.Students.Find(grading.Student);
+
+            if (s == null)
+            {
+                return RedirectToAction("Details", new { id = id });
+            }
+
+            ViewBag.Student = s;
+
+            //get subjects
+            List<Subject> subjects = _context.Subjects.Where(x => x.YearOfStudy == "" + s.YearOfStudy).ToList();
+
+            ViewBag.Subjects = subjects;
+
+            ViewBag.Grading = grading;
+
             return View(grading);
         }
 
@@ -428,36 +480,258 @@ namespace StudentTeacher.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Number,Student,Teacher")] Grading grading)
+        public async Task<IActionResult> Edit(
+            int id, string Grade, string Subject, string Topic,
+            string Arating, string Erating, string INTROrating,
+            string EXErating, string CLOSURErating, string ASSESSMENTrating,
+            string PRESENCErating, string ENVIRONMENTrating,
+            string ComSectionAtoD, string ComSectionE, string ComIntro,
+            string ComTeaching, string ComClosure, string ComAssessment,
+            string ComPresence, string ComEnvironment
+            )
         {
-            if (id != grading.Number)
+            //test id
+            Grading grading = _context.Gradings.Find(id);
+            if (grading == null)
             {
-                return NotFound();
+                return RedirectToAction("Index", "Gradings");
             }
 
-            if (ModelState.IsValid)
+            //get realting student
+            Student student = _context.Students.Find(grading.Student);
+            if (student == null)
+            {
+                return RedirectToAction("Index", "Gradings");
+            }
+
+            #region Null Checks
+            //Grade
+            if (string.IsNullOrEmpty(Grade))
+            {
+                TempData["error"] = "Inavlid Grade Selected";
+                return View(grading);
+            }
+            else
             {
                 try
                 {
-                    _context.Update(grading);
-                    await _context.SaveChangesAsync();
+                    int iGrade = int.Parse(Grade);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch
                 {
-                    if (!GradingExists(grading.Number))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    TempData["error"] = "Inavlid Grade Selected";
+                    return View(grading);
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["Student"] = new SelectList(_context.Students, "Number", "Number", grading.Student);
-            ViewData["Teacher"] = new SelectList(_context.Teachers, "Number", "Number", grading.Teacher);
-            return View(grading);
+
+            //Subject
+            if (string.IsNullOrEmpty(Subject))
+            {
+                TempData["error"] = "Inavlid Subject Selected";
+                return View(grading);
+            }
+            else
+            {
+                bool exists = _context.Subjects.Where(x => x.Subject1 == Subject && x.YearOfStudy == "" + student.YearOfStudy).Count() > 0;
+                if (!exists)
+                {
+                    TempData["error"] = "Inavlid Subject Selected";
+                    return View(grading);
+                }
+            }
+
+            //Topic
+            if (string.IsNullOrEmpty(Topic))
+            {
+                TempData["error"] = "Inavlid Topic Entered!";
+                return View(grading);
+            }
+
+            #region Check if Radios are not null
+            if (Arating.ToString() == null)
+            {
+                TempData["error"] = "Invalid rating selected!";
+                return View();
+            }
+            if (Erating.ToString() == null)
+            {
+                TempData["error"] = "Invalid rating selected!";
+                return View();
+            }
+            if (INTROrating.ToString() == null)
+            {
+                TempData["error"] = "Invalid rating selected!";
+                return View();
+            }
+            if (EXErating.ToString() == null)
+            {
+                TempData["error"] = "Invalid rating selected!";
+                return View();
+            }
+            if (CLOSURErating.ToString() == null)
+            {
+                TempData["error"] = "Invalid rating selected!";
+                return View();
+            }
+            if (ASSESSMENTrating.ToString() == null)
+            {
+                TempData["error"] = "Invalid rating selected!";
+                return View();
+            }
+            if (PRESENCErating.ToString() == null)
+            {
+                TempData["error"] = "Invalid rating selected!";
+                return View();
+            }
+            if (ENVIRONMENTrating.ToString() == null)
+            {
+                TempData["error"] = "Invalid rating selected!";
+                return View();
+            }
+
+            #endregion
+
+            #region Check if Commentary is not null
+            if (string.IsNullOrWhiteSpace(ComSectionAtoD))
+            {
+                TempData["error"] = "Invalid Commentary!";
+                return View();
+            }
+
+            if (string.IsNullOrWhiteSpace(ComSectionE))
+            {
+                TempData["error"] = "Invalid Commentary!";
+                return View();
+            }
+
+            if (string.IsNullOrWhiteSpace(ComIntro))
+            {
+                TempData["error"] = "Invalid Commentary!";
+                return View();
+            }
+
+            if (string.IsNullOrWhiteSpace(ComTeaching))
+            {
+                TempData["error"] = "Invalid Commentary!";
+                return View();
+            }
+
+            if (string.IsNullOrWhiteSpace(ComClosure))
+            {
+                TempData["error"] = "Invalid Commentary!";
+                return View();
+            }
+
+            if (string.IsNullOrWhiteSpace(ComAssessment))
+            {
+                TempData["error"] = "Invalid Commentary!";
+                return View();
+            }
+
+            if (string.IsNullOrWhiteSpace(ComPresence))
+            {
+                TempData["error"] = "Invalid Commentary!";
+                return View();
+            }
+
+            if (string.IsNullOrWhiteSpace(ComEnvironment))
+            {
+                TempData["error"] = "Invalid Commentary!";
+                return View();
+            }
+            #endregion
+
+            #endregion
+
+            //general info of grading
+            grading.Grade = Convert.ToInt32(Grade);
+            grading.Subject = Subject;
+            grading.Topic = Topic;
+
+            //grading marks allocations
+            //Get Current Marks Objects
+            Planning gPlanning = _context.Plannings.Where(x => x.GradingNumber == grading.Number).SingleOrDefault();
+            Execution gExecution = _context.Executions.Where(x => x.GradingNumber == grading.Number).SingleOrDefault();
+            Overall gOverall = _context.Overalls.Where(x => x.GradingNumber == grading.Number).SingleOrDefault();
+            //Check that they are not null
+
+            if (gPlanning == null || gExecution == null || gOverall == null)
+            {
+                TempData["error"] = "An error has occurred! Please contact system admin if this persists!";
+                return View(grading);
+            }
+
+            //Set new Marks Values
+            //Planning
+            gPlanning.SectionAtoD = Convert.ToInt32(Arating);
+            gPlanning.SectionE = Convert.ToInt32(Erating);
+
+            //Execution
+            gExecution.Intro = Convert.ToInt32(INTROrating);
+            gExecution.Teaching = Convert.ToInt32(EXErating);
+            gExecution.Closure = Convert.ToInt32(CLOSURErating);
+            gExecution.Assessment = Convert.ToInt32(ASSESSMENTrating);
+
+            //Overall
+            gOverall.Presence = Convert.ToInt32(PRESENCErating);
+            gOverall.Environment = Convert.ToInt32(ENVIRONMENTrating);
+
+            //set new comments values
+            //get existing comments
+            Commentary SectionAtoD = _context.Commentaries.Where(x => x.GradingNumber == grading.Number && x.Criteria == "SectionAtoD").SingleOrDefault();
+            Commentary SectionE = _context.Commentaries.Where(x => x.GradingNumber == grading.Number && x.Criteria == "SectionE").SingleOrDefault();
+            Commentary Intro = _context.Commentaries.Where(x => x.GradingNumber == grading.Number && x.Criteria == "Intro").SingleOrDefault();
+            Commentary Teaching = _context.Commentaries.Where(x => x.GradingNumber == grading.Number && x.Criteria == "Teaching").SingleOrDefault();
+            Commentary Closure = _context.Commentaries.Where(x => x.GradingNumber == grading.Number && x.Criteria == "Closure").SingleOrDefault();
+            Commentary Assessment = _context.Commentaries.Where(x => x.GradingNumber == grading.Number && x.Criteria == "Assessment").SingleOrDefault();
+            Commentary Presence = _context.Commentaries.Where(x => x.GradingNumber == grading.Number && x.Criteria == "Presence").SingleOrDefault();
+            Commentary Environment = _context.Commentaries.Where(x => x.GradingNumber == grading.Number && x.Criteria == "Environment").SingleOrDefault();
+
+            if (SectionAtoD == null || SectionE == null)
+            {
+                TempData["error"] = "An error has occurred! Please contact system admin if this persists!";
+                return View(grading);
+            }
+
+            if (Intro == null || Teaching == null || Closure == null || Assessment == null)
+            {
+                TempData["error"] = "An error has occurred! Please contact system admin if this persists!";
+                return View(grading);
+            }
+
+            if (Presence == null || Environment == null)
+            {
+                TempData["error"] = "An error has occurred! Please contact system admin if this persists!";
+                return View(grading);
+            }
+
+            //new comments
+            SectionAtoD.Comment = ComSectionAtoD;
+            SectionE.Comment = ComSectionE;
+            Intro.Comment = ComIntro;
+            Teaching.Comment = ComTeaching;
+            Closure.Comment = ComClosure;
+            Assessment.Comment = ComAssessment;
+            Presence.Comment = ComPresence;
+            Environment.Comment = ComEnvironment;
+
+            //Update comments in DB
+            _context.Commentaries.Update(SectionAtoD);
+            _context.Commentaries.Update(SectionE);
+            _context.Commentaries.Update(Intro);
+            _context.Commentaries.Update(Teaching);
+            _context.Commentaries.Update(Closure);
+            _context.Commentaries.Update(Assessment);
+            _context.Commentaries.Update(Presence);
+            _context.Commentaries.Update(Environment);
+
+            //update grading in DB
+            _context.Gradings.Update(grading);
+
+            await _context.SaveChangesAsync();
+
+            TempData["success"] = "Grading updated successfully!";
+            return RedirectToAction("Details", "Gradings", new { id = id });
         }
 
         // GET: Gradings/Delete/5

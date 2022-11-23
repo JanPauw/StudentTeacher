@@ -88,7 +88,7 @@ namespace StudentTeacher.Controllers
                     return RedirectToAction("LogOut", "Users");
                 }
 
-                StudentSchool ss = studentSchools.Where(x => x.Student == s.Number).SingleOrDefault();
+                StudentSchool ss = studentSchools.Where(x => x.Student == s.Number && x.PlacementYear == s.YearOfStudy).SingleOrDefault();
 
                 //Check null
                 if (ss != null)
@@ -103,7 +103,7 @@ namespace StudentTeacher.Controllers
             ViewBag.Schools = _context.Schools.ToList();
             ViewBag.Teachers = _context.Teachers.ToList();
             ViewBag.Lecturers = _context.Lecturers.ToList();
-            ViewBag.Gradings = _context.Gradings.OrderByDescending(x => x.Date).ToList();
+            ViewBag.Gradings = _context.Gradings.Where(x => x.Teacher == loggedIn.Number).OrderByDescending(x => x.Date).ToList();
             ViewBag.Campuses = _context.Campuses.ToList();
 
 
