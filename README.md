@@ -1,20 +1,22 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+![My project-1 (27)](https://user-images.githubusercontent.com/80828952/216526340-dd6228ea-cc83-4209-8514-e48707e96e8e.png)
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+# StudentTeacher Evaluation
+A ASP.NET Core Wba App created to help grade student's practical performance while teaching.
+This app was intended to be used by the lecturers of the students, and the schools that the students are teaching at.
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+## Tech Stack
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+Client: HTML, C# (ASP.NET 6), CSS, Bootstrap
+
+Server: Azure SQL, Azure Devops, Azure App Services
+ 
+## Features
+- Users can login and register (login details gets saved).
+- Users can view Caches on a Google Map, and tap on them to view their details.
+- Users can select to navigate to a selected cache.
+- Once a user gets to the cache, they can mark it as found.
+- Users can view their cache history to see all visited caches.
+- After finding a cache users can favorite found caches.
+- Users can add their own caches onto the map.
+- Users can view cache details and view and leave comments.
