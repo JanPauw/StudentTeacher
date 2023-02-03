@@ -12,11 +12,12 @@ Client: HTML, C# (ASP.NET 6), CSS, Bootstrap
 Server: Azure SQL, Azure Devops, Azure App Services
  
 ## Features
-- Users can login and register (login details gets saved).
-- Users can view Caches on a Google Map, and tap on them to view their details.
-- Users can select to navigate to a selected cache.
-- Once a user gets to the cache, they can mark it as found.
-- Users can view their cache history to see all visited caches.
-- After finding a cache users can favorite found caches.
-- Users can add their own caches onto the map.
-- Users can view cache details and view and leave comments.
+- Different logins for Admins, Lecturers, and Teachers.
+- Teachers can register on a per school basis.
+- Admins can import Campus, Student, and School information.
+- Admins can add or remove subjects that the student's will be assessed in, on a per year basis.
+- Admins can view all Student, School, Teacher, and Lecturer information.
+- Lecturers can only see the Student and School details of their campus.
+- Teachers can only view Student information of their related schools.
+- Admins, Lecturers, and Teachers can all submit, view, and edit gradings made for students.
+- Everything can be exported to an Excel spreadsheet.
