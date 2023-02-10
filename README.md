@@ -2,7 +2,7 @@
 
 
 # StudentTeacher Evaluation
-A ASP.NET Core Wba App created to help grade student's practical performance while teaching.
+A ASP.NET Core Web App created to help grade student's practical performance while teaching.
 This app was intended to be used by the lecturers of the students, and the schools that the students are teaching at.
 
 ## Tech Stack
